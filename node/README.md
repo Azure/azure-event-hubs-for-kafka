@@ -34,8 +34,8 @@ Additionally, topics in Kafka map to Event Hub instances, so create an Event Hub
 Now that you have a Kafka enabled Event Hubs connection string, clone the Azure Event Hubs repository and navigate to the `quickstart` subfolder:
 
 ```bash
-git clone https://github.com/Azure/azure-event-hubs.git
-cd azure-event-hubs/samples/kafka/Node
+git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
+cd azure-event-hubs-for-kafka/node
 ```
 
 ## Configuration

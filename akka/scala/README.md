@@ -27,8 +27,8 @@ An Event Hubs namespace is required to send or receive from any Event Hubs servi
 Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs repository and navigate to the `samples/kafka/akka-scala` subfolder:
 
 ```bash
-git clone https://github.com/Azure/azure-event-hubs.git
-cd azure-event-hubs/samples/kafka/akka-scala
+git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
+cd azure-event-hubs-for-kafka/akka/scala
 ```
 
 ## Akka Streams Producer
