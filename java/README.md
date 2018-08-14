@@ -1,10 +1,10 @@
-# Send and Receive Messages using Azure Event Hubs for Apache Kafka Ecosystems
+# Send and Receive Messages in Java using Azure Event Hubs for Apache Kafka Ecosystems
 
-Azure Event Hubs is a highly scalable data streaming platform and event ingestion service, capable of receiving and processing millions of events per second. Event Hubs can process and store events, data, or telemetry produced by distributed software and devices. Data sent to an event hub can be transformed and stored using any real-time analytics provider or batching/storage adapters.
+One of the key benefits of using Apache Kafka is the number of ecosystems it can connect to. Kafka-enabled Event Hubs allow users to combine the flexibility of the Kafka ecosystem with the scalability, consistency, and support of the Azure ecosystem without having to manage on prem clusters or resources - it's the best of both worlds!
 
-An Event Hubs Kafka endpoint enables users to connect to Event Hubs using the Kafka protocol (i.e. Kafka clients). By making minimal changes to a Kafka application, users will be able to connect to Azure Event Hubs and reap the benefits of the Azure ecosystem. Kafka-enabled Event Hubs currently supports Kafka versions 1.0 and later.
+An Event Hubs Kafka endpoint enables users to connect to Event Hubs using the Kafka protocol (i.e. Kafka clients). By making minimal changes to a Kafka application, users will be able to connect to Event Hubs and reap the benefits of the Azure ecosystem. Kafka-enabled Event Hubs currently supports Kafka versions 1.0 and later.
 
-This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer.
+This tutorial will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Java.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ An Event Hubs namespace is required to send or receive from any Event Hubs servi
 
 ## Clone the example project
 
-Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs repository and navigate to the `quickstart` subfolder:
+Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `java` subfolder:
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git

@@ -27,7 +27,7 @@ An Event Hubs namespace is required to send or receive from any Event Hubs servi
 
 ## Clone the example project
 
-Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs repository and navigate to the `mirror-maker` subfolder:
+Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `mirror-maker` subfolder:
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
