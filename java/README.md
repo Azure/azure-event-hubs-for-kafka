@@ -4,7 +4,7 @@ One of the key benefits of using Apache Kafka is the number of ecosystems it can
 
 An Event Hubs Kafka endpoint enables users to connect to Event Hubs using the Kafka protocol (i.e. Kafka clients). By making minimal changes to a Kafka application, users will be able to connect to Event Hubs and reap the benefits of the Azure ecosystem. Kafka-enabled Event Hubs currently supports Kafka versions 1.0 and later.
 
-This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Java.
+This tutorial will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Java.
 
 ## Prerequisites
 
