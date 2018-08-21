@@ -1,3 +1,5 @@
+//Copyright (c) Microsoft Corporation. All rights reserved.
+//Licensed under the MIT License.
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;     //Kafka v0.11.0.0

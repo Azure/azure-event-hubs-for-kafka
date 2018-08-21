@@ -1,3 +1,5 @@
+//Copyright (c) Microsoft Corporation. All rights reserved.
+//Licensed under the MIT License.
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;

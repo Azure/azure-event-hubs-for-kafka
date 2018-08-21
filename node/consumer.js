@@ -1,3 +1,5 @@
+//Copyright (c) Microsoft Corporation. All rights reserved.
+//Licensed under the MIT License.
 var Transform = require('stream').Transform;
 var Kafka = require('node-rdkafka');
 

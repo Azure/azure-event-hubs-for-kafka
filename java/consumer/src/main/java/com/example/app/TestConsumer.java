@@ -1,3 +1,5 @@
+//Copyright (c) Microsoft Corporation. All rights reserved.
+//Licensed under the MIT License.
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

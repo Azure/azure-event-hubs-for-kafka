@@ -1,3 +1,5 @@
+//Copyright (c) Microsoft Corporation. All rights reserved.
+//Licensed under the MIT License.
 import java.util.concurrent.TimeUnit.SECONDS
 
 import akka.actor.ActorSystem

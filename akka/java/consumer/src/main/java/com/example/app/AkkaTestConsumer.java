@@ -1,3 +1,5 @@
+//Copyright (c) Microsoft Corporation. All rights reserved.
+//Licensed under the MIT License.
 import akka.Done;
 import akka.actor.ActorSystem;
 import akka.kafka.*;

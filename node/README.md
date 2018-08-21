@@ -4,7 +4,7 @@ One of the key benefits of using Apache Kafka is the number of ecosystems it can
 
 An Azure Event Hubs Kafka endpoint enables users to connect to Azure Event Hubs using the Kafka protocol (i.e. Kafka clients). By making minimal changes to a Kafka application, users will be able to connect to Azure Event Hubs and reap the benefits of the Azure ecosystem. Kafka enabled Event Hubs currently supports Kafka versions 1.0 and later.
 
-This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Node.
+This tutorial will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Node.
 
 NOTE: This sample uses the [node-rdkafka](https://github.com/Blizzard/node-rdkafka) library which currently doesn't support Windows as well as it supports Linux/Mac. For instructions on how to configure for Windows, please visit the node-rdkafka project and follow their instructions before continuing with the sample (though our sample is untested on Windows). However, this sample has been tested on the [Linux Subsystem on Windows 10](https://docs.microsoft.com/en-us/windows/wsl/install-win10), so that is a good option if you plan on running on Windows.
 
@@ -31,7 +31,7 @@ Additionally, topics in Kafka map to Event Hub instances, so create an Event Hub
 
 ## Clone the example project
 
-Now that you have a Kafka enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `quickstart` subfolder:
+Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `node` subfolder:
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
