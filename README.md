@@ -5,7 +5,7 @@
 <h1 align="center">Microsoft Azure Event Hubs
 <p align="center">
   <a href="#star-our-repo">
-        <img src="https://img.shields.io/github/stars/azure/azure-event-hubs.svg?style=social&label=Stars"
+        <img src="https://img.shields.io/github/stars/azure/azure-event-hubs-for-kafka.svg?style=social&label=Stars"
             alt="star our repo"></a>
   <a href="https://twitter.com/intent/follow?screen_name=azureeventhubs" target="_blank">
         <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow%20@azureeventhubs"
