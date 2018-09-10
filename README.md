@@ -1,3 +1,17 @@
+<p align="center">
+  <img src="event-hubs.png" alt="Microsoft Azure Event Hubs" width="100"/>
+</p>
+
+<h1 align="center">Microsoft Azure Event Hubs
+<p align="center">
+  <a href="#star-our-repo">
+        <img src="https://img.shields.io/github/stars/azure/azure-event-hubs.svg?style=social&label=Stars"
+            alt="star our repo"></a>
+  <a href="https://twitter.com/intent/follow?screen_name=azureeventhubs" target="_blank">
+        <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow%20@azureeventhubs"
+            alt="follow on Twitter"></a>
+</p></h1>
+
 # Migrating to Azure Event Hubs for Apache Kafka Ecosystems
 
 An Azure Event Hubs Kafka endpoint enables users to connect to Azure Event Hubs using the Kafka protocol. By making minimal changes to a Kafka application, users will be able to connect to Azure Event Hubs and reap the benefits of the Azure ecosystem. Event Hubs for Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
