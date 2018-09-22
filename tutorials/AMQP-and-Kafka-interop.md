@@ -38,7 +38,8 @@ It is easy to achieve the same state in a Kafka producer or consumer by using th
 
     final byte[] eventBody = new byte[] { 0x01, 0x02, 0x03, 0x04 };
     Bytes wrapper = Bytes.wrap(eventBody);
-    ProducerRecord<Long, Bytes> record = new ProducerRecord<Long, Bytes>(myTopic, myPartitionId, myTimeStamp, wrapper);
+    ProducerRecord<Long, Bytes> record =
+        new ProducerRecord<Long, Bytes>(myTopic, myPartitionId, myTimeStamp, wrapper);
 
     // send record
 ```
@@ -77,8 +78,9 @@ consumer can take advantage of the provided StringSerializer or StringDeserializ
 
     final KafkaProducer<Long, Bytes> producer = new KafkaProducer<Long, Bytes>(properties);
 
-    final String exampleJson = "{\"name\":\"Goku\", \"power level\":9001}";
-    ProducerRecord<Long, Bytes> pr = new ProducerRecord<Long, Bytes>(myTopic, myPartitionId, myTimeStamp, exampleJson);
+    final String exampleJson = "{\"name\":\"John\", \"number\":9001}";
+    ProducerRecord<Long, Bytes> pr =
+        new ProducerRecord<Long, Bytes>(myTopic, myPartitionId, myTimeStamp, exampleJson);
 
     /* send pr */
 ```
@@ -101,7 +103,7 @@ For the AMQP side, both Java and .NET provide built-in ways to convert strings t
 ```java
     // Create Java AMQP string event for sending
 
-    final String exampleJson = "{\"name\":\"Goku\", \"power level\":9001}";
+    final String exampleJson = "{\"name\":\"John\", \"number\":9001}";
     final EventData ed = EventData.create(exampleJson.getBytes(StandardCharsets.UTF_8));
 ```
 
@@ -115,7 +117,7 @@ For the AMQP side, both Java and .NET provide built-in ways to convert strings t
 ```csharp
     // Create C# AMQP string event for sending
 
-    string exampleJson = "{\"name\":\"Goku\", \"power level\":9001}";
+    string exampleJson = "{\"name\":\"John\", \"number\":9001}";
     EventData working = new EventData(Encoding.UTF8.GetBytes(exampleJson));
 ```
 
@@ -130,6 +132,9 @@ For the AMQP side, both Java and .NET provide built-in ways to convert strings t
 
     string receivedJson = Encoding.UTF8.GetString(bodyBytes);
 ```
+
+Because Kafka is open-source, the application developer can inspect the implementation of any serializer
+or deserializer and implement code which produces or consumes a compatible sequence of bytes on the AMQP side.
 
 
 ## Event User Properties
