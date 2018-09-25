@@ -1,8 +1,8 @@
 # Exchanging Events Between Consumers and Producers Using Different Protocols
 
-Azure Event Hubs support three protocols for consumers and producers: AMQP, REST (via HTTPS), and Kafka.
+Azure Event Hubs support three protocols for consumers and producers: AMQP, Kafka, and HTTPS.
 Each one of these protocols has its own way of representing a message, so naturally the question arises:
-if my system sends events to an Event Hub with one protocol and then consumes them with a different protocol,
+if an application sends events to an Event Hub with one protocol and then consumes them with a different protocol,
 what do the various parts and values of the event look like when they arrive at the consumer? This document
 discusses best practices on both producer and consumer to ensure that the values within an event are interpreted
 correctly by the consuming application.
@@ -14,8 +14,9 @@ the code snippets:
 * Microsoft Azure Event Hubs Client for Java (version 1.1.0 from https://github.com/Azure/azure-event-hubs-java)
 * Microsoft Azure Event Hubs Client for .NET (version 2.1.0 from https://github.com/Azure/azure-event-hubs-dotnet)
 * Microsoft Azure Service Bus (version 5.0.0 from https://www.nuget.org/packages/WindowsAzure.ServiceBus)
+* HTTPS (supports producers only)
 
-Other AMQP clients may behave slightly differently. AMQP itself has a well-defined type system, but the specifics of
+Other AMQP clients may behave slightly differently. AMQP has a well-defined type system, but the specifics of
 serializing language-specific types to and from that type system depend on the client, as does how the client provides access
 to the parts of an AMQP message.
 
@@ -25,7 +26,11 @@ All of the Microsoft AMQP clients represent the event body as an uninterpreted b
 passes a sequence of bytes to the client, and a consuming application receives that same sequence from the client.
 All interpretation of the byte sequence happens within the application code.
 
-It is easy to achieve the same state in a Kafka producer or consumer by using the provided BytesSerializer and BytesDeserializer:
+When sending an event via HTTPS, the event body is the POSTed content, which is also treated as uninterpreted
+bytes.
+
+It is easy to achieve the same state in a Kafka producer or consumer by using the provided BytesSerializer
+and BytesDeserializer:
 
 ```java
     // Kafka byte producer
@@ -64,10 +69,10 @@ decisions on the fly, for example based on type or sender information in user-se
 
 Applications that have a single, fixed event body type may be able to use other Kafka serializers and 
 deserializers to transparently convert data. For example, consider an application which uses JSON. The
-construction and interpretation of
-the JSON string happens at the application level, but at the Event Hubs level the event body will always be a string,
-which is to say a sequence of bytes representing characters in the UTF-8 encoding. In this case, the Kafka producer or
-consumer can take advantage of the provided StringSerializer or StringDeserializer:
+construction and interpretation of the JSON string happens at the application level, but at the Event Hubs
+level the event body will always be a string, which is to say a sequence of bytes representing characters
+in the UTF-8 encoding. In this case, the Kafka producer or consumer can take advantage of the provided
+StringSerializer or StringDeserializer:
 
 ```java
     // Kafka UTF-8 string producer
@@ -139,20 +144,20 @@ or deserializer and implement code which produces or consumes a compatible seque
 
 ## Event User Properties
 
-User-set properties can be set and retrieved from both sides:
-in the Microsoft AMQP clients they are called properties and in Kafka they are called headers. However,
-unlike event bodies, which both sides agree are byte sequences, properties have types for the AMQP clients,
-whereas they are also just byte sequences in Kafka.
+User-set properties can be set and retrieved from both AMQP clients
+(in the Microsoft AMQP clients they are called properties) and Kafka (where they are called headers). HTTPS
+senders can set user properties on an event by supplying them as HTTP headers in the POST operation.
+However, unlike event bodies, which both sides agree are byte sequences, property values have types for the
+AMQP clients, whereas they are also just byte sequences in Kafka. HTTPS is a special case: at the point of
+sending, all property values are UTF-8 text. The Event Hubs service does a limited amount of interpretation
+to convert appropriate property values to AMQP-encoded 32- and 64-bit signed integers, 64-bit floating point
+numbers, and booleans; any property value which does not fit one of those types is treated as a string.
 
-Either approach works in isolation: AMQP producers use the AMQP type system to allow AMQP consumers to
-automatically deserialize and present typed values to the consuming application, and Kafka producers and
-consumers exchange untyped byte sequences whose type is agreed on at the application level, and which can
-be conveniently serialized and deserialized using the wide variety of serializer and deserializer classes
-that the Kafka client provides. Mixing them means that a Kafka consumer sees the raw AMQP byte sequence,
-including the type information, and that an AMQP consumer sees the untyped byte sequence sent by the Kafka
-producer, and the application must interpret it.
+Mixing the two approaches to property typing means that a Kafka consumer sees the raw AMQP byte sequence,
+including the AMQP type information, and that an AMQP consumer sees the untyped byte sequence sent by the Kafka
+producer, which the application must interpret.
 
-To ease the situation for Kafka consumers receiving properties from AMQP producers, we have created the
+To ease the situation for Kafka consumers receiving properties from AMQP or HTTPS producers, we have created the
 AmqpDeserializer class, modeled after the other deserializers in the Kafka ecosystem, which interprets the
 type information in the AMQP byte sequences to deserialize the data bytes into a Java type.
 
