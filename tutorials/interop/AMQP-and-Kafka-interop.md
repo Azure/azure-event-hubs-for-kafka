@@ -32,9 +32,8 @@ bytes.
 It is easy to achieve the same state in a Kafka producer or consumer by using the provided ByteArraySerializer
 and ByteArrayDeserializer:
 
+### Kafka byte[] producer
 ```java
-    // Kafka byte producer
-
     final Properties properties = new Properties();
     // add other properties
     properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
@@ -48,9 +47,8 @@ and ByteArrayDeserializer:
     /* send pr */
 ```
 
+### Kafka byte[] consumer
 ```java
-    // Kafka byte consumer
-
     final Properties properties = new Properties();
     // add other properties
     properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName());
@@ -72,9 +70,8 @@ level the event body will always be a string, which is to say a sequence of byte
 in the UTF-8 encoding. In this case, the Kafka producer or consumer can take advantage of the provided
 StringSerializer or StringDeserializer:
 
+### Kafka UTF-8 string producer
 ```java
-    // Kafka UTF-8 string producer
-
     final Properties properties = new Properties();
     // add other properties
     properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -88,9 +85,8 @@ StringSerializer or StringDeserializer:
     /* send pr */
 ```
 
+### Kafka UTF-8 string consumer
 ```java
-    // Kafka UTF-8 string consumer
-
     final Properties properties = new Properties();
     // add other properties
     properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
@@ -101,32 +97,31 @@ StringSerializer or StringDeserializer:
     final String receivedJson = cr.value();
 ```
 
-For the AMQP side, both Java and .NET provide built-in ways to convert strings to and from UTF-8 byte sequences:
+For the AMQP side, both Java and .NET provide built-in ways to convert strings to and from UTF-8 byte sequences.
+The Microsoft AMQP clients represent events as a class named EventData, and these examples show how to serialize
+a UTF-8 string into an EventData event body in an AMQP producer, and how to deserialize an EventData event body
+into a UTF-8 string in an AMQP consumer.
 
+### Java AMQP UTF-8 string producer
 ```java
-    // Create Java AMQP string event for sending
-
     final String exampleJson = "{\"name\":\"John\", \"number\":9001}";
     final EventData ed = EventData.create(exampleJson.getBytes(StandardCharsets.UTF_8));
 ```
 
+### Java AMQP UTF-8 string consumer
 ```java
-    // Interpret Java AMQP event as string
-
     EventData ed = /* receive event */
     String receivedJson = new String(ed.getBytes(), StandardCharsets.UTF_8);
 ```
 
+### C# .NET UTF-8 string producer
 ```csharp
-    // Create .NET AMQP string event for sending
-
     string exampleJson = "{\"name\":\"John\", \"number\":9001}";
     EventData working = new EventData(Encoding.UTF8.GetBytes(exampleJson));
 ```
 
+### C# .NET UTF-8 string consumer
 ```csharp
-    // Interpret .NET AMQP event as string
-
     EventData ed = /* receive event */
 
     // getting the event body bytes depends on which .NET client is used
@@ -145,25 +140,28 @@ or deserializer and implement code which produces or consumes a compatible seque
 User-set properties can be set and retrieved from both AMQP clients
 (in the Microsoft AMQP clients they are called properties) and Kafka (where they are called headers). HTTPS
 senders can set user properties on an event by supplying them as HTTP headers in the POST operation.
-However, unlike event bodies, which both sides agree are byte sequences, property values have types for the
-AMQP clients, whereas they are also just byte sequences in Kafka. HTTPS is a special case: at the point of
+However, Kafka treats both event bodies and event header values as byte sequences, whereas in AMQP clients
+property values have types, which are communicated by encoding the property values according to the AMQP
+type system.
+HTTPS is a special case: at the point of
 sending, all property values are UTF-8 text. The Event Hubs service does a limited amount of interpretation
 to convert appropriate property values to AMQP-encoded 32- and 64-bit signed integers, 64-bit floating point
 numbers, and booleans; any property value which does not fit one of those types is treated as a string.
 
-Mixing the two approaches to property typing means that a Kafka consumer sees the raw AMQP byte sequence,
-including the AMQP type information, and that an AMQP consumer sees the untyped byte sequence sent by the Kafka
+Mixing these approaches to property typing means that a Kafka consumer sees the raw AMQP-encoded byte sequence,
+including the AMQP type information, whereas an AMQP consumer sees the untyped byte sequence sent by the Kafka
 producer, which the application must interpret.
 
 To ease the situation for Kafka consumers receiving properties from AMQP or HTTPS producers, we have created the
 AmqpDeserializer class, modeled after the other deserializers in the Kafka ecosystem, which interprets the
-type information in the AMQP byte sequences to deserialize the data bytes into a Java type.
+type information in the AMQP-encoded byte sequences to deserialize the data bytes into a Java type.
 
 As a best practice, we recommend including a property in messages sent via AMQP or HTTPS which the Kafka
 consumer can use to determine whether header values need AMQP deserialization. The value of the property is
 not important; it just needs a well-known name that the Kafka consumer can find in the list of headers and
 adjust its behavior accordingly.
 
+### AMQP to Kafka part 1: create and send an event in C# (.NET) with properties
 ```csharp
     // Create an event with properties "MyStringProperty" and "MyIntegerProperty"
     EventData working = new EventData(Encoding.UTF8.GetBytes("an event body"));
@@ -176,6 +174,7 @@ adjust its behavior accordingly.
     /* send working */
 ```
 
+### AMQP to Kafka part 2: use AmqpDeserializer to deserialize those properties in a Kafka consumer
 ```java
     final AmqpDeserializer amqpDeser = new AmqpDeserializer();
 
@@ -208,6 +207,7 @@ adjust its behavior accordingly.
 If the application knows the expected type for a property, there are deserialization methods
 which do not require a cast afterwards, but will throw if the property is not of the type expected.
 
+### AMQP to Kafka part 3: a different way of using AmqpDeserializer in a Kafka consumer
 ```java
     // BEST PRACTICE: detect whether AMQP deserialization is needed
     if (headerNamedAMQPheaders != null) {
@@ -247,12 +247,13 @@ adjust its behavior accordingly. If the Kafka producer cannot be changed, it is 
 application to check if the the property value is of a binary or byte type and attempt deserialization based
 on that.
 
+### Kafka to AMQP part 1: create and send an event from Kafka with properties
 ```java
-    // Set headers using Kafka serializers
     final String topicName = /* topic name */
     final ProducerRecord<Long, String> pr = new ProducerRecord<Long, String>(topicName, /* other arguments */);
     final Headers h = pr.headers();
 
+    // Set headers using Kafka serializers
     IntegerSerializer intSer = new IntegerSerializer();
     h.add("MyIntegerProperty", intSer.serialize(topicName, 1234));
 
@@ -277,9 +278,8 @@ on that.
     /* send pr */
 ```
 
+### Kafka to AMQP part 2: manually deserialize those properties in C# (.NET)
 ```csharp
-    // Manually deserialize properties sent by Kafka
-
     EventData ed = /* receive event */
 
     // BEST PRACTICE: detect whether manual deserialization is needed
@@ -328,9 +328,8 @@ on that.
     }
 ```
 
+### Kafka to AMQP part 3: manually deserialize those properties in Java
 ```java
-    // Manually deserialize properties sent by Kafka
-
     final EventData ed = /* receive event */
 
     // BEST PRACTICE: detect whether manual deserialization is needed
