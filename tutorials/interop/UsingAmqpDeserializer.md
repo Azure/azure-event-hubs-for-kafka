@@ -11,6 +11,9 @@ There are two general approaches to using it:
 
 To use the deserializer, simply add the java file to your project.
 
+If you modify the deserializer, DeserTests.java is a set of Junit tests which can be used to
+verify the behavior.
+
 ## deserialize()
 
 ```java
