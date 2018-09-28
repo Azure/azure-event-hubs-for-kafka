@@ -56,7 +56,23 @@ Run your application and see how it goes - in most cases this should be enough t
 
 ## Troubleshooting
 
-Didn't work? In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
+### Receiving an UnknownServerException from Kafka client libraries
+
+The error will look something like this:
+```
+java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
+```
+This error could mean many things, usually related to either client configuration or the configuration of the Event Hubs. Some cases where this has been seen are:
+
+* Too many Kafka producers being started at once. Space out the Kafka producer startup
+* Your requests are being throttled. One reason for this is too many producers sending events to too few partitions. Try creating a topic with more partitions.
+
+### Consumers not getting any records and constantly rebalancing
+
+There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. If this is happening, ensure that all consumers are using unique client IDs by setting the `client.id` property for each consumer client. 
+
+### Other issues? 
+In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
 
 * Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
 
