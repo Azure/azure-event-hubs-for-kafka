@@ -29,8 +29,8 @@ All interpretation of the byte sequence happens within the application code.
 When sending an event via HTTPS, the event body is the POSTed content, which is also treated as uninterpreted
 bytes.
 
-It is easy to achieve the same state in a Kafka producer or consumer by using the provided BytesSerializer
-and BytesDeserializer:
+It is easy to achieve the same state in a Kafka producer or consumer by using the provided ByteArraySerializer
+and ByteArrayDeserializer:
 
 ```java
     // Kafka byte producer
@@ -240,11 +240,11 @@ Client for Java, or System.Byte[] for Microsoft's .NET AMQP clients). The easies
 Kafka-supplied serializers to generate the bytes for the header values on the Kafka producer side, and then
 write compatible deserialization code on the AMQP consumer side, which is very simple.
 
-As with AMQP-to-Kafka, we recommend a best practice including a property in messages sent via Kafka which the
+As with AMQP-to-Kafka, we recommend as a best practice including a property in messages sent via Kafka which the
 AMQP consumer can use to determine whether header values need deserialization. The value of the property is
 not important; it just needs a well-known name that the AMQP consumer can find in the list of headers and
-adjust its behavior accordingly. If the Kafka producer cannot be changed, it is also possible to check if the
-the property value is a binary or byte type as seen on the AMQP consumer and attempt deserialization based
+adjust its behavior accordingly. If the Kafka producer cannot be changed, it is also possible for the consuming
+application to check if the the property value is of a binary or byte type and attempt deserialization based
 on that.
 
 ```java
