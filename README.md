@@ -54,14 +54,6 @@ If `sasl.jaas.config` is not a supported configuration in your framework, find t
 
 Run your application and see how it goes - in most cases this should be enough to make the switch. 
 
-## List of differences between Event Hubs for Kafka Ecosystems and Apache Kafka
-
-For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, properties, error codes, and general behavior that Apache Kafka does. The instances where the two explicitly differ (or where Event Hubs imposes a limit that Kafka does not) are listed below:
-
-* The max length of the `group.id` property is 64 characters
-* The max size of `offset.metadata.max.bytes` is 1024 bytes
-* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1Mb
-
 ## Troubleshooting
 
 ### Receiving an UnknownServerException from Kafka client libraries
@@ -87,3 +79,12 @@ In our experience, when changing the configurations didn't go as smoothly as we'
 * Version issues. Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could work because of the Kafka protocol's backwards compatability, but there's a chance it won't be able to connect or will require some serious tinkering. Since Kafka versions 0.9 and earlier don't support the required SASL protocols, any adapter or client using those versions won't be able to connect to Event Hubs.
 
 If you're still stuck (or if you know the secret to making it work with your framework), let us know by opening up a GitHub issue on this repo!
+
+## List of differences between Event Hubs for Kafka Ecosystems and Apache Kafka
+
+For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, properties, error codes, and general behavior that Apache Kafka does. The instances where the two explicitly differ (or where Event Hubs imposes a limit that Kafka does not) are listed below:
+
+* The max length of the `group.id` property is 64 characters
+* The max size of `offset.metadata.max.bytes` is 1024 bytes
+* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1Mb
+
