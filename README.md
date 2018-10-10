@@ -1,3 +1,17 @@
+<p align="center">
+  <img src="event-hubs.png" alt="Microsoft Azure Event Hubs" width="100"/>
+</p>
+
+<h1 align="center">Microsoft Azure Event Hubs
+<p align="center">
+  <a href="#star-our-repo">
+        <img src="https://img.shields.io/github/stars/azure/azure-event-hubs-for-kafka.svg?style=social&label=Stars"
+            alt="star our repo"></a>
+  <a href="https://twitter.com/intent/follow?screen_name=azureeventhubs" target="_blank">
+        <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow%20@azureeventhubs"
+            alt="follow on Twitter"></a>
+</p></h1>
+
 # Migrating to Azure Event Hubs for Apache Kafka Ecosystems
 
 An Azure Event Hubs Kafka endpoint enables users to connect to Azure Event Hubs using the Kafka protocol. By making minimal changes to a Kafka application, users will be able to connect to Azure Event Hubs and reap the benefits of the Azure ecosystem. Event Hubs for Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
@@ -50,7 +64,23 @@ For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, pr
 
 ## Troubleshooting
 
-Didn't work? In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
+### Receiving an UnknownServerException from Kafka client libraries
+
+The error will look something like this:
+```
+java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
+```
+This error could mean many things, usually related to either client configuration or the configuration of the Event Hubs. Some cases where this has been seen are:
+
+* Too many Kafka producers being started at once. Space out the Kafka producer startup
+* Your requests are being throttled. One reason for this is too many producers sending events to too few partitions. Try creating a topic with more partitions.
+
+### Consumers not getting any records and constantly rebalancing
+
+There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. If this is happening, ensure that all consumers are using unique client IDs by setting the `client.id` property for each consumer client. 
+
+### Other issues? 
+In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
 
 * Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
 
