@@ -54,7 +54,7 @@ If `sasl.jaas.config` is not a supported configuration in your framework, find t
 
 Run your application and see how it goes - in most cases this should be enough to make the switch. 
 
-## Event Hubs specific 
+## Running list of differences between Event Hubs for Kafka Ecosystems and Apache Kafka
 
 For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, properties, error codes, and general behavior that Apache Kafka does. The instances where the two explicitly differ (or where Event Hubs imposes a limit that Kafka does not) are listed below:
 
