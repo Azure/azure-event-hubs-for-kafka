@@ -51,4 +51,6 @@ Run the application in VS2017 and watch it go! If the Kafka-enabled Event Hub ha
 
 ## Troubleshooting
 
-Still not working? Try turning on debugging using librdkafka's debug config: Open up `Worker.cs` and insert `{ "debug", "security,broker,protocol" }` in your configuration dictionaries (if the problem is specific to the producer or the consumer, just put it in that client's dictionary). If that doesn't help, feel free to open up an issue on this Github and we'll help as soon as we can!
+Still not working? Try turning on debugging using librdkafka's debug config: Open up `Worker.cs` and insert `{ "debug", "security,broker,protocol" }` in your configuration dictionaries (if the problem is specific to the producer or the consumer, just put it in that client's dictionary). 
+
+If that doesn't help, feel free to open up an issue on this Github and we'll help as soon as we can!
