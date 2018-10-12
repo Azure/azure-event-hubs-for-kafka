@@ -24,7 +24,7 @@ if __name__ == '__main__':
         'security.protocol': 'SASL_SSL',
         'sasl.mechanism': 'PLAIN',
         'sasl.username': '$ConnectionString',
-        'sasl.password': '{YOUR.EVENTHUB.CONNECTION.STRING}',
+        'sasl.password': '{YOUR.EVENTHUBS.CONNECTION.STRING}',
         'client.id': 'python-example-producer'
     }
 
