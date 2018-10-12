@@ -2,7 +2,7 @@
   <img src="event-hubs.png" alt="Microsoft Azure Event Hubs" width="100"/>
 </p>
 
-<h1 align="center">Microsoft Azure Event Hubs
+<h1 align="center">Azure Event Hubs for Apache Kafka Ecosystems
 <p align="center">
   <a href="#star-our-repo">
         <img src="https://img.shields.io/github/stars/azure/azure-event-hubs-for-kafka.svg?style=social&label=Stars"
