@@ -37,7 +37,7 @@ EventHubsForKafkaSample.sln
 
 Use the NuGet Package Manager UI (or Package Manager Console) to install the Confluent.Kafka package. More detailed instructions can be found [here](https://github.com/confluentinc/confluent-kafka-dotnet#referencing). 
 
-**This tutorial uses the Confluent.Kafka v0.11 - using the v1.0-beta will cause compilation errors.** A tutorial for Confluent.Kafka v1.0 is in the pipeline!
+**This tutorial uses the Confluent.Kafka v0.11 - using the v1.0-beta will cause compilation errors.**
 
 ## Update App.config
 
@@ -51,6 +51,9 @@ Run the application in VS2017 and watch it go! If the Kafka-enabled Event Hub ha
 
 ## Troubleshooting
 
-Still not working? Try turning on debugging using librdkafka's debug config: Open up `Worker.cs` and insert `{ "debug", "security,broker,protocol" }` in your configuration dictionaries (if the problem is specific to the producer or the consumer, just put it in that client's dictionary). 
+Still not working? Here are some helpful tips:
 
-If that doesn't help, feel free to open up an issue on this Github and we'll help as soon as we can!
+* Try turning on debugging using librdkafka's debug config: Open up `Worker.cs` and insert `{ "debug", "security,broker,protocol" }` in your configuration dictionaries (if the problem is specific to the producer or the consumer, just put it in that client's dictionary)
+* Make sure your connection string is at the **namespace level** (if your connection string ends with "EntityPath=<SomeEventHubName>", then it is an EventHub level connection string and will not work)
+* Make sure your topic name is the name of an Event Hub that exists in your namespace
+* If it still doesn't work, feel free to open up an issue on this Github and we'll help as soon as we can!
