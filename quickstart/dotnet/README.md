@@ -2,6 +2,8 @@
 
 This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in C# using .NET Core 2.0. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
 
+This sample is based on [Confluent's Apache Kafka .NET client](https://github.com/confluentinc/confluent-kafka-dotnet), modified for use with Event Hubs for Kafka.
+
 ## Prerequisites
 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
@@ -37,7 +39,7 @@ EventHubsForKafkaSample.sln
 
 Use the NuGet Package Manager UI (or Package Manager Console) to install the Confluent.Kafka package. More detailed instructions can be found [here](https://github.com/confluentinc/confluent-kafka-dotnet#referencing). 
 
-**This tutorial uses the Confluent.Kafka v0.11 - using the v1.0-beta will cause compilation errors.**
+**This tutorial uses Confluent.Kafka v0.11 - using v1.0-beta will cause compilation errors.**
 
 ## Update App.config
 
