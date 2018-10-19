@@ -26,7 +26,7 @@ namespace EventHubsForKafkaSample
                     { "sasl.mechanism", "PLAIN" },
                     { "sasl.username", "$ConnectionString" },
                     { "sasl.password", connStr },
-                    { "ssl.ca.location", cacertlocation }
+                    { "ssl.ca.location", cacertlocation },
                     //{ "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
                 };
 
@@ -58,6 +58,7 @@ namespace EventHubsForKafkaSample
                     { "ssl.ca.location", cacertlocation },
                     { "group.id", consumergroup },
                     { "request.timeout.ms", 60000 },
+                    //{ "auto.offest.reset", "earliest" },          //Uncomment for setting offest value, valid args: [latest, earliest, none]
                     //{ "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
                 };
 
