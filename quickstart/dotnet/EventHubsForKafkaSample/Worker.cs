@@ -58,7 +58,7 @@ namespace EventHubsForKafkaSample
                     { "ssl.ca.location", cacertlocation },
                     { "group.id", consumergroup },
                     { "request.timeout.ms", 60000 },
-                    { "broker.version.fallback","1.0.0" },          //Event Hubs for Kafka Ecosystems supports Kafka v1.0+, 
+                    { "broker.version.fallback", "1.0.0" },         //Event Hubs for Kafka Ecosystems supports Kafka v1.0+, 
                                                                     //a fallback to an older API will fail
                     //{ "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
                 };
