@@ -32,7 +32,7 @@ Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
 cd azure-event-hubs-for-kafka/quickstart/dotnet
-EventHubsForKafkaSample.sln
+./EventHubsForKafkaSample.sln
 ```
 
 ## Import Confluent's Kafka package
