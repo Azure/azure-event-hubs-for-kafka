@@ -79,7 +79,7 @@ In this step, a Kafka Connect worker will be started locally in distributed mode
 
 This section will walk you through spinning up FileStreamSource and FileStreamSink connectors. 
 
-1. Create a directory for our input and output data files to live
+1. Create a directory for our input and output data files
     ```bash
     mkdir ~/connect-quickstart
     ```
