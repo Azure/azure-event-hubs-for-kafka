@@ -129,7 +129,7 @@ You can use any of the following tools to manage your Event Hubs namespace:
 
 - [Azure portal](portal.azure.com) (Note: consumer groups auto-created by Kafka clients will not appear on the Event Hubs consumer group lists.)
 
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/eventhubs?view=azure-cli-latest)
+- [Azure CLI](https://docs.microsoft.com/cli/azure/eventhubs?view=azure-cli-latest)
 
 - [C# Namespace Manager library](https://docs.microsoft.com/en-us/dotnet/api/microsoft.servicebus.namespacemanager?view=azure-dotnet)
 
