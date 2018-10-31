@@ -12,7 +12,7 @@ To complete this walkthough, make sure you have the following prerequisites:
 
 - Read through the [Event Hubs for Apache Kafka](https://docs.microsoft.com/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview) introduction article
 
-- Created [a Kafka-enabled Event Hubs namespace](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create) on the Azure Portal
+- Created a [Kafka-enabled Event Hubs namespace](https://docs.microsoft.com/azure/event-hubs/event-hubs-create) on the Azure Portal
 
 ## Key Concepts
 
