@@ -75,6 +75,8 @@ In this step, a Kafka Connect worker will be started locally in distributed mode
 
 3. Run `./bin/connect-distributed.sh /PATH/TO/connect-distributed.properties`.  The Connect worker REST API is ready for interaction when you see `'INFO Finished starting connectors and tasks'`. 
 
+Note: **Event Hubs supports topic auto-creation from Kafka clients!**  A quick check of the namespace on the Azure portal will reveal that the Connect worker's internal topics have been created automatically.
+
 ### Creating Connectors
 
 This section will walk you through spinning up FileStreamSource and FileStreamSink connectors. 
@@ -95,7 +97,7 @@ This section will walk you through spinning up FileStreamSource and FileStreamSi
     curl -s -X POST -H "Content-Type: application/json" --data '{"name": "file-source","config": {"connector.class":"org.apache.kafka.connect.file.FileStreamSourceConnector","tasks.max":"1","topic":"connect-quickstart","file": "{YOUR/HOME/PATH}/connect-quickstart/input.txt"}}' http://localhost:8083/connectors
     ```
 
-    Note: **Event Hubs supports Kafka's topic auto-creation!**  You should see the Event Hub `connect-quickstart` on your Event Hubs instance after running the above command.
+    You should see the Event Hub `connect-quickstart` on your Event Hubs instance after running the above command.
 
 4. Check status of source connector
     ```bash
