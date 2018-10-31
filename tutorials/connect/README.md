@@ -131,6 +131,6 @@ You can use any of the following tools to manage your Event Hubs namespace:
 
 - [Azure CLI](https://docs.microsoft.com/cli/azure/eventhubs?view=azure-cli-latest)
 
-- [C# Namespace Manager library](https://docs.microsoft.com/en-us/dotnet/api/microsoft.servicebus.namespacemanager?view=azure-dotnet)
+- [C# Namespace Manager library](https://docs.microsoft.com/dotnet/api/microsoft.servicebus.namespacemanager?view=azure-dotnet)
 
 - [Service Bus Explorer](https://github.com/paolosalvatori/ServiceBusExplorer/releases)
