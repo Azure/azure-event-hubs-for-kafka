@@ -13,7 +13,7 @@ In addition:
 
 ### Version Requirements
 
-The Spark-Kafka adapter was updated to support Kafka v2.0 as of Spark v2.4. In previous releases of Spark, the adapter "supported" Kafka v0.10 and later but relied specifically on Kafka v0.10 APIs. Since Event Hubs for Kafka Ecosystems does not support Kafka v0.10, the Spark-Kafka adapters from versions of Spark prior to v2.4 is not supported by Event Hubs for Kafka Ecosystems. 
+The Spark-Kafka adapter was updated to support Kafka v2.0 as of Spark v2.4. In previous releases of Spark, the adapter "supported" Kafka v0.10 and later but relied specifically on Kafka v0.10 APIs. Since Event Hubs for Kafka Ecosystems does not support Kafka v0.10, **the Spark-Kafka adapters from versions of Spark prior to v2.4 is not supported by Event Hubs for Kafka Ecosystems.**
 
 We recommend making the switch to Spark v2.4 to make use of the native Kafka connector. If that isn't feasible, check out the [EventHubs Spark connector](https://github.com/Azure/azure-event-hubs-spark) which supports Spark v2.1 and later.
 
