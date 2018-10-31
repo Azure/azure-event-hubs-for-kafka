@@ -10,7 +10,7 @@ To complete this walkthough, make sure you have the following prerequisites:
 
 - Kafka release (version 1.1.1, Scala version 2.11), available from [kafka.apache.org](https://kafka.apache.org/downloads#1.1.1)
 
-- Read through the [Event Hubs for Apache Kafka](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview) introduction article
+- Read through the [Event Hubs for Apache Kafka](https://docs.microsoft.com/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview) introduction article
 
 - Created [a Kafka-enabled Event Hubs namespace](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create) on the Azure Portal
 
