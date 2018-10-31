@@ -1,11 +1,6 @@
 # Kafka Connect support on Azure Event Hubs
 
-This document will walk you through integrating Kafka Connect with Azure Event Hubs and deploying four common connectors:
-
-- JDBC Source
-- JDBC Sink
-- FileStream Source
-- FileStream Sink
+This document will walk you through integrating Kafka Connect with Azure Event Hubs and deploying basic FileStreamSource and FileStreamSink connectors.
 
 ## Prerequisites
 
@@ -78,7 +73,7 @@ In this step, a Kafka Connect worker will be started locally in distributed mode
 
 2. Navigate to the location of the Kafka release on your machine.
 
-3. Run `./bin/connect-distributed.sh /PATH/TO/connect-distributed.properties`.  The Connect worker is ready for task creation when you see `'INFO Finished starting connectors and tasks'`. 
+3. Run `./bin/connect-distributed.sh /PATH/TO/connect-distributed.properties`.  The Connect worker REST API is ready for interaction when you see `'INFO Finished starting connectors and tasks'`. 
 
 ### Creating Connectors
 
@@ -122,7 +117,7 @@ This section will walk you through spinning up FileStreamSource and FileStreamSi
     ```bash
     # read the file
     cat ~/connect-quickstart/output.txt
-    # or diff the input and output files
+    # diff the input and output files
     diff ~/connect-quickstart/input.txt ~/connect-quickstart/output.txt
     ```
 
