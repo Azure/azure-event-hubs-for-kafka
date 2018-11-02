@@ -27,7 +27,7 @@ Whether you end up choosing a cloud platform like Azure Databricks or decide to 
 
 ## Microbatching vs Continuous Processing
 
-Spark began as a purely microbatched system, but recently (in Spark v2.3) released [`Continuous Mode`](https://databricks.com/blog/2018/03/20/low-latency-continuous-processing-mode-in-structured-streaming-in-apache-spark-2-3-0.html) to support continuous processing. Both microbatch and continuous processing are supported by EventHubs for Kafka, so feel free to pick whichever makes the most sense for your application.
+Spark began as a purely microbatched system, but recently (in Spark v2.3) released [`Continuous Mode`](https://databricks.com/blog/2018/03/20/low-latency-continuous-processing-mode-in-structured-streaming-in-apache-spark-2-3-0.html) to support continuous processing. Both microbatch and continuous processing are supported by EventHubs for Kafka, so feel free to pick whichever makes the most sense for your application. **Note: See our section on [retry logic](./README.md#retry-logic), as Spark continuous mode does not support Spark task retries.**
 
 ## Create an Event Hubs namespace
 
@@ -100,4 +100,6 @@ df.writeStream
 
 Since Event Hubs for Kafka is a fully managed service, we make updates frequently to add new features and improve performance. This means that occasionally we restart nodes to upgrade them. When an upgrade is in progress, your Spark application will lose its connection to the broker and need to reconnect. The maximum downtime of a node is 5 minutes (usually much less), so to prevent your application from failing, make sure your Spark application doesn't give up before then. 
 
-On the Spark side, increasing the [`spark.task.maxFailures`](https://spark.apache.org/docs/latest/configuration.html#scheduling) configuration to 11 should do the trick. From the Kafka side, changing the [`reconnect.backoff.ms` and `reconnect.backoff.max.ms`](https://kafka.apache.org/documentation/#newconsumerconfigs) configurations should do it. Which set of configurations you'll want to change just depends on your application. If neither of those are updated, your application will likely fail with a "join group response error" whenever we redeploy our service, so **we highly recommend making one of these changes before running any scenarios**.
+On the Spark side, increasing the [`spark.task.maxFailures`](https://spark.apache.org/docs/latest/configuration.html#scheduling) configuration to 11 should do the trick (not currently supported by continuous mode). From the Kafka side, changing the [`reconnect.backoff.ms` and `reconnect.backoff.max.ms`](https://kafka.apache.org/documentation/#newconsumerconfigs) configurations should do it. Which set of configurations you'll want to change just depends on your application. 
+
+If your application isn't configured to handle this potential downtime, your application will likely fail with a "join group response error" whenever we redeploy our service, so **we highly recommend making one of these changes before running any scenarios**.
