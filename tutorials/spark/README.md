@@ -25,6 +25,10 @@ Whether you end up choosing a cloud platform like Azure Databricks or decide to 
 
 *Note: Databricks shades the Kafka client under the `kafkashaded` package. If you are using Databricks to run Spark, make sure to update all occurrences of `org.apache.kafka.common.security.plain.PlainLoginModule` to `kafkashaded.org.apache.kafka.common.security.plain.PlainLoginModule` in these samples!*
 
+## Microbatching vs Continuous
+
+Spark began as a purely microbatched system, but recently (since Spark v2.3) supported `Continuous Mode`. Both microbatch and continuous processing are supported by EventHubs for Kafka when using the Spark-Kafka connector.
+
 ## Create an Event Hubs namespace
 
 An Event Hubs namespace is required to send or receive from any Event Hubs service. See [Create Kafka-enabled Event Hubs](https://docs.microsoft.com/azure/event-hubs/event-hubs-create-kafka-enabled) for instructions on getting an Event Hubs Kafka endpoint. Make sure to copy the Event Hubs connection string for later use.
