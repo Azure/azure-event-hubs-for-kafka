@@ -27,7 +27,7 @@ Whether you end up choosing a cloud platform like Azure Databricks or decide to 
 
 ## Microbatching vs Continuous Processing
 
-Spark began as a purely microbatched system, but as of version 2.3 Spark has [`Continuous Mode`](https://databricks.com/blog/2018/03/20/low-latency-continuous-processing-mode-in-structured-streaming-in-apache-spark-2-3-0.html) to support continuous processing. Both microbatch and continuous processing are supported by EventHubs for Kafka, so feel free to pick whichever makes the most sense for your application.
+Spark began as a purely microbatched system, but as of version 2.3, Spark has an experimental [`Continuous Mode`](https://databricks.com/blog/2018/03/20/low-latency-continuous-processing-mode-in-structured-streaming-in-apache-spark-2-3-0.html) to support continuous processing. Both microbatch and continuous processing are supported by EventHubs for Kafka, so feel free to pick whichever makes the most sense for your application.
 
 ## Create an Event Hubs namespace
 
