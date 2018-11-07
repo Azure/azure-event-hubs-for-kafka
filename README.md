@@ -74,7 +74,7 @@ There is no exception or error when this happens, but the Kafka logs will show t
 ### Other issues? 
 In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
 
-* Firewall issues! Make sure that port 9093 isn't blocked by your machine's firewall.
+* Firewall issues! Make sure that port 9093 isn't blocked by your firewall.
 
 * Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
 
