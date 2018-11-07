@@ -18,7 +18,7 @@ Checklist
 Please provide the following information:
 
  - [x] Apache Kafka version: `<REPLACE with e.g., 1.1.0>`
- - [ ] Kafka client configuration: `<REPLACE with e.g., message.timeout.ms=123, auto.reset.offset=earliest, ..>`
+ - [ ] Kafka client configuration: `<REPLACE with e.g., security.protocol=SASL_SSL, auto.reset.offset=earliest, ..>` (**do not include your connection string or SAS Key**) 
  - [ ] Namespace and EventHub/topic name
  - [ ] Consumer or producer failure `<REPLACE with e.g., Consumer failure>`
  - [ ] If consumer, partition ID, group ID `<REPLACE with e.g., partition ID = 3, group ID = kafka-consumer-group>`
