@@ -76,7 +76,7 @@ In our experience, when changing the configurations didn't go as smoothly as we'
 
 * Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
 
-* Version issues. Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could work because of the Kafka protocol's backwards compatability, but there's a chance it won't be able to connect or will require some serious tinkering. Since Kafka versions 0.9 and earlier don't support the required SASL protocols, any adapter or client using those versions won't be able to connect to Event Hubs.
+* Version issues. Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could occasionally work because of the Kafka protocol's backwards compatability, but there's a chance it won't be able to connect or will require some *serious* tinkering. Since Kafka versions 0.9 and earlier don't support the required SASL protocols, any adapter or client using those versions won't be able to connect to Event Hubs.
 
 If you're still stuck (or if you know the secret to making it work with your framework), let us know by opening up a GitHub issue on this repo!
 
@@ -87,4 +87,3 @@ For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, pr
 * The max length of the `group.id` property is 64 characters
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
 * Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1Mb
-
