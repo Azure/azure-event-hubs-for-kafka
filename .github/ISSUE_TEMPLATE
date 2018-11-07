@@ -16,7 +16,8 @@ Checklist
 **IMPORTANT**: We will close issues where the checklist has not been completed.
 
 Please provide the following information:
-
+ 
+ - [ ] Verified that port 9093 is not blocked by firewall
  - [x] Apache Kafka version: `<REPLACE with e.g., 1.1.0>`
  - [ ] Kafka client configuration: `<REPLACE with e.g., auto.reset.offset=earliest, ..>` (*do not include your connection string or SAS Key*)
  - [ ] Namespace and EventHub/topic name
