@@ -20,7 +20,7 @@ val df = spark.readStream
     .option("kafka.security.protocol", "SASL_SSL")
     .option("kafka.sasl.jaas.config", EH_SASL)
     .option("kafka.request.timeout.ms", "60000")
-    .option("kafka.session.timeout.ms", "30000")
+    .option("kafka.session.timeout.ms", "60000")
     .option("kafka.group.id", GROUP_ID)
     .option("failOnDataLoss", "false")
     .load()
