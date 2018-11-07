@@ -74,6 +74,8 @@ There is no exception or error when this happens, but the Kafka logs will show t
 ### Other issues? 
 In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
 
+* Firewall issues! Make sure that port 9093 isn't blocked by your machine's firewall.
+
 * Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
 
 * Version issues. Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could occasionally work because of the Kafka protocol's backwards compatability, but there's a chance it won't be able to connect or will require some *serious* tinkering. Since Kafka versions 0.9 and earlier don't support the required SASL protocols, any adapter or client using those versions won't be able to connect to Event Hubs.
