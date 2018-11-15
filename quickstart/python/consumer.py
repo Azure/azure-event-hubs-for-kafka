@@ -48,6 +48,7 @@ if __name__ == '__main__':
         'group.id': group,
         'client.id': 'python-example-consumer',
         'request.timeout.ms': 60000,
+        'session.timeout.ms': 60000,
         'default.topic.config': {'auto.offset.reset': 'smallest'}
     }
 
