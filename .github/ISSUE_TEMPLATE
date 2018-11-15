@@ -18,6 +18,7 @@ Checklist
 Please provide the following information:
  
  - [ ] Verified that port 9093 is not blocked by firewall
+ - [ ] Verified the namespace is either Standard or Dedicated tier (i.e. it is not Basic tier, which isn't supported)
  - [ ] Sample you're having trouble with: `<REPLACE with e.g., Java quickstart>`
  - [x] Apache Kafka version: `<REPLACE with e.g., 1.1.0>`
  - [ ] Kafka client configuration: `<REPLACE with e.g., auto.reset.offset=earliest, ..>` (*do not include your connection string or SAS Key*)
