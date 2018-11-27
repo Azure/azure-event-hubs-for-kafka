@@ -1,0 +1,33 @@
+Description
+===========
+<Describe the issue here>
+
+How to reproduce
+================
+<How to reproduce the issue, or remove section if not relevant>
+
+Has it worked previously?
+=========================
+<Is this a first attempt at getting the sample application to run, or has it worked in the past?>
+
+Checklist
+=========
+
+**IMPORTANT**: We will close issues where the checklist has not been completed.
+
+Please provide the following information:
+ 
+ - [ ] Verified that port 9093 is not blocked by firewall
+ - [ ] Verified the namespace is either Standard or Dedicated tier (i.e. it is not Basic tier, which isn't supported)
+ - [ ] Sample you're having trouble with: `<REPLACE with e.g., Java quickstart>`
+ - [x] Apache Kafka version: `<REPLACE with e.g., 1.1.0>`
+ - [ ] Kafka client configuration: `<REPLACE with e.g., auto.reset.offset=earliest, ..>` (*do not include your connection string or SAS Key*)
+ - [ ] Namespace and EventHub/topic name
+ - [ ] Consumer or producer failure `<REPLACE with e.g., Consumer failure>`
+ - [ ] If consumer, partition ID, group ID `<REPLACE with e.g., partitionID=3, groupID=consumer-group>`
+ - [ ] Timestamp in UTC `<REPLACE wtih e.g., Nov 7 2018 - 17:15:01 UTC> 
+ - [ ] Client ID `<REPLACE with e.g., clientID=kafka-client>
+ - [ ] Provide all logs (with debugging enabled if possible) or exception call stack
+ - [ ] Standalone repro <REPLACE with e.g., Willing/able to send scenario to repro issue>
+ - [ ] Operating system: `<REPLACE with e.g., Ubuntu 16.04.5 (x64) LTS>`
+ - [ ] Critical issue

@@ -1,4 +1,4 @@
-# Apache Kafka Connect support on Azure Event Hubs
+# Apache Kafka Connect support on Azure Event Hubs (preview)
 
 This document will walk you through integrating Kafka Connect with Azure Event Hubs and deploying basic FileStreamSource and FileStreamSink connectors.  While these connectors are not meant for production use, they demonstrate an end-to-end Kafka Connect Scenario where Azure Event Hubs masquerades as a Kafka broker.
 
