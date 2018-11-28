@@ -46,11 +46,12 @@ The following sample matches any logs from sources with a `kafka.*` tag.
   max_send_retries 1
   required_acks -1
 
-  # using OS certs - 
+  # using default OS certs for SSL
   ssl_ca_certs_from_system true
+
   username $ConnectionString
   password "Endpoint=sb://{YOUR.EVENTHUBS.FQDN}/;SharedAccessKeyName={SHARED.ACCESS.KEY.NAME};SharedAccessKey={SHARED.ACCESS.KEY}"
 </match>
 ```
 
-Note: the above configuration assumes that 
+Note: the above configuration assumes that a default certificate store has been installed on your OS.  If you'd like to use your own, the path to a valid CA certificate should be passed using the `ssl_ca_cert` property in the match configuration.
