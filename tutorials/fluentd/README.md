@@ -14,6 +14,8 @@ To complete this walkthough, make sure you have the following prerequisites:
 
 - Created a [Kafka-enabled Event Hubs namespace](https://docs.microsoft.com/azure/event-hubs/event-hubs-create) on the Azure Portal
 
+All CLI commands assume you are using a `bash` shell on Linux.
+
 ## Overview
 
 FluentD is a free open-source data collector that enables easy configuration-driven log streaming to and from over six hundred data sources and sinks using community-developed plugins.
@@ -22,9 +24,10 @@ Many FluentD users employ the `out_kafka` plugin to move data to an Apache Kafka
 
 ## FluentD configuration sample
 
-The following sample matches any logs from sources with a `kafka.*` tag.
+Add the following sample to your `td-agent.conf` file (default location is `/etc/td-agent/td-agent.conf`).  If you already have a `td-agent` service running, you will have to restart it with `sudo systemctl restart td-agent.service` in order for Kafka streaming to begin.
 
 ```yaml
+# matches any logs from sources with a `kafka.*` tag
 <match kafka.**>
   @type kafka_buffered
 
