@@ -19,7 +19,7 @@ We recommend making the switch to Spark v2.4 to make use of the native Kafka con
 
 ## Running Spark
 
-Running Spark for the first time can be overwhelming. If you don't already have Spark running in your own environment, we recommend using [Azure Databricks](https://azure.microsoft.com/services/databricks/) to simplify the process - it'll take care of the details so you can focus on your application. Spark v2.4 should be released in the next couple weeks or so, and will have JARs released then. In the meantime, Azure Databricks Runtime Version `5.0 beta (Scala 2.11)` uses Spark v2.4 which can be used for development until it is officially released. Otherwise, feel free to build from Spark's 2.4 branch on Github.
+Running Spark for the first time can be overwhelming. If you don't already have Spark running in your own environment, we recommend using [Azure Databricks](https://azure.microsoft.com/services/databricks/) to simplify the process - it'll take care of the details so you can focus on your application. If you decide to go with Azure Databricks, make sure to use Runtime Version `5.0 (Scala 2.11)` (the first Databricks runtime that uses Spark v2.4) or later. Importing the Spark v2.4 connector JARs on a pre-5.0 runtime will not work.
 
 Whether you end up choosing a cloud platform like Azure Databricks or decide to run on your on-prem cluster, Event Hubs for Kafka will work all the same.
 
