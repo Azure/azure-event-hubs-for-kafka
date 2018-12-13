@@ -42,6 +42,7 @@ if __name__ == '__main__':
     conf = {
         'bootstrap.servers': '{YOUR.EVENTHUBS.FQDN}:9093',
         'security.protocol': 'SASL_SSL',
+        'ssl.ca.location': '/path/to/ca-certificate.crt'
         'sasl.mechanism': 'PLAIN',
         'sasl.username': '$ConnectionString',
         'sasl.password': '{YOUR.EVENTHUBS.CONNECTION.STRING}',
