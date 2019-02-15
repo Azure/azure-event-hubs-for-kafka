@@ -55,7 +55,7 @@ akka.kafka.producer {
     # Properties defined by org.apache.kafka.clients.producer.ProducerConfig
     # can be defined in this configuration section.
     kafka-clients {
-        bootstrap.servers="{YOUR.EVENTHUBS.FQDN}:9093"
+        bootstrap.servers="mynamespace.servicebus.windows.net:9093"
         sasl.mechanism=PLAIN
         security.protocol=SASL_SSL
         sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"{YOUR.EVENTHUBS.CONNECTION.STRING}\";"
@@ -95,7 +95,7 @@ akka.kafka.consumer {
        request.timeout.ms=60000
        group.id=akka-example-consumer
 
-       bootstrap.servers="{YOUR.EVENTHUBS.FQDN}:9093"
+       bootstrap.servers="mynamespace.servicebus.windows.net:9093"
        sasl.mechanism=PLAIN
        security.protocol=SASL_SSL
        sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"{YOUR.EVENTHUBS.CONNECTION.STRING}\";"
