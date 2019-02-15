@@ -32,7 +32,7 @@ Add the following sample to your `td-agent.conf` file (default location is `/etc
   @type kafka_buffered
 
   # list of seed brokers
-  brokers {YOUR.EVENTHUBS.FQDN}:9093
+  brokers mynamespace.servicebus.windows.net:9093
 
   # buffer settings
   buffer_type file
@@ -53,7 +53,7 @@ Add the following sample to your `td-agent.conf` file (default location is `/etc
   ssl_ca_certs_from_system true
 
   username $ConnectionString
-  password "Endpoint=sb://{YOUR.EVENTHUBS.FQDN}/;SharedAccessKeyName={SHARED.ACCESS.KEY.NAME};SharedAccessKey={SHARED.ACCESS.KEY}"
+  password "Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName={SHARED.ACCESS.KEY.NAME};SharedAccessKey={SHARED.ACCESS.KEY}"
 </match>
 ```
 
