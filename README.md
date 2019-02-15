@@ -41,7 +41,7 @@ To connect to a Kafka-enabled Event Hub, you'll need to update the Kafka client 
 Insert the following configs wherever makes sense in your application. Make sure to update the `bootstrap.servers` and `sasl.jaas.config` values to direct the client to your Event Hubs Kafka endpoint with the correct authentication. 
 
 ```
-bootstrap.servers={YOUR.EVENTHUBS.FQDN}:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093
 request.timeout.ms=60000
 security.protocol=SASL_SSL
 sasl.mechanism=PLAIN
