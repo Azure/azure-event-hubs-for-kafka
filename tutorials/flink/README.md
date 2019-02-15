@@ -48,7 +48,7 @@ Using the provided Flink producer example, send messages to the Event Hubs servi
 Update the `bootstrap.servers` and `sasl.jaas.config` values in `producer/src/main/resources/producer.config` to direct the producer to the Event Hubs Kafka endpoint with the correct authentication.
 
 ```
-bootstrap.servers={YOUR.EVENTHUBS.FQDN}:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093
 client.id=FlinkExampleProducer
 sasl.mechanism=PLAIN
 security.protocol=SASL_SSL
@@ -79,7 +79,7 @@ Using the provided consumer example, receive messages from the Kafka-enabled Eve
 Update the `bootstrap.servers` and `sasl.jaas.config` values in `consumer/src/main/resources/consumer.config` to direct the consumer to the Event Hubs Kafka endpoint with the correct authentication.
 
 ```config
-bootstrap.servers={YOUR.EVENTHUBS.FQDN}:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093
 group.id=FlinkExampleConsumer
 sasl.mechanism=PLAIN
 security.protocol=SASL_SSL
