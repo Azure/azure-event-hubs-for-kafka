@@ -40,12 +40,12 @@ if __name__ == '__main__':
     # Consumer configuration
     # See https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
     conf = {
-        'bootstrap.servers': '{YOUR.EVENTHUBS.FQDN}:9093',
+        'bootstrap.servers': 'mynamespace.servicebus.windows.net:9093', #update
         'security.protocol': 'SASL_SSL',
         'ssl.ca.location': '/path/to/ca-certificate.crt',
         'sasl.mechanism': 'PLAIN',
         'sasl.username': '$ConnectionString',
-        'sasl.password': '{YOUR.EVENTHUBS.CONNECTION.STRING}',
+        'sasl.password': '{YOUR.EVENTHUBS.CONNECTION.STRING}',          #update
         'group.id': group,
         'client.id': 'python-example-consumer',
         'request.timeout.ms': 60000,
