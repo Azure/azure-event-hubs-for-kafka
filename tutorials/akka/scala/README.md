@@ -58,7 +58,7 @@ akka.kafka.producer {
         bootstrap.servers="mynamespace.servicebus.windows.net:9093"
         sasl.mechanism=PLAIN
         security.protocol=SASL_SSL
-        sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"{YOUR.EVENTHUBS.CONNECTION.STRING}\";"
+        sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX\";"
     }
 }
 ```
@@ -97,7 +97,7 @@ akka.kafka.consumer {
        bootstrap.servers="mynamespace.servicebus.windows.net:9093"
        sasl.mechanism=PLAIN
        security.protocol=SASL_SSL
-       sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"{YOUR.EVENTHUBS.CONNECTION.STRING}\";"
+       sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX\";"
     }
 }
 ```
