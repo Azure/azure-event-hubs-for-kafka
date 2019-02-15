@@ -7,8 +7,8 @@ import org.apache.kafka.common.security.plain.PlainLoginModule
 
 //Update values as needed
 val TOPIC = "test"
-val BOOTSTRAP_SERVERS = "<YOUR.EVENTHUB.FQDN>:9093"
-val EH_SASL = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"<YOUR.EVENTHUB.CONNECTION.STRING>\";"
+val BOOTSTRAP_SERVERS = "mynamespace.servicebus.windows.net:9093"
+val EH_SASL = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX\";"
 
 //Define dataframe
 df = /**Dataframe**/
