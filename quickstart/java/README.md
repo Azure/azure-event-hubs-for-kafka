@@ -51,7 +51,7 @@ Update the `bootstrap.servers` and `sasl.jaas.config` values in `producer/src/ma
 bootstrap.servers=mynamespace.servicebus.windows.net:9093
 security.protocol=SASL_SSL
 sasl.mechanism=PLAIN
-sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="{YOUR.EVENTHUBS.CONNECTION.STRING}";
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX";
 ```
 
 ### Run producer from command line
@@ -81,7 +81,7 @@ Change the `bootstrap.servers` and `sasl.jaas.config` values in `consumer/src/ma
 bootstrap.servers=mynamespace.servicebus.windows.net:9093
 security.protocol=SASL_SSL
 sasl.mechanism=PLAIN
-sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="{YOUR.EVENTHUBS.CONNECTION.STRING}";
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX";
 ```
 
 ### Run consumer from command line
