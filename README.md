@@ -71,6 +71,12 @@ This error could mean many things, usually related to either client configuratio
 
 There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. If this is happening, ensure that all consumers are using unique client IDs by setting the `client.id` property for each consumer client. 
 
+### Compression / Message Format Version issue
+
+Kafka supports compression, and Event Hubs for Kafka currently does not. Errors that mention a message format version (e.g. "The message format version on the broker does not support the request.") are usually caused when a client tries to send compressed Kafka messages to our brokers. 
+
+If compressed data is necessary, compressing your data before sending it to the brokers and decompressing after receiving it is a valid workaround. The message body is just a byte array to the service, so client-side compression/decompression will not cause any issues.
+
 ### Other issues? 
 In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
 
