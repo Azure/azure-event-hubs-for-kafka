@@ -27,7 +27,7 @@ More information on Kafka Connect concepts is available [here](https://docs.conf
 Minimal reconfiguration is necessary when redirecting Kafka Connect throughput from Kafka to Event Hubs.  The following `connect-distributed.properties` sample illustrates how to configure Connect to authenticate and communicate with the Kafka endpoint on Event Hubs:
 
 ```properties
-bootstrap.servers=mynamespace.servicebus.windows.net:9093 # e.g. namespace.servicebus.windows.net:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093
 group.id=connect-cluster-group
 
 # connect internal topic names, auto-created if not exists
