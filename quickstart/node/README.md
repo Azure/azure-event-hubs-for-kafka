@@ -27,9 +27,7 @@ Additionally, topics in Kafka map to Event Hub instances, so create an Event Hub
 
 For this sample, you will need the connection string from the portal as well as the FQDN that points to your Event Hub namespace. **The FQDN can be found within your connection string as follows**:
 
-```
-Endpoint=sb://{YOUR.EVENTHUBS.FQDN}/;SharedAccessKeyName={SHARED.ACCESS.KEY.NAME};SharedAccessKey={SHARED.ACCESS.KEY}
-```
+`Endpoint=sb://`**`mynamespace.servicebus.windows.net`**`/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX`
 
 ## Clone the example project
 
@@ -47,12 +45,12 @@ Configure the Kafka Producer/Consumer types with the fully qualified domain name
 ```javascript
 var producer = new Kafka.Producer({
   //'debug' : 'all',
-  'metadata.broker.list': '{YOUR.EVENTHUBS.FQDN}:9093',
+  'metadata.broker.list': 'mynamespace.servicebus.windows.net:9093', //REPLACE​
   'dr_cb': true,  //delivery report callback
   'security.protocol': 'SASL_SSL',
   'sasl.mechanisms': 'PLAIN',
-  'sasl.username': '$ConnectionString',
-  'sasl.password': '{YOUR.EVENTHUB.CONNECTION.STRING}'
+  'sasl.username': '$ConnectionString', //do not replace $ConnectionString
+  'sasl.password': 'Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX' //REPLACE
 });
 
 ```
