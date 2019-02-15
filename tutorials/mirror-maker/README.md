@@ -72,7 +72,7 @@ Now update the producer config file `mirror-eventhub.config`, which tells Mirror
 ##### mirror-eventhub.config
 
 ```config
-bootstrap.servers={YOUR.EVENTHUBS.FQDN}:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093
 client.id=mirror_maker_producer
 
 #Required for Event Hubs
