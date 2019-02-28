@@ -41,7 +41,7 @@ You'll need to update the following configurations:
 
 ```java
 //Update these two configurations
-props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "mynamespace.servicebus.windows.net:9092");
+props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "mynamespace.servicebus.windows.net:9093");
 props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://<YOUR.SCHEMA.REGISTRY.IP.ADDRESS>:8081");
 
 //Add these three configurations
