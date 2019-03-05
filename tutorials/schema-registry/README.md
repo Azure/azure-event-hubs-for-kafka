@@ -7,7 +7,7 @@ This tutorial will walk you through integrating Schema Registry and Event Hubs f
 To complete this walkthough, make sure you have the following prerequisites:
 
 * An Avro serialized/deserialized producer and consumer - you can find a tutorial [here](https://github.com/confluentinc/examples/tree/5.1.2-post/clients/avro).
-* A schema registry instance running on top of an Apache Kafka metadata store. This can be hosted locally, on an Azure VM, or on Confluent Cloud. A thorough guide on setting up a schema registry can be found [here](https://docs.confluent.io/current/schema-registry/docs/schema_registry_tutorial.html).
+* A schema registry instance running on top of an Apache Kafka metadata store. The cluster and schema registry instance can be hosted locally, on an Azure VM, or on Confluent Cloud. A thorough guide on setting up a schema registry can be found [here](https://docs.confluent.io/current/schema-registry/docs/schema_registry_tutorial.html).
 
 ## Overview
 
