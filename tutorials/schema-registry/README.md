@@ -6,18 +6,16 @@ This tutorial will walk you through integrating Schema Registry and Event Hubs f
 
 To complete this walkthough, make sure you have the following prerequisites:
 
-* [Java Development Kit (JDK) 1.8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-    * On Ubuntu, run `apt-get install default-jdk` to install the JDK.
-    * Be sure to set the JAVA_HOME environment variable to point to the folder where the JDK is installed.
-* A schema registry instance. This can be hosted locally, on an Azure VM, or on Confluent Cloud. A thorough guide on setting up a schema registry can be found [here](https://docs.confluent.io/current/schema-registry/docs/schema_registry_tutorial.html).
+* An Avro serialized/deserialized producer and consumer - you can find a tutorial [here](https://github.com/confluentinc/examples/tree/5.1.2-post/clients/avro).
+* A schema registry instance running on top of an Apache Kafka metadata store. This can be hosted locally, on an Azure VM, or on Confluent Cloud. A thorough guide on setting up a schema registry can be found [here](https://docs.confluent.io/current/schema-registry/docs/schema_registry_tutorial.html).
 
 ## Overview
 
-[Confluent's Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html) provides the standard interface for Avro serialization and deserialization of Kafka messages. This guide is for users who want to use Avro-style schemas with Event Hubs for Kafka. 
+[Confluent's Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html) provides the standard interface for Avro serialization and deserialization of Kafka messages. This guide is for users who want to use those Avro-style schemas with Event Hubs for Kafka. 
 
-There are two potential uses for Event Hubs in the Schema Registry scenario because there are two (logically) separate stores. The first is the metadata store (`schema.registry.url`) that the schema registry stores its schemas in. The second is the data store which is used for the standard sending/receiving of data (`bootstrap.servers`). Often applications will put both of these in the same Kafka cluster to simplify the design and make maintenance easier, but they can also be run separately. For the metadata store, Schema Registry requires AdminClient APIs that Event Hubs for Kafka does not currently support; however, it does not require these APIs of the data store.
+There are two potential uses for Event Hubs in the Schema Registry scenario because there are two logically separate stores. The first is the metadata store (`schema.registry.url`) that the schema registry stores its schemas in. The second is the data store which is used for the standard sending/receiving of data (`bootstrap.servers`). Often applications will put both of these in the same Kafka cluster to simplify the design and make maintenance easier, but they can also be run separately. For the metadata store, Schema Registry requires AdminClient APIs that Event Hubs for Kafka does not currently support; however, it does not require these APIs of the data store.
 
-Because of this distinction, Event Hubs for Kafka currently can serve as the data store but *not* the metadata store (i.e. a separate Kafka cluster is required for the metadata store).
+Because of this distinction, Event Hubs for Kafka can currently serve as the data store but *not* the metadata store (i.e. a separate Kafka cluster is required for the metadata store). This walkthrough requires a separate Apache Kafka cluster as the backing metadata store for the schema registry, and is not a full solution for many scenarios. In the future, Event Hubs for Kafka will be able to be used as *both* the backing metadata store and data store, and this walkthrough will be updated at that time.
 
 ### FQDN
 
@@ -27,13 +25,7 @@ For this sample, you will need the connection string from the portal as well as 
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
 
-## Set up
-
-### Create an Avro serialized/deserialized Kafka producer and consumer
-
-Confluent has a great sample [here](https://github.com/confluentinc/examples/tree/5.1.2-post/clients/avro).
-
-### Update your configuration
+## Update your configuration
 
 You'll need to update the following two configurations:
 
@@ -46,7 +38,7 @@ Along with these three SASL authentication configs as noted [here](../README.md#
 * `security.protocol`
 * `sasl.jaas.config`
 
-(If you're using the Confluent samples mentioned above, the configuration changes below should do the trick for both producer and consumer)
+(If you're using the Confluent sample mentioned above, the configuration changes below should do the trick for both producer and consumer)
 
 ```java
 //Configuration updates for a Kafka client using Avro serialization/deserialization with Event Hubs for Kafka
