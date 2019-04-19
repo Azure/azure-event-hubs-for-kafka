@@ -4,20 +4,19 @@
  *
  * Original Blizzard node-rdkafka sample modified for use with Azure Event Hubs for Apache Kafka Ecosystems
  */
- 
 var Transform = require('stream').Transform;
 var Kafka = require('node-rdkafka');
+require('dotenv').config();
 
 var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': 'mynamespace.servicebus.windows.net:9093', //REPLACE
+    'metadata.broker.list': `${process.env.CONNECTION_STRING.split('/')[2]}:9093`,
     'group.id': '$Default', //The default consumer group for EventHubs is $Default
     'socket.keepalive.enable': true,
     'enable.auto.commit': false,
     'security.protocol': 'SASL_SSL',
     'sasl.mechanisms': 'PLAIN',
     'sasl.username': '$ConnectionString', //do not replace $ConnectionString
-    'sasl.password': 'Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX', //REPLACE
-
+    'sasl.password': `${process.env.CONNECTION_STRING}`,
 }, {}, {
         topics: 'test',
         waitInterval: 0,

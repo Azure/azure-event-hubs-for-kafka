@@ -4,17 +4,17 @@
  *
  * Original Blizzard node-rdkafka sample modified for use with Azure Event Hubs for Apache Kafka Ecosystems
  */
-
 var Kafka = require('node-rdkafka');
+require('dotenv').config();
 
 var producer = new Kafka.Producer({
-  //'debug' : 'all',
-  'metadata.broker.list': 'mynamespace.servicebus.windows.net:9093', //REPLACE
+  // 'debug' : 'all',
+  'metadata.broker.list': `${process.env.CONNECTION_STRING.split('/')[2]}:9093`,
   'dr_cb': true,  //delivery report callback
   'security.protocol': 'SASL_SSL',
   'sasl.mechanisms': 'PLAIN',
   'sasl.username': '$ConnectionString', //do not replace $ConnectionString
-  'sasl.password': 'Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX' //REPLACE
+  'sasl.password': `${process.env.CONNECTION_STRING}`,
 });
 
 var topicName = 'test';
