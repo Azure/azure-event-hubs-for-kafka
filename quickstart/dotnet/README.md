@@ -10,7 +10,7 @@ If you don't have an Azure subscription, create a [free account](https://azure.m
 
 In addition:
 
-* [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
+* [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 * [Git](https://www.git-scm.com/downloads)
 
 ## Create an Event Hubs namespace
@@ -39,7 +39,7 @@ cd azure-event-hubs-for-kafka/quickstart/dotnet
 
 Use the NuGet Package Manager UI (or Package Manager Console) to install the Confluent.Kafka package. More detailed instructions can be found [here](https://github.com/confluentinc/confluent-kafka-dotnet#referencing). 
 
-**This tutorial uses Confluent.Kafka v0.11 - using v1.0-beta will cause compilation errors.**
+**This tutorial uses Confluent.Kafka v1.1.0**
 
 ## Update App.config
 
@@ -47,7 +47,7 @@ Update the values of the `EH_FQDN` and `EH_CONNECTION_STRING` in `App.config` to
 
 ## Run the application
 
-Run the application in VS2017 and watch it go! If the Kafka-enabled Event Hub has incoming events, then the consumer should now begin receiving events from the topic set in `App.config`. 
+Run the application in VS2019 and watch it go! If the Kafka-enabled Event Hub has incoming events, then the consumer should now begin receiving events from the topic set in `App.config`. 
 
 **NOTE**: Since Kafka's default for an unknown consumer group is to read from the *latest* offset, the first time you run the consumer will not receive any events from this application's producer. This is because the producer sends its messages before the consumer polls in this application. To remedy this, either run the application several times with the same consumer group (so that the consumer group's offset will be known to the broker), set Kafka's [`auto.offset.reset` consumer config](https://kafka.apache.org/documentation/#newconsumerconfigs) to `earliest`, or use an external producer and produce simultaneously.
 
