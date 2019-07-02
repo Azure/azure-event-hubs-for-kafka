@@ -56,6 +56,7 @@ namespace EventHubsForKafkaSample
                 SaslPassword = connStr,
                 SslCaLocation = cacertlocation,
                 GroupId = consumergroup,
+                AutoOffsetReset = AutoOffsetReset.Earliest,
                 BrokerVersionFallback = "1.0.0",        //Event Hubs for Kafka Ecosystems supports Kafka v1.0+, a fallback to an older API will fail
                 //Debug = "security,broker,protocol"    //Uncomment for librdkafka debugging information
             };
