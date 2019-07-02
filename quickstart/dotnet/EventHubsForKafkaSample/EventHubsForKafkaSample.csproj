@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confluent.Kafka" Version="0.11.5" />
+    <PackageReference Include="Confluent.Kafka" Version="1.1.0" />
     <!-- Version="1.0.0-beta" />-->
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" /> <!--Version="4.5.0" />-->
   </ItemGroup>

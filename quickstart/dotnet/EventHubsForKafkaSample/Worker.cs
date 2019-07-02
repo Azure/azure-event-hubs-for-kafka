@@ -6,11 +6,9 @@
 //Original Confluent sample modified for use with Azure Event Hubs for Apache Kafka Ecosystems
 
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Confluent.Kafka;
-using Confluent.Kafka.Serialization;
 
 namespace EventHubsForKafkaSample
 {
@@ -20,23 +18,23 @@ namespace EventHubsForKafkaSample
         {
             try
             {
-                var config = new Dictionary<string, object> {
-                    { "bootstrap.servers", brokerList },
-                    { "security.protocol", "SASL_SSL" },
-                    { "sasl.mechanism", "PLAIN" },
-                    { "sasl.username", "$ConnectionString" },
-                    { "sasl.password", connStr },
-                    { "ssl.ca.location", cacertlocation },
-                    //{ "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
+                var config = new ProducerConfig
+                {
+                    BootstrapServers = brokerList,
+                    SecurityProtocol = SecurityProtocol.SaslSsl,
+                    SaslMechanism = SaslMechanism.Plain,
+                    SaslUsername = "$ConnectionString",
+                    SaslPassword = connStr,
+                    SslCaLocation = cacertlocation,
+                    //Debug = "security,broker,protocol"        //Uncomment for librdkafka debugging information
                 };
-
-                using (var producer = new Producer<long, string>(config, new LongSerializer(), new StringSerializer(Encoding.UTF8)))
+                using (var producer = new ProducerBuilder<long, string>(config).SetKeySerializer(Serializers.Int64).SetValueSerializer(Serializers.Utf8).Build())
                 {
                     Console.WriteLine("Sending 10 messages to topic: " + topic + ", broker(s): " + brokerList);
                     for (int x = 0; x < 10; x++)
                     {
                         var msg = string.Format("Sample message #{0} sent at {1}", x, DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.ffff"));
-                        var deliveryReport = await producer.ProduceAsync(topic, DateTime.UtcNow.Ticks, msg);
+                        var deliveryReport = await producer.ProduceAsync(topic, new Message<long, string> { Key = DateTime.UtcNow.Ticks, Value = msg });
                         Console.WriteLine(string.Format("Message {0} sent (value: '{1}')", x, msg));
                     }
                 }
@@ -49,40 +47,46 @@ namespace EventHubsForKafkaSample
 
         public static void Consumer(string brokerList, string connStr, string consumergroup, string topic, string cacertlocation)
         {
-            var config = new Dictionary<string, object> {
-                    { "bootstrap.servers", brokerList },
-                    { "security.protocol","SASL_SSL" },
-                    { "sasl.mechanism","PLAIN" },
-                    { "sasl.username", "$ConnectionString" },
-                    { "sasl.password", connStr },
-                    { "ssl.ca.location", cacertlocation },
-                    { "group.id", consumergroup },
-                    { "request.timeout.ms", 60000 },
-                    { "broker.version.fallback", "1.0.0" },         //Event Hubs for Kafka Ecosystems supports Kafka v1.0+, 
-                                                                    //a fallback to an older API will fail
-                    //{ "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
-                };
-
-            using (var consumer = new Consumer<long, string>(config, new LongDeserializer(), new StringDeserializer(Encoding.UTF8)))
+            var config = new ConsumerConfig
             {
-                consumer.OnMessage += (_, msg)
-                  => Console.WriteLine($"Received: '{msg.Value}'");
+                BootstrapServers = brokerList,
+                SecurityProtocol = SecurityProtocol.SaslSsl,
+                SaslMechanism = SaslMechanism.Plain,
+                SaslUsername = "$ConnectionString",
+                SaslPassword = connStr,
+                SslCaLocation = cacertlocation,
+                GroupId = consumergroup,
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                BrokerVersionFallback = "1.0.0",        //Event Hubs for Kafka Ecosystems supports Kafka v1.0+, a fallback to an older API will fail
+                //Debug = "security,broker,protocol"    //Uncomment for librdkafka debugging information
+            };
 
-                consumer.OnError += (_, error)
-                  => Console.WriteLine($"Error: {error}");
+            using (var consumer = new ConsumerBuilder<long, string>(config).SetKeyDeserializer(Deserializers.Int64).SetValueDeserializer(Deserializers.Utf8).Build())
+            {
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Console.CancelKeyPress += (_, e) => { e.Cancel = true; cts.Cancel(); };
 
-                consumer.OnConsumeError += (_, msg)
-                  => Console.WriteLine($"Consume error ({msg.TopicPartitionOffset}): {msg.Error}");
+                consumer.Subscribe(topic);
 
                 Console.WriteLine("Consuming messages from topic: " + topic + ", broker(s): " + brokerList);
-                consumer.Subscribe(topic);
 
                 while (true)
                 {
-                    consumer.Poll(TimeSpan.FromMilliseconds(1000));
+                    try
+                    {
+                        var msg = consumer.Consume(cts.Token);
+                        Console.WriteLine($"Received: '{msg.Value}'");
+                    }
+                    catch (ConsumeException e)
+                    {
+                        Console.WriteLine($"Consume error: {e.Error.Reason}");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error: {e.Message}");
+                    }
                 }
             }
-
         }
     }
 }
