@@ -96,6 +96,6 @@ If you're still stuck (or if you know the secret to making it work with your fra
 
 For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, properties, error codes, and general behavior that Apache Kafka does. The instances where the two explicitly differ (or where Event Hubs imposes a limit that Kafka does not) are listed below:
 
-* The max length of the `group.id` property is 64 characters
+* The max length of the `group.id` property is 256 characters
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
 * Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1Mb
