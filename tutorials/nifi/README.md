@@ -35,7 +35,7 @@ Once the NiFi web interface is up and running, select the right Kafka processor.
 
 **Note: Event Hub supports Kafka protocol 1.0 and above. So make sure you select the right processor**
 
-![Select Kafka NiFi processor image](./images/select_kafka_processor.PNG)
+![Select Kafka NiFi processor image](./images/select_kafka_processor.png)
 
 ### Configuring Kafka Processor for NiFi
 
@@ -53,7 +53,7 @@ Update the configuration properties of the processor using below information:
 
 * Let `Delivery Gaurantee` be `Best Effort` and set `Use Transactions` value to `false`
 
-![Kafka Processor Config image](./images/kafka_procesor_config.PNG)
+![Kafka Processor Config image](./images/kafka_procesor_config.png)
 
 * Configuring SSL Context Service:
 
@@ -63,11 +63,11 @@ Update the configuration properties of the processor using below information:
 
     * Add new `StandardSSLControllerService` from the dropdown on next menu
 
-    ![Add SSL Controller image](./images/add_controller_service.PNG)
+    ![Add SSL Controller image](./images/add_controller_service.png)
 
     * Once created, hit the arrow to open the configuration and settings for the `StandardSSLControllerService` just created
 
-    ![SSL Service Arrow Config image](./images/ssl_service_arrow_config.PNG)
+    ![SSL Service Arrow Config image](./images/ssl_service_arrow_config.png)
 
     * Configure the StandardSSLControllerService with below properties:
 
@@ -86,11 +86,11 @@ Update the configuration properties of the processor using below information:
     * Save the `StandardSSLControllerService` configuration just created.
     This might show you a message saying "Validating" for some time. If it does that, close the current NiFi flow configuration window and reopen it.
 
-    ![Validating SSL context image](./images/validating_context.PNG)
+    ![Validating SSL context image](./images/validating_context.png)
 
     * You may find that the `StandardSSLControllerService` is `Disabled`. Click the highlighted icon on the right to `Enable` it.
 
-    ![Disabled SSL service image](./images/disabled_ssl_service.PNG)
+    ![Disabled SSL service image](./images/disabled_ssl_service.png)
 
 * Using the `+` symbol to add custom properties, add in the following additional custom properties with the values as follows:
 
@@ -98,7 +98,7 @@ Update the configuration properties of the processor using below information:
 
     * `sasl.mechanism` with value => `PLAIN`
 
-![Processor SASL config image](./images/processor_sasl_config.PNG)
+![Processor SASL config image](./images/processor_sasl_config.png)
 
 ## Using NiFi to create data flow with Event Hubs
 
