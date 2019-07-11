@@ -104,4 +104,4 @@ Update the configuration properties of the processor using below information:
 
 The configuration for the ConsumeKafka processor in NiFi will be similar.
 
-With the above auth and basic configurations, you should be have a good initial setup to create your own data flow using Event Hubs with Kafka protocol.
+With the above auth and basic configurations, you should have a good initial setup to create your own data flow using Event Hubs with Kafka protocol.
