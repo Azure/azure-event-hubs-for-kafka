@@ -53,7 +53,7 @@ Update the configuration properties of the processor using below information:
 
 * Let `Delivery Gaurantee` be `Best Effort` and set `Use Transactions` value to `false`
 
-![Kafka Processor Config image](./images/kafka_procesor_config.png)
+![Kafka Processor Config image](./images/kafka_processor_config.png)
 
 * Configuring SSL Context Service:
 
@@ -94,7 +94,7 @@ Update the configuration properties of the processor using below information:
 
 * Using the `+` symbol to add custom properties, add in the following additional custom properties with the values as follows:
 
-    * `sasl.jaas.config` with value => `org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="{YOUR.EVENTHUBS.CONNECTION.STRING}";`
+    * `sasl.jaas.config` with value => `org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX";`
 
     * `sasl.mechanism` with value => `PLAIN`
 
@@ -104,4 +104,4 @@ Update the configuration properties of the processor using below information:
 
 The configuration for the ConsumeKafka processor in NiFi will be similar.
 
-With the above configurations, you should be all set to create your own data flow using Event Hubs with Kafka protocol.
+With the above auth and basic configurations, you should be have a good initial setup to create your own data flow using Event Hubs with Kafka protocol.
