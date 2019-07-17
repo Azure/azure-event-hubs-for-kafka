@@ -56,17 +56,6 @@ Run your application and see how it goes - in most cases this should be enough t
 
 ## Troubleshooting
 
-### Receiving an UnknownServerException from Kafka client libraries
-
-The error will look something like this:
-```
-java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
-```
-This error could mean many things, usually related to either client configuration or the configuration of the Event Hubs. Some cases where this has been seen are:
-
-* Too many Kafka producers being started at once. Space out the Kafka producer startup
-* Your requests are being throttled. One reason for this is too many producers sending events to too few partitions. Try creating a topic with more partitions.
-
 ### Consumers not getting any records and constantly rebalancing
 
 There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. If this is happening, ensure that all consumers are using unique client IDs by setting the `client.id` property for each consumer client. 
@@ -77,18 +66,31 @@ Kafka supports compression, and Event Hubs for Kafka currently does not. Errors 
 
 If compressed data is necessary, compressing your data before sending it to the brokers and decompressing after receiving it is a valid workaround. The message body is just a byte array to the service, so client-side compression/decompression will not cause any issues.
 
-### Other issues? 
-In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
+### Receiving an UnknownServerException from Kafka client libraries
 
-1. **Firewall issues** - Make sure that port 9093 isn't blocked by your firewall.
+The error will look something like this:
+```
+org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
+```
+Please open an issue on this repository.  This error could mean many things, potentially related to either client configuration or the configuration of the Event Hubs. Some cases where this has been seen are:
+
+* Too many Kafka producers being started at once. Space out the Kafka producer startup
+* Your requests are being throttled. One reason for this is too many producers sending events to too few partitions. Try creating a topic with more partitions.
+
+### Other issues?
+Check the following items if experiencing issues when using Kafka on Event Hubs.
+
+1. **Firewall blocking traffic** - Make sure that port 9093 isn't blocked by your firewall.
 
 2. **TopicAuthorizationException** - The most common causes of this exception are:
     1. A typo in the connection string in your configuration file or
     2. Trying to use Event Hubs for Kafka on a Basic tier namespace. Event Hubs for Kafka is [only supported for Standard and Dedicated tier namespaces](https://azure.microsoft.com/pricing/details/event-hubs/).
 
-3. **SASL authentication** - Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs can be more difficult than meets the eye. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
+3. **Kafka version mismatch** - Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could occasionally work because of the Kafka protocol's backwards compatability, but we heavily recommend against using old API versions. Kafka versions 0.9 and earlier do not support the required SASL protocols and will not be able to connect to Event Hubs.
 
-4. **Kafka version mismatch** - Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could occasionally work because of the Kafka protocol's backwards compatability, but there's a chance it won't be able to connect or will require some *serious* tinkering. Since Kafka versions 0.9 and earlier don't support the required SASL protocols, any adapter or client using those versions won't be able to connect to Event Hubs.
+4. **Strange encodings on AMQP headers when consuming with Kafka** - when sending to Event Hubs over AMQP, any AMQP payload headers are serialized in AMQP encoding.  Kafka consumers will not deserialize the headers from AMQP - to read header values, you must manually decode the AMQP headers.  (Alternatively, you can avoid using AMQP headers if you know that you will be consuming via Kafka protocol.) See here - https://github.com/Azure/azure-event-hubs-for-kafka/issues/56
+
+5. **SASL authentication** - Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs can be more difficult than meets the eye. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
 
 If you're still stuck (or if you know the secret to making it work with your framework), let us know by opening up a GitHub issue on this repo!
 
@@ -98,4 +100,4 @@ For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, pr
 
 * The max length of the `group.id` property is 256 characters
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
-* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1Mb
+* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1 MB
