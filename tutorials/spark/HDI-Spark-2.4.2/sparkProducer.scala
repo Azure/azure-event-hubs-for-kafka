@@ -22,16 +22,15 @@ val artistschema = StructType(List(
     StructField("userId", StringType, true)))
 
 //Sample data can be found here: wget -P /tmp/small_radio_json.json https://raw.githubusercontent.com/Azure/usql/master/Examples/Samples/Data/json/radiowebsite/small_radio_json.json
-val df = spark
+val df = (spark
     .read
     .schema(artistschema)
-    .json("/tmp/small_radio_json.json")
+    .json("/tmp/small_radio_json.json"))
 val dfWrite = df.selectExpr("CAST(userId as STRING) as key", "to_json(struct(*)) AS value")
 dfWrite.show()
 
 //write as batch
-dfWrite
-    .write
+(dfWrite.write
     .format("kafka")
     .option("topic", TOPIC)
     .option("kafka.bootstrap.servers", BOOTSTRAP_SERVERS)
@@ -39,4 +38,4 @@ dfWrite
     .option("kafka.security.protocol", "SASL_SSL")
     .option("kafka.sasl.jaas.config", EH_SASL)
     .option("checkpointLocation", CHECKPOINT_PATH)
-    .save()
+    .save())
