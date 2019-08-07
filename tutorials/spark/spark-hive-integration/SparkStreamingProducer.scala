@@ -16,7 +16,7 @@ val CHECKPOINT_PATH = "./checkpoint"
 // $ wget -P /tmp/small_radio_json.json https://raw.githubusercontent.com/Azure/usql/master/Examples/Samples/Data/json/radiowebsite/small_radio_json.json
 // note - spark context may be using cluster blob storage as attached file system
 
-//Define dataframe from data sample
+// define schema for data sample
 val artistschema = StructType(List(
     StructField("artist", StringType, true),
     StructField("firstName", StringType, true),
