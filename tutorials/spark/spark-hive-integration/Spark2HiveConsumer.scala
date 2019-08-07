@@ -39,7 +39,7 @@ val STREAM_TO_STREAM = "com.hortonworks.spark.sql.hive.llap.streaming.HiveStream
 //Make sure permissions are set for the checkpoint location.
 val CHECKPOINT_LOCATION = "/tmp/checkpoint"
 val HIVE_TABLE_NAME = "stream_table"
-val HIVE_DB_NAME = "testdb"
+val HIVE_DB_NAME = "default"
 
 // Read stream using Spark SQL (structured streaming)
 // consider adding .option("startingOffsets", "earliest") to read earliest available offset during testing
@@ -72,8 +72,8 @@ val df_write = df.filter($"key".isNotNull)
   .withColumn("value", convertToString(df("value")))
   .writeStream
   .format(STREAM_TO_STREAM)
-  .option("database", "default")
-  .option("table","stream_table_2")
+  .option("database", HIVE_DB_NAME)
+  .option("table", HIVE_TABLE_NAME)
   .option("metastoreUri",spark.conf.get("spark.datasource.hive.warehouse.metastoreUri"))
-  .option("checkpointLocation","/tmp/checkpoint")
+  .option("checkpointLocation",CHECKPOINT_LOCATION)
   .start()

@@ -95,6 +95,8 @@ df.filter($"key".isNotNull)
 
 View the [consumer example](./Spark2HiveConsumer.scala) for the full Scala consumer implementation.
 
+*Note: your checkpoint location persists even after Event Hub topics are created and deleted.  If you observe fetch timeout exceptions at offsets that do not exist, you should ensure that your checkpoint file is cleared of stale offsets.*
+
 ## Further reading
 
 * [Integrating Spark and Hive via Apache Hive Warehouse connector](https://docs.microsoft.com/en-us/azure/hdinsight/interactive-query/apache-hive-warehouse-connector)
