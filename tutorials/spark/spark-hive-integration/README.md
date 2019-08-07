@@ -83,14 +83,15 @@ The [consumer example](./Spark2HiveConsumer.scala) can be run from `spark-shell`
 
 ```scala
 df.filter($"key".isNotNull)
-    .withColumn("key", convertToInt(df("key")))
-    .withColumn("value", convertToString(df("value")))
-    .select("key","value")
-    .write
-    .format("com.hortonworks.spark.sql.hive.llap.HiveStreamingDataSource")
-    .mode(SaveMode.Append)
-    .option("table", "stream_table_2")
-    .save()
+  .withColumn("key", convertToInt(df("key")))
+  .withColumn("value", convertToString(df("value")))
+  .writeStream
+  .format(STREAM_TO_STREAM)
+  .option("database", HIVE_DB_NAME)
+  .option("table", HIVE_TABLE_NAME)
+  .option("metastoreUri",spark.conf.get("spark.datasource.hive.warehouse.metastoreUri"))
+  .option("checkpointLocation",CHECKPOINT_LOCATION)
+  .start()
 ```
 
 View the [consumer example](./Spark2HiveConsumer.scala) for the full Scala consumer implementation.
