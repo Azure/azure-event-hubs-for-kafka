@@ -56,6 +56,17 @@ Run your application and see how it goes - in most cases this should be enough t
 
 ## Troubleshooting
 
+### Kafka Throttling
+
+With Event Hubs AMQP clients, a ServerBusy exception is immediately returned upon service throttling, equivalent to a “try again later” message.  In Kafka, messages are just delayed before being completed, and the delay length is returned in milliseconds as `throttle_time_ms` in the produce/fetch response. These delays are not generally logged as ServerBusy exceptions on Event Hubs dashboards – instead, the `throttle_time_ms` value should be used as an indicator that throughput has exceeded the provisioned quota.
+
+If traffic is extremely excessive, the service has the following behavior:
+* If produce request’s delay exceeds request timeout – EH returns PolicyViolation error code
+* If fetch request’s delay exceeds request timeout – EH returns empty message list but no error code 
+In these cases, the request will be logged as throttled.
+
+Dedicated clusters do not have throttling mechanisms - you are free to consume all of your cluster resources.  On overview on dedicated clusters can be found [here](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-dedicated-overview).
+
 ### Consumers not getting any records and constantly rebalancing
 
 There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. If this is happening, ensure that all consumers are using unique client IDs by setting the `client.id` property for each consumer client. 
@@ -72,10 +83,8 @@ The error will look something like this:
 ```
 org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
 ```
-Please open an issue on this repository.  This error could mean many things, potentially related to either client configuration or the configuration of the Event Hubs. Some cases where this has been seen are:
+Please open an issue.  Debug-level logging and exception timestamps in UTC are extremely helpful. 
 
-* Too many Kafka producers being started at once. Space out the Kafka producer startup
-* Your requests are being throttled. One reason for this is too many producers sending events to too few partitions. Try creating a topic with more partitions.
 
 ### Other issues?
 Check the following items if experiencing issues when using Kafka on Event Hubs.
@@ -83,7 +92,7 @@ Check the following items if experiencing issues when using Kafka on Event Hubs.
 1. **Firewall blocking traffic** - Make sure that port 9093 isn't blocked by your firewall.
 
 2. **TopicAuthorizationException** - The most common causes of this exception are:
-    1. A typo in the connection string in your configuration file or
+    1. A typo in the connection string in your configuration file, or
     2. Trying to use Event Hubs for Kafka on a Basic tier namespace. Event Hubs for Kafka is [only supported for Standard and Dedicated tier namespaces](https://azure.microsoft.com/pricing/details/event-hubs/).
 
 3. **Kafka version mismatch** - Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could occasionally work because of the Kafka protocol's backwards compatability, but we heavily recommend against using old API versions. Kafka versions 0.9 and earlier do not support the required SASL protocols and will not be able to connect to Event Hubs.
