@@ -65,7 +65,7 @@ If traffic is extremely excessive, the service has the following behavior:
 * If fetch request’s delay exceeds request timeout – EH returns empty message list but no error code 
 In these cases, the request will be logged as throttled.
 
-Dedicated clusters do not have throttling mechanisms - you are free to consume all of your cluster resources.  On overview on dedicated clusters can be found [here](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-dedicated-overview).
+Dedicated clusters do not have throttling mechanisms - you are free to consume all of your cluster resources.  An overview on dedicated clusters can be found [here](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-dedicated-overview).
 
 ### Consumers not getting any records and constantly rebalancing
 
