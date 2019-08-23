@@ -8,7 +8,7 @@ How to reproduce
 
 Has it worked previously?
 =========================
-<Is this a first attempt at getting the sample application to run, or has it worked in the past?  Is this is a new issue>
+<Is this a first attempt at getting the sample application to run, or has it worked in the past?>
 
 Checklist
 =========
@@ -30,6 +30,6 @@ Please provide the relevant information for the following items:
  - [ ] Critical issue
 
 If this is a question on basic functionality, please verify the following:
- - [ ] Port 9093 is not blocked by firewall ("broker cannot be found" errors)
- - [ ] Pinging FQDN (e.g. `$ ping namespace.servicebus.windows.net`) returns a cluster DNS resolution (e.g. ns-eh2-prod-am3-516.cloudapp.net [13.69.64.0])
- - [ ] Namespace is either Standard or Dedicated tier, not Basic (TopicAuthorization errors)
+ - [ ] Port 9093 should not be blocked by firewall ("broker cannot be found" errors)
+ - [ ] Pinging FQDN shoudl return cluster DNS resolution (e.g. `$ ping namespace.servicebus.windows.net` returns ~ `ns-eh2-prod-am3-516.cloudapp.net [13.69.64.0]`)
+ - [ ] Namespace should be either Standard or Dedicated tier, not Basic (TopicAuthorization errors)
