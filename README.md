@@ -71,8 +71,7 @@ Dedicated clusters do not have throttling mechanisms - you are free to consume a
 
 There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. There are a few possible fixes here:
 
- * Ensure that all consumers are using unique client IDs by setting the `client.id` property for each consumer client. 
- * Make sure that your `session.timeout.ms` and `request.timeout.ms` are set to the recommended value of 60000. Having these too low could cause consumer timeouts which then cause rebalances (which then cause more timeouts which then cause more rebalancing...). 
+ * Make sure that your `request.timeout.ms` is at least the recommended value of 60000 and your `session.timeout.ms` is at least the recommended value of 30000. Having these too low could cause consumer timeouts which then cause rebalances (which then cause more timeouts which then cause more rebalancing...). 
 
 ### Compression / Message Format Version issue
 
