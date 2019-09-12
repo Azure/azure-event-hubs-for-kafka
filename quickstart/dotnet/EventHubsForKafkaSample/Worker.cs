@@ -51,6 +51,8 @@ namespace EventHubsForKafkaSample
             {
                 BootstrapServers = brokerList,
                 SecurityProtocol = SecurityProtocol.SaslSsl,
+                SocketTimeoutMs = 60000,                //this corresponds to the Consumer config `request.timeout.ms`
+                SessionTimeoutMs = 30000,
                 SaslMechanism = SaslMechanism.Plain,
                 SaslUsername = "$ConnectionString",
                 SaslPassword = connStr,
