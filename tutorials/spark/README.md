@@ -23,7 +23,10 @@ Running Spark for the first time can be overwhelming. If you don't already have 
 
 Whether you end up choosing a cloud platform like Azure Databricks or decide to run on your on-prem cluster, Event Hubs for Kafka will work all the same.
 
-*Note: Databricks shades the Kafka client under the `kafkashaded` package. If you are using Databricks to run Spark, make sure to update all occurrences of `org.apache.kafka.common.security.plain.PlainLoginModule` to `kafkashaded.org.apache.kafka.common.security.plain.PlainLoginModule` in these samples!*
+*Note: Databricks shades the Kafka client under the `kafkashaded` package. If you are using Databricks to run Spark:
+
+1. Do not import `org.apache.kafka.common.security.plain.PlainLoginModule` (it's provided by the Databricks runtime)
+2. Update your EH_SASL constant's `org.apache.kafka.common.security.plain.PlainLoginModule` to `kafkashaded.org.apache.kafka.common.security.plain.PlainLoginModule`
 
 ## Microbatching vs Continuous Processing
 
