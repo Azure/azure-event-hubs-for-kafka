@@ -58,12 +58,11 @@ Run your application and see how it goes - in most cases this should be enough t
 
 ### Kafka Throttling
 
-With Event Hubs AMQP clients, a ServerBusy exception is immediately returned upon service throttling, equivalent to a “try again later” message.  In Kafka, messages are just delayed before being completed, and the delay length is returned in milliseconds as `throttle_time_ms` in the produce/fetch response. These delays are not generally logged as ServerBusy exceptions on Event Hubs dashboards – instead, the `throttle_time_ms` value should be used as an indicator that throughput has exceeded the provisioned quota.
+With Event Hubs AMQP clients, a ServerBusy exception is immediately returned upon service throttling, equivalent to a “try again later” message.  In Kafka, messages are just delayed before being completed, and the delay length is returned in milliseconds as `throttle_time_ms` in the produce/fetch response. In most cases, these delayed requests are not logged as ServerBusy exceptions on Event Hubs dashboards – instead, the response's `throttle_time_ms` value should be used as an indicator that throughput has exceeded the provisioned quota.
 
 If traffic is extremely excessive, the service has the following behavior:
 * If produce request’s delay exceeds request timeout – EH returns PolicyViolation error code
-* If fetch request’s delay exceeds request timeout – EH returns empty message list but no error code 
-In these cases, the request will be logged as throttled.
+* If fetch request’s delay exceeds request timeout – EH logs the request as throttled and responds with empty set of records and no error code
 
 Dedicated clusters do not have throttling mechanisms - you are free to consume all of your cluster resources.  An overview on dedicated clusters can be found [here](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-dedicated-overview).
 
