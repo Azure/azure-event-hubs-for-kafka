@@ -21,13 +21,13 @@ sasl.mechanisms=PLAIN
 sasl.username=$ConnectionString
 sasl.password=Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX
 # Replace
-# - 'metadata.broker.list' with your namespace
+# - 'metadata.broker.list' with your namespace FQDN (change 'mynamespace' to your namespace name)
 # - 'sasl.password' with your namespace's connection string 
 ```
 
-There are multiple ways to configure kafkacat as demonstrated in kafkacat repository README [configuration section](https://github.com/edenhill/kafkacat#configuration).  This tutorial assumes the `$KAFKACAT_CONFIG` environment variable has been set to the absolute path to a kafkacat configuration file. Now go ahead and try out kafkacat!
+There are multiple ways to configure kafkacat as demonstrated in the kafkacat repository README [configuration section](https://github.com/edenhill/kafkacat#configuration).  This tutorial assumes the `$KAFKACAT_CONFIG` environment variable has been set to the absolute path of your kafkacat configuration file. Now go ahead and try out kafkacat!
 
-The following command lists the topics in your currently-referenced namespace:
+The following command lists the topics in your currently referenced namespace:
 
 ```sh
 kafkacat -b mynamespace.servicebus.windows.net:9093 -L
