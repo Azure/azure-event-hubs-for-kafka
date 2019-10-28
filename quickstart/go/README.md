@@ -46,6 +46,8 @@ $ export KAFKA_EVENTHUB_ENDPOINT="mynamespace.servicebus.windows.net:9093" # REP
 $ export KAFKA_EVENTHUB_CONNECTION_STRING="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX" # REPLACE
 ```
 
+You may want to run `go get -u github.com/confluentinc/confluent-kafka-go/kafka`.  This command downloads and builds the go library from Github then executes a `go install` to move the package to your `$GOPATH` directory.
+
 ## Producer
 
 The producer sample demonstrates how to send messages to the Event Hubs service using the Kafka head.
@@ -71,3 +73,7 @@ $ go run consumer.go
 ```
 
 The consumer will now begin receiving events from the Kafka-enabled Event Hub on topic `test` and printing the events to stdout. If you would like to change the topic, change the topic variable in `consumer.go`.
+
+## Troubleshooting
+
+If you receive `Invalid value "SASL_SSL" for configuration property "security.protocol"`, you should install SSL dependencies.  For Ubuntu, you can run `sudo apt-get install libsasl2-dev libsasl2-modules libssl-dev`.
