@@ -76,4 +76,4 @@ The consumer will now begin receiving events from the Kafka-enabled Event Hub on
 
 ## Troubleshooting
 
-If you receive `Invalid value "SASL_SSL" for configuration property "security.protocol"`, you should install SSL dependencies.  For Ubuntu, you can run `sudo apt-get install libsasl2-dev libsasl2-modules libssl-dev`.
+If you receive `Invalid value "SASL_SSL" for configuration property "security.protocol"`, you should install SSL dependencies.  For Ubuntu, you can run `sudo apt-get install libsasl2-dev libsasl2-modules libssl-dev`.  You will also need to rebuild your `librdkafka` installation.
