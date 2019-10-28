@@ -21,7 +21,6 @@ func main() {
 		"security.protocol": "SASL_SSL",
 		"sasl.username":     "$ConnectionString",
 		"sasl.password":     os.Getenv("KAFKA_EVENTHUB_CONNECTION_STRING"),
-		"debug":	     "consumer", 
 	})
 
 	if err != nil {
