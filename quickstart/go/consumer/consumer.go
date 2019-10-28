@@ -15,6 +15,8 @@ import (
 
 func main() {
 	consumerGroup := "consumergroup"
+	
+	https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
 		"sasl.mechanisms":   "PLAIN",
@@ -23,6 +25,7 @@ func main() {
 		"sasl.password":     os.Getenv("KAFKA_EVENTHUB_CONNECTION_STRING"),
 		"group.id":          consumerGroup,
 		"auto.offset.reset": "earliest",
+		"debug":	     "consumer",
 	})
 
 	if err != nil {
