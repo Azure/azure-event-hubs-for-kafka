@@ -14,13 +14,14 @@ import (
 )
 
 func main() {
-
+	// https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
 	p, err := kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
 		"sasl.mechanisms":   "PLAIN",
 		"security.protocol": "SASL_SSL",
 		"sasl.username":     "$ConnectionString",
 		"sasl.password":     os.Getenv("KAFKA_EVENTHUB_CONNECTION_STRING"),
+		"debug":	     "consumer", 
 	})
 
 	if err != nil {
