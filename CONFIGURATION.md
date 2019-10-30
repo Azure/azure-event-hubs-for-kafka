@@ -4,6 +4,10 @@ SASL and SSL settings are not included here.  Please refer to SDK quickstarts.
 
 ## Java client configuration properties
 
+Producer configs can be found [here](https://docs.confluent.io/current/installation/configuration/producer-configs.html).
+
+Consumer configs can be found [here](https://docs.confluent.io/current/installation/configuration/consumer-configs.html).
+
 Property | Client Type | Recommended Value/Range | Permitted Range | Notes
 ---|---|---:|-----:|---
 metadata.max.age.ms | all clients| ~ 180000 | < 240000 | Can be lowered to pick up metadata changes sooner.
