@@ -115,11 +115,11 @@ For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, pr
 
 ## More FAQ
 
-*Are you running Apache Kafka?*
+**Are you running Apache Kafka?**
 
-No.  We deserialize Kafka payloads and execute the payload-specified API operation against Event Hubs infrastructure.  Because there is a tight correlation between Apache Kafka and Event Hubs AMQP functionality (e.g. produce, receive, management), we are able to bring the known reliability of Event Hubs to the Kafka PaaS space.
+No.  We execute Kafka API operations against Event Hubs infrastructure.  Because there is a tight correlation between Apache Kafka and Event Hubs AMQP functionality (i.e. produce, receive, management, etc.), we are able to bring the known reliability of Event Hubs to the Kafka PaaS space.
 
-*What's the difference between an Event Hub consumer group and a Kafka consumer group on Event Hubs?*
+**What's the difference between an Event Hub consumer group and a Kafka consumer group on Event Hubs?**
 
 Kafka consumer groups on EH are fully distinct from standard Event Hubs consumer groups.
 
