@@ -105,10 +105,30 @@ Check the following items if experiencing issues when using Kafka on Event Hubs.
 
 If you're still stuck (or if you know the secret to making it work with your framework), let us know by opening up a GitHub issue on this repo!
 
-## List of differences between Event Hubs for Kafka Ecosystems and Apache Kafka
+## Apache Kafka vs. Event Hubs Kafka
 
 For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, properties, error codes, and general behavior that Apache Kafka does. The instances where the two explicitly differ (or where Event Hubs imposes a limit that Kafka does not) are listed below:
 
 * The max length of the `group.id` property is 256 characters
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
 * Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1 MB
+
+## More FAQ
+
+*Are you running Apache Kafka?*
+No.  We deserialize Kafka payloads and execute the payload-specified API operation against Event Hubs infrastructure.  Because there is a tight correlation between Apache Kafka and Event Hubs AMQP functionality (e.g. produce, receive, management), we are able to bring the known reliability of Event Hubs to the Kafka PaaS space.
+
+*What's the difference between an Event Hub consumer group and a Kafka consumer group on Event Hubs?*
+Kafka consumer groups on EH are fully distinct from standard Event Hubs consumer groups.
+
+Event Hubs consumer groups are...
+- managed with CRUD operations.  EH consumer groups cannot be auto-created.
+- children entities of an Event Hub.  This means that the same consumer group name can be reused between Event Hubs in the same namespace because they are separate entities.
+- not used for storing offsets.  Orchestrated AMQP consumption is done using Event Processor Host and an offset store like Azure Storage.
+
+Kafka consumer groups are...
+- auto-created.
+- capable of storing offsets in the Event Hubs service.
+- used as keys in what is effectively an offset key-value store.  For a given group.id and topic-partition unique pair, we store an offset.
+- span a namespace.  Using the same Kafka group name for multiple applications on multiple EH topics means that all applications and their Kafka clients will be rebalanced whenever only a single application needs rebalancing.  Choose your group names wisely.
+- fully distinct from EH consumer groups.  You don't need to use '$Default', nor do you need to worry about Kafka clients interfering with AMQP workloads.
