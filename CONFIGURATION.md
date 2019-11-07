@@ -19,7 +19,10 @@ Producer configs can be found [here](https://docs.confluent.io/current/installat
 Property | Recommended Values | Permitted Range | Notes
 ---|---:|---:|---
 max.request.size | 1046528 | | 
+retries | > 0 | | May require increasing delivery.timeout.ms value, see documentation.
 request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.
+linger.ms | > 0 | | For high throughput scenarios, linger value should be equal to application's highest tolerable latency.
+delivery.timeout.ms | | | Set according to the formula (`request.timeout.ms` + `linger.ms`) * `retries`
 enable.idempotence | false | | Idempotency currently not supported.
 compression.type | `none` | | Compression currently not supported..
 
@@ -46,6 +49,7 @@ metadata.max.age.ms | ~ 180000| < 240000 | Can be lowered to pick up metadata ch
 
 Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
+retries | > 0 | | Default is 2. This is fine.
 request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.  `librdkafka` default value is 5000, which can be problematic.
 enable.idempotence | false | | Idempotency currently not supported.
 compression.codec | `none` || Compression currently not supported.
