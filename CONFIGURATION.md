@@ -20,9 +20,9 @@ Property | Recommended Values | Permitted Range | Notes
 ---|---:|---:|---
 max.request.size | 1046528 | | 
 retries | > 0 | | May require increasing delivery.timeout.ms value, see documentation.
-request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.
+request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.  While requests with lower timeout values are accepted, client behavior is not guaranteed.
 linger.ms | > 0 | | For high throughput scenarios, linger value should be equal to application's highest tolerable latency.
-delivery.timeout.ms | | | Set according to the formula (`request.timeout.ms` + `linger.ms`) * `retries`
+delivery.timeout.ms | | | Set according to the formula (`request.timeout.ms` + `linger.ms`) * `retries`.
 enable.idempotence | false | | Idempotency currently not supported.
 compression.type | `none` | | Compression currently not supported..
 
