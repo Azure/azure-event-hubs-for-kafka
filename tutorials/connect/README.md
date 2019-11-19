@@ -23,6 +23,26 @@ To complete this walkthough, make sure you have the following prerequisites:
 More information on Kafka Connect concepts is available [here](https://docs.confluent.io/current/connect/concepts.html).
 
 ## Configuring Kafka Connect for Event Hubs
+**Warning: Kafka Connect internal topics must be compacted topics. Do not use standard retention day topics.  Your messages will be deleted and *irrecoverable* after configured retention time has passed.**
+
+You should either allow Kafka Connect to create topics on its own using configured partitions counts (preferable); or you should use the following kafka-topics commands to create topics yourself.
+```bash
+# configs
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic CONFIGS-NAME --config cleanup.policy=compact --partitions 1 --replication-factor 1
+
+# offsets
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic OFFSETS-NAME --config cleanup.policy=compact --partitions 50 --replication-factor 1
+
+# status
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic STATUS-NAME --config cleanup.policy=compact --partitions 10 --replication-factor 1
+```
+The command configuration file is simply an AdminClient configuration as follows:
+```properties
+bootstrap.servers={NAMESPACE.NAME}.servicebus.windows.net:9093
+security.protocol=SASL_SSL
+sasl.mechanism=PLAIN
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://{NAMESPACE.NAME}.servicebus.windows.net/;SharedAccessKeyName={XXXXXX};SharedAccessKey={XXXXXX}";
+```
 
 Minimal reconfiguration is necessary when redirecting Kafka Connect throughput from Kafka to Event Hubs.  The following `connect-distributed.properties` sample illustrates how to configure Connect to authenticate and communicate with the Kafka endpoint on Event Hubs:
 
