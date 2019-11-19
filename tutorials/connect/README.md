@@ -25,7 +25,7 @@ More information on Kafka Connect concepts is available [here](https://docs.conf
 ## Configuring Kafka Connect for Event Hubs
 **Warning: Kafka Connect internal topics must be compacted topics. Do not use standard retention day topics.  Your messages will be deleted and *irrecoverable* after configured retention time has passed.**
 
-You should either allow Kafka Connect to create topics on its own using configured partitions counts (preferable); or you should use the following kafka-topics commands to create topics yourself.
+You should either allow Kafka Connect to create topics on its own using configured partitions counts (preferable); or you should use the following `kafka-topics` commands to create topics yourself.  The `kafka-topics` executables can be downloaded from Apache ([here](https://kafka.apache.org/downloads))
 ```bash
 # configs
 kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic CONFIGS-NAME --config cleanup.policy=compact --partitions 1 --replication-factor 1
