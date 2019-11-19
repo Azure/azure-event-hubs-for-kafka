@@ -28,13 +28,13 @@ More information on Kafka Connect concepts is available [here](https://docs.conf
 You should either allow Kafka Connect to create topics on its own using configured partitions counts (preferable); or you should use the following `kafka-topics` commands to create topics yourself.  The `kafka-topics` executables can be downloaded from Apache ([here](https://kafka.apache.org/downloads))
 ```bash
 # configs
-kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic CONFIGS-NAME --config cleanup.policy=compact --partitions 1 --replication-factor 1
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093 --command-config path/to/config --create --topic CONFIGS-TOPIC-NAME --config cleanup.policy=compact --partitions 1 --replication-factor 1
 
 # offsets
-kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic OFFSETS-NAME --config cleanup.policy=compact --partitions 25 --replication-factor 1
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093 --command-config path/to/config --create --topic OFFSETS-TOPIC-NAME --config cleanup.policy=compact --partitions 25 --replication-factor 1
 
 # status
-kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic STATUS-NAME --config cleanup.policy=compact --partitions 5 --replication-factor 1
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093 --command-config path/to/config --create --topic STATUS-TOPIC-NAME --config cleanup.policy=compact --partitions 5 --replication-factor 1
 ```
 The command configuration file is simply an AdminClient configuration as follows:
 ```properties
