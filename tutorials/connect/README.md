@@ -31,10 +31,10 @@ You should either allow Kafka Connect to create topics on its own using configur
 kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic CONFIGS-NAME --config cleanup.policy=compact --partitions 1 --replication-factor 1
 
 # offsets
-kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic OFFSETS-NAME --config cleanup.policy=compact --partitions 50 --replication-factor 1
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic OFFSETS-NAME --config cleanup.policy=compact --partitions 25 --replication-factor 1
 
 # status
-kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic STATUS-NAME --config cleanup.policy=compact --partitions 10 --replication-factor 1
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093:9093 --command-config path/to/config --create --topic STATUS-NAME --config cleanup.policy=compact --partitions 5 --replication-factor 1
 ```
 The command configuration file is simply an AdminClient configuration as follows:
 ```properties
