@@ -48,10 +48,7 @@ public class CustomAuthenticateCallbackHandler implements AuthenticateCallbackHa
                     OAuthBearerToken token = getOAuthBearerToken();
                     OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
                     oauthCallback.token(token);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
+                } catch (InterruptedException | ExecutionException | TimeoutException | ParseException e) {
                     e.printStackTrace();
                 }
             } else {
