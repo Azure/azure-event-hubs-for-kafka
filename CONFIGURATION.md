@@ -32,7 +32,7 @@ Consumer configs can be found [here](https://docs.confluent.io/current/installat
 Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
 heartbeat.interval.ms | 3000 | | This is default and should not be changed.
-session.timeout.ms | 20000 |6000 .. 300000| Start with 20000, increase if seeing frequent rebalancing due to missed heartbeats.
+session.timeout.ms | 30000 |6000 .. 300000| Start with 30000, increase if seeing frequent rebalancing due to missed heartbeats.
 
 
 ## librdkafka configuration properties
@@ -59,4 +59,13 @@ compression.codec | `none` || Compression currently not supported.
 Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
 heartbeat.interval.ms | 3000 || This is default and should not be changed.
-session.timeout.ms | 20000 |6000 .. 300000| Start with 20000, increase if seeing frequent rebalancing due to missed heartbeats.
+session.timeout.ms | 30000 |6000 .. 300000| Start with 30000, increase if seeing frequent rebalancing due to missed heartbeats.
+
+
+## Further notes
+
+Check the following table of common configuration-related error scenarios.
+
+Symptoms | Problem | Solution
+----|---|-----
+Offset commit failures due to rebalancing | Your consumer is waiting too long in between calls to poll() and the service is kicking the consumer out of the group. | You have several options: <ul><li>increase session timeout</li><li>decrease message batch size to speed up processing</li><li>improve processing parallelization to avoid blocking consumer.poll()</li></ul> Applying some combination of the three is likely wisest.
