@@ -51,6 +51,7 @@ Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
 retries | > 0 | | Default is 2. This is fine.
 request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.  `librdkafka` default value is 5000, which can be problematic. *While requests with lower timeout values are accepted, client behavior is not guaranteed.*
+partitioner | `consistent_random` | See librdkafka documentation | `consistent_random` is default and best.  Empty and null keys are handled ideally for most cases.
 enable.idempotence | false | | Idempotency currently not supported.
 compression.codec | `none` || Compression currently not supported.
 
