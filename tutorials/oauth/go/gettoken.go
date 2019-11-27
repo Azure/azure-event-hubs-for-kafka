@@ -9,18 +9,16 @@ package main
 
 import (
 	"fmt"
-	//"github.com/Azure/go-autorest/autorest"
+	"os"
 	"github.com/Azure/go-autorest/autorest/adal"
-	//"github.com/Azure/go-autorest/autorest/azure"
-	//"github.com/Azure/go-autorest/autorest/date"
 )
 
 func main() {
 	fmt.Println("hello world");
 
-	applicationID := "fd756bd0-6853-41fd-8f5a-cc7e8bd89214"
-	applicationSecret := "l.vUN-4SRE45Ph9@D-]_s[zUaOBchc-i"
-	tenantID := "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	applicationID := os.Getenv("AAD_APPLICATION_ID")
+	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
+	tenantID := os.Getenv("AAD_TENANT_ID")
 	resource := "https://eventhubs.azure.net/"
 
 	const activeDirectoryEndpoint = "https://login.microsoftonline.com/"
