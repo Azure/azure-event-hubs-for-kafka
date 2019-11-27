@@ -16,7 +16,7 @@ import (
 func main() {
 	consumerGroup := "consumergroup"
 	
-	https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
+	// https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
 		"sasl.mechanisms":   "PLAIN",

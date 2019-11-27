@@ -13,6 +13,11 @@ In addition:
 * [Go Tools Distribution](https://golang.org/doc/install)
 * [Git](https://www.git-scm.com/downloads)
     * On Ubuntu, you can run `sudo apt-get install git` to install Git.
+* Go language
+    * On Ubuntu, run `sudo apt-get install golang`.
+* [Add Confluent repository](https://docs.confluent.io/current/installation/installing_cp/deb-ubuntu.html#get-the-software) if needed
+* [Install librdkafka](https://github.com/edenhill/librdkafka)
+    * On Ubuntu, run `sudo apt-get install librdkafka-dev`.
 
 ## Create an Event Hubs namespace
 
