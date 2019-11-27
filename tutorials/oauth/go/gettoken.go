@@ -9,10 +9,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/Azure/go-autorest/autorest"
+	//"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
+	//"github.com/Azure/go-autorest/autorest/azure"
+	//"github.com/Azure/go-autorest/autorest/date"
 )
 
 func main() {
@@ -21,25 +21,31 @@ func main() {
 	applicationID := "fd756bd0-6853-41fd-8f5a-cc7e8bd89214"
 	applicationSecret := "l.vUN-4SRE45Ph9@D-]_s[zUaOBchc-i"
 	tenantID := "72f988bf-86f1-41af-91ab-2d7cd011db47"
+	resource := "https://eventhubs.azure.net/"
 
 	const activeDirectoryEndpoint = "https://login.microsoftonline.com/"
 	oauthConfig, err := adal.NewOAuthConfig(activeDirectoryEndpoint, tenantID)
 
+	callback := func(token adal.Token) error {
+		// This is called after the token is acquired
+		return nil;
+	}
 
 	spt, err := adal.NewServicePrincipalToken(
 		*oauthConfig,
-		appliationID,
+		applicationID,
 		applicationSecret,
 		resource,
-		callbacks...)
+		callback)
+
 	if err != nil {
-		return nil, err
+		fmt.Println(err);
 	}
 	
 	// Acquire a new access token
 	err  = spt.Refresh()
 	if (err == nil) {
-		token := spt.Token
+		token := spt.OAuthToken()
 		fmt.Println("Token " + token);
 	}
 }
