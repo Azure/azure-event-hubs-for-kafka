@@ -10,15 +10,16 @@ package main
 import (
 	"fmt"
 	"os"
+
 	"github.com/Azure/go-autorest/autorest/adal"
 )
 
 func main() {
-	fmt.Println("hello world");
+	fmt.Println("hello world")
 
+	tenantID := os.Getenv("AAD_TENANT_ID")
 	applicationID := os.Getenv("AAD_APPLICATION_ID")
 	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
-	tenantID := os.Getenv("AAD_TENANT_ID")
 	resource := "https://eventhubs.azure.net/"
 
 	const activeDirectoryEndpoint = "https://login.microsoftonline.com/"
@@ -26,7 +27,7 @@ func main() {
 
 	callback := func(token adal.Token) error {
 		// This is called after the token is acquired
-		return nil;
+		return nil
 	}
 
 	spt, err := adal.NewServicePrincipalToken(
@@ -37,13 +38,13 @@ func main() {
 		callback)
 
 	if err != nil {
-		fmt.Println(err);
+		fmt.Println(err)
 	}
-	
+
 	// Acquire a new access token
-	err  = spt.Refresh()
-	if (err == nil) {
+	err = spt.Refresh()
+	if err == nil {
 		token := spt.OAuthToken()
-		fmt.Println("Token " + token);
+		fmt.Println("Token " + token)
 	}
 }
