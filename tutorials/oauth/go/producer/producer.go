@@ -58,7 +58,9 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh) (kafka.OAuthBearerToken, err
 	// 	Principal:  principal,
 	// 	Extensions: extensions,
 	// }
-	return oauthBearerToken, nil
+	//return oauthBearerToken, nil
+
+	return nil, nil
 }
 
 func main() {
