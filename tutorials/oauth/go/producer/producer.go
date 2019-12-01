@@ -76,31 +76,36 @@ func main() {
 
 	// Token refresh events are posted on the Events channel, instructing
 	// the application to refresh its token.
-	go func(eventsChan chan kafka.Event) {
-		for ev := range eventsChan {
-			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
-			if !ok {
-				// Ignore other event types
-				continue
-			}
+	// go func(eventsChan chan kafka.Event) {
+	// 	for ev := range eventsChan {
+	// 		oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
+	// 		if !ok {
+	// 			// Ignore other event types
+	// 			continue
+	// 		}
 
-			handleOAuthBearerTokenRefreshEvent(p, oart)
-		}
-	}(p.Events())
+	// 		handleOAuthBearerTokenRefreshEvent(p, oart)
+	// 	}
+	// }(p.Events())
 
 	// Delivery report handler for produced messages
-	// go func() {
-	// 	for e := range p.Events() {
-	// 		switch ev := e.(type) {
-	// 		case *kafka.Message:
-	// 			if ev.TopicPartition.Error != nil {
-	// 				fmt.Printf("Delivery failed: %v\n", ev.TopicPartition)
-	// 			} else {
-	// 				fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
-	// 			}
-	// 		}
-	// 	}
-	// }()
+	go func() {
+		for e := range p.Events() {
+			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
+			if ok {
+				handleOAuthBearerTokenRefreshEvent(p, oart)
+			}
+
+			switch ev := e.(type) {
+			case *kafka.Message:
+				if ev.TopicPartition.Error != nil {
+					fmt.Printf("Delivery failed: %v\n", ev.TopicPartition)
+				} else {
+					fmt.Printf("Delivered message to %v\n", ev.TopicPartition)
+				}
+			}
+		}
+	}()
 
 	// Produce messages to topic (asynchronously)
 	topic := "test"
