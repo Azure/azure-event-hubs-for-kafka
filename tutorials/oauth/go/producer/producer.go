@@ -91,7 +91,7 @@ func main() {
 	// Delivery report handler for produced messages
 	go func() {
 		for e := range p.Events() {
-			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
+			oart, ok := e.(kafka.OAuthBearerTokenRefresh)
 			if ok {
 				handleOAuthBearerTokenRefreshEvent(p, oart)
 			}
