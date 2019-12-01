@@ -40,7 +40,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh) (kafka.OAuthBearerToken, err
 	// We then exit immediately after that, so no additional token refreshes will occur.
 	// Therefore set the lifetime to be an hour (though anything on the order of a minute or more
 	// would be fine).
-	// expiration := now.Add(time.Second * time.Duration(3600))
+	expiration := now.Add(time.Second * time.Duration(3600))
 	// expirationSecondsSinceEpoch := expiration.Unix()
 
 	// oauthbearerMapForJSON := map[string]interface{}{
@@ -51,16 +51,14 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh) (kafka.OAuthBearerToken, err
 	// claimsJSON, _ := json.Marshal(oauthbearerMapForJSON)
 	// encodedClaims := base64.RawURLEncoding.EncodeToString(claimsJSON)
 	// jwsCompactSerialization := joseHeaderEncoded + "." + encodedClaims + "."
-	// extensions := map[string]string{}
-	// oauthBearerToken := kafka.OAuthBearerToken{
-	// 	TokenValue: jwsCompactSerialization,
-	// 	Expiration: expiration,
-	// 	Principal:  principal,
-	// 	Extensions: extensions,
-	// }
-	//return oauthBearerToken, nil
-
-	return nil, nil
+	extensions := map[string]string{}
+	oauthBearerToken := kafka.OAuthBearerToken{
+		TokenValue: "sdfsfsdf'",
+		Expiration: expiration,
+		Principal:  "principal",
+		Extensions: extensions,
+	}
+	return oauthBearerToken, nil
 }
 
 func main() {
