@@ -34,7 +34,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh) (kafka.OAuthBearerToken, err
 	fmt.Println("in retrieveToken")
 
 	now := time.Now()
-	nowSecondsSinceEpoch := now.Unix()
+	//owSecondsSinceEpoch := now.Unix()
 
 	// The token lifetime needs to be long enough to allow connection and a broker metadata query.
 	// We then exit immediately after that, so no additional token refreshes will occur.
