@@ -89,14 +89,14 @@ func main() {
 	// }(p.Events())
 
 	// Delivery report handler for produced messages
-	go func() {
-		for e := range p.Events() {
-			oart, ok := e.(kafka.OAuthBearerTokenRefresh)
+	go func(eventsChan chan kafka.Event) {
+		for ev := range eventsChan {
+			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
 			if ok {
 				handleOAuthBearerTokenRefreshEvent(p, oart)
 			}
 
-			switch ev := e.(type) {
+			switch et := ev.(type) {
 			case *kafka.Message:
 				if ev.TopicPartition.Error != nil {
 					fmt.Printf("Delivery failed: %v\n", ev.TopicPartition)
@@ -105,7 +105,7 @@ func main() {
 				}
 			}
 		}
-	}()
+	}((p.Events())
 
 	// Produce messages to topic (asynchronously)
 	topic := "test"
