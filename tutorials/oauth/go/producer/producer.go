@@ -105,6 +105,7 @@ func main() {
 	// Produce messages to topic (asynchronously)
 	topic := "test"
 	for _, word := range []string{"Welcome", "to", "the", "Kafka", "head", "on", "Azure", "EventHubs"} {
+		fmt.Println("sending")
 		p.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Value:          []byte(word),
