@@ -105,7 +105,7 @@ func main() {
 				}
 			}
 		}
-	}((p.Events())
+	}(p.Events())
 
 	// Produce messages to topic (asynchronously)
 	topic := "test"
