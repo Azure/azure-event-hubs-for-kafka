@@ -20,7 +20,7 @@ func main() {
 	tenantID := os.Getenv("AAD_TENANT_ID")
 	applicationID := os.Getenv("AAD_APPLICATION_ID")
 	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
-	resource := "https://eventhubs.azure.net/"
+	resource := "https://serkant-test1.servicebus.windows.net/"
 
 	const activeDirectoryEndpoint = "https://login.microsoftonline.com/"
 	oauthConfig, err := adal.NewOAuthConfig(activeDirectoryEndpoint, tenantID)
