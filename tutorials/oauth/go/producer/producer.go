@@ -69,7 +69,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 		Extensions: extensions,
 	}
 
-	return oauthBearerToken, nil
+	return &oauthBearerToken, nil
 }
 
 func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
