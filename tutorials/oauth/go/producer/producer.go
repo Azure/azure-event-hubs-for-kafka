@@ -23,7 +23,7 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 		fmt.Fprintf(os.Stderr, "%% Token retrieval error: %v\n", retrieveErr)
 		client.SetOAuthBearerTokenFailure(retrieveErr.Error())
 	} else {
-		setTokenError := client.SetOAuthBearerToken(oauthBearerToken)
+		setTokenError := client.SetOAuthBearerToken(*oauthBearerToken)
 		if setTokenError != nil {
 			fmt.Fprintf(os.Stderr, "%% Error setting token and extensions: %v\n", setTokenError)
 			client.SetOAuthBearerTokenFailure(setTokenError.Error())
