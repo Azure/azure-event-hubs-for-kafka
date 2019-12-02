@@ -12,6 +12,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/Azure/go-autorest/autorest/adal"
@@ -44,8 +45,9 @@ func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
 	return spt, err
 }
 
-func getExpFromClaims(claims Claims) string {
-	return fmt.Sprintf("%v", claims["exp"])
+func getExpFromClaims(claims Claims) (int, error) {
+	strVal := fmt.Sprintf("%v", claims["exp"])
+	return strconv.Atoi(strVal)
 }
 
 func getClaimsFromJwt(tokenStr string) (Claims, error) {
@@ -93,7 +95,11 @@ func main() {
 		fmt.Println("Token " + rawToken)
 
 		claims, _ := getClaimsFromJwt(rawToken)
-		exp := getExpFromClaims(claims)
-		fmt.Println("Token expires at " + exp)
+		exp, err := getExpFromClaims(claims)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Token expires at ", exp)
 	}
 }
