@@ -16,7 +16,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearerTokenRefresh, spt adal.ServicePrincipalToken) {
+func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) {
 	fmt.Println("handleOAuthBearerTokenRefreshEvent")
 	oauthBearerToken, retrieveErr := retrieveToken(e, spt)
 	if retrieveErr != nil {
@@ -31,7 +31,7 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 	}
 }
 
-func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt adal.ServicePrincipalToken) (kafka.OAuthBearerToken, error) {
+func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) (kafka.OAuthBearerToken, error) {
 	fmt.Println("in retrieveToken")
 
 	// Acquire a new access token
