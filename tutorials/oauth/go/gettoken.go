@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/adal"
 )
 
-func getServicePrincipalToken() (*ServicePrincipalToken, error) {
+func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
 	tenantID := os.Getenv("AAD_TENANT_ID")
 	applicationID := os.Getenv("AAD_APPLICATION_ID")
 	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
