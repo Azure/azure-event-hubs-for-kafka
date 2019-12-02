@@ -45,7 +45,7 @@ func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
 }
 
 func getExpFromClaims(claims Claims) string {
-	return fmt.Sprintf("%v", claims["name"])
+	return fmt.Sprintf("%v", claims["exp"])
 }
 
 func getClaimsFromJwt(tokenStr string) (Claims, error) {
