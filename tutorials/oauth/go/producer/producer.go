@@ -12,12 +12,13 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearerTokenRefresh) {
+func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearerTokenRefresh, spt adal.ServicePrincipalToken) {
 	fmt.Println("handleOAuthBearerTokenRefreshEvent")
-	oauthBearerToken, retrieveErr := retrieveToken(e)
+	oauthBearerToken, retrieveErr := retrieveToken(e, spt)
 	if retrieveErr != nil {
 		fmt.Fprintf(os.Stderr, "%% Token retrieval error: %v\n", retrieveErr)
 		client.SetOAuthBearerTokenFailure(retrieveErr.Error())
@@ -30,8 +31,17 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 	}
 }
 
-func retrieveToken(e kafka.OAuthBearerTokenRefresh) (kafka.OAuthBearerToken, error) {
+func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt adal.ServicePrincipalToken) (kafka.OAuthBearerToken, error) {
 	fmt.Println("in retrieveToken")
+
+	// Acquire a new access token
+	err = spt.Refresh()
+	if err != nil {
+		return nil, err
+	}
+
+	token := spt.OAuthToken()
+	fmt.Println("Token " + token)
 
 	now := time.Now()
 	//owSecondsSinceEpoch := now.Unix()
@@ -58,11 +68,11 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh) (kafka.OAuthBearerToken, err
 		Principal:  "",
 		Extensions: extensions,
 	}
+
 	return oauthBearerToken, nil
 }
 
-func getServicePrincipalToken() (ServicePrincipalToken)
-{
+func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
 	tenantID := os.Getenv("AAD_TENANT_ID")
 	applicationID := os.Getenv("AAD_APPLICATION_ID")
 	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
@@ -83,11 +93,7 @@ func getServicePrincipalToken() (ServicePrincipalToken)
 		audience,
 		callback)
 
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return spt
+	return spt, err
 }
 
 func main() {
@@ -98,6 +104,12 @@ func main() {
 	}
 
 	p, err := kafka.NewProducer(&config)
+
+	if err != nil {
+		panic(err)
+	}
+
+	spt, err := getServicePrincipalToken()
 
 	if err != nil {
 		panic(err)
@@ -122,7 +134,7 @@ func main() {
 		for ev := range eventsChan {
 			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
 			if ok {
-				handleOAuthBearerTokenRefreshEvent(p, oart)
+				handleOAuthBearerTokenRefreshEvent(p, oart, spt)
 			}
 
 			switch et := ev.(type) {
