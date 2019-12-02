@@ -40,8 +40,16 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 		return nil, err
 	}
 
-	token := spt.OAuthToken()
-	fmt.Println("Token " + token)
+	tokenString := spt.OAuthToken()
+
+	token, err := jwt.Parse(tokenString, 
+
+		return key.Key, nil
+		})
+
+
+	fmt.Println("Token " + tokenString)
+	spt.
 
 	now := time.Now()
 	//owSecondsSinceEpoch := now.Unix()
