@@ -14,9 +14,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/adal"
 )
 
-func main() {
-	fmt.Println("hello world")
-
+func getServicePrincipalToken() (*ServicePrincipalToken, error) {
 	tenantID := os.Getenv("AAD_TENANT_ID")
 	applicationID := os.Getenv("AAD_APPLICATION_ID")
 	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
@@ -36,6 +34,35 @@ func main() {
 		applicationSecret,
 		audience,
 		callback)
+
+	return spt, err
+}
+
+func main() {
+	fmt.Println("hello world")
+
+	/*tenantID := os.Getenv("AAD_TENANT_ID")
+	applicationID := os.Getenv("AAD_APPLICATION_ID")
+	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
+	audience := os.Getenv("AAD_AUDIENCE")
+
+	const activeDirectoryEndpoint = "https://login.microsoftonline.com/"
+	oauthConfig, err := adal.NewOAuthConfig(activeDirectoryEndpoint, tenantID)
+
+	callback := func(token adal.Token) error {
+		// This is called after the token is acquired
+		return nil
+	}
+
+	spt, err := adal.NewServicePrincipalToken(
+		*oauthConfig,
+		applicationID,
+		applicationSecret,
+		audience,
+		callback)
+
+	*/
+	spt, err := getServicePrincipalToken()
 
 	if err != nil {
 		fmt.Println(err)

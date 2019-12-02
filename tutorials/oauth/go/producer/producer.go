@@ -61,6 +61,35 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh) (kafka.OAuthBearerToken, err
 	return oauthBearerToken, nil
 }
 
+func getServicePrincipalToken() (ServicePrincipalToken)
+{
+	tenantID := os.Getenv("AAD_TENANT_ID")
+	applicationID := os.Getenv("AAD_APPLICATION_ID")
+	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
+	audience := os.Getenv("AAD_AUDIENCE")
+
+	const activeDirectoryEndpoint = "https://login.microsoftonline.com/"
+	oauthConfig, err := adal.NewOAuthConfig(activeDirectoryEndpoint, tenantID)
+
+	callback := func(token adal.Token) error {
+		// This is called after the token is acquired
+		return nil
+	}
+
+	spt, err := adal.NewServicePrincipalToken(
+		*oauthConfig,
+		applicationID,
+		applicationSecret,
+		audience,
+		callback)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return spt
+}
+
 func main() {
 	config := kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
