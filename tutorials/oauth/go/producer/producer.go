@@ -35,7 +35,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 	fmt.Println("in retrieveToken")
 
 	// Acquire a new access token
-	err = spt.Refresh()
+	err := spt.Refresh()
 	if err != nil {
 		return nil, err
 	}
