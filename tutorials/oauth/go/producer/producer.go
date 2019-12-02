@@ -31,7 +31,7 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 	}
 }
 
-func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) (kafka.OAuthBearerToken, error) {
+func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) (*kafka.OAuthBearerToken, error) {
 	fmt.Println("in retrieveToken")
 
 	// Acquire a new access token
