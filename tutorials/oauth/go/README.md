@@ -27,11 +27,19 @@ Additionally, topics in Kafka map to Event Hub instances, so create an Event Hub
 
 ### FQDN
 
-For these samples, you will need the connection string from the portal as well as the FQDN that points to your Event Hub namespace. **The FQDN can be found within your connection string as follows**:
+For these samples, you will need FQDN that points to your Event Hub namespace. **The FQDN can be found within your connection string as follows**:
 
 `Endpoint=sb://`**`mynamespace.servicebus.windows.net`**`/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX`
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
+
+## Create an Azure Active Directory Application
+
+In order to run these samples, you will need to create an AAD application and assign it as EventHubs Data Owner on the Event Hubs namespace you created in the previous section.
+
+[AAD Role Based Access Control](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview)
+
+[More on Azure EventHubs Role Based Access Control](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory)
 
 ## Clone the example project
 
