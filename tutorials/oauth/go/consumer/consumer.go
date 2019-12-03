@@ -142,6 +142,7 @@ func main() {
 			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
 			if !ok {
 				// Ignore other event types
+				fmt.Println("// Ignore other event types")
 				continue
 			}
 
