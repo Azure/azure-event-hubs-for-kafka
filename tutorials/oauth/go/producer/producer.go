@@ -51,12 +51,12 @@ func getExpirationFromClaims(claims Claims) time.Time {
 
 func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) {
 	fmt.Println("handleOAuthBearerTokenRefreshEvent")
-	oauthBearerToken, retrieveErr := retrieveToken(e, spt)
-	if retrieveErr != nil {
-		fmt.Fprintf(os.Stderr, "%% Token retrieval error: %v\n", retrieveErr)
-		client.SetOAuthBearerTokenFailure(retrieveErr.Error())
+	oauthBearerToken, err := retrieveToken(e, spt)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%% Token retrieval error: %v\n", err)
+		client.SetOAuthBearerTokenFailure(err.Error())
 	} else {
-		setTokenError := client.SetOAuthBearerToken(*oauthBearerToken)
+		setTokenError := client.SetOAuthBearerToken(oauthBearerToken)
 		if setTokenError != nil {
 			fmt.Fprintf(os.Stderr, "%% Error setting token and extensions: %v\n", setTokenError)
 			client.SetOAuthBearerTokenFailure(setTokenError.Error())
@@ -64,7 +64,7 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 	}
 }
 
-func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) (*kafka.OAuthBearerToken, error) {
+func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) (kafka.OAuthBearerToken, error) {
 	fmt.Println("in retrieveToken")
 
 	// Acquire a new token
@@ -88,7 +88,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 		Extensions: extensions,
 	}
 
-	return &oauthBearerToken, nil
+	return oauthBearerToken, nil
 }
 
 func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
