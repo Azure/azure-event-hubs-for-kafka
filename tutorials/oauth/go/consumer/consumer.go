@@ -95,8 +95,7 @@ func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
 	applicationSecret := os.Getenv("AAD_APPLICATION_SECRET")
 	audience := os.Getenv("AAD_AUDIENCE")
 
-	const activeDirectoryEndpoint = "https://login.microsoftonline.com/"
-	oauthConfig, err := adal.NewOAuthConfig(activeDirectoryEndpoint, tenantID)
+	oauthConfig, err := adal.NewOAuthConfig("https://login.microsoftonline.com/", tenantID)
 
 	callback := func(token adal.Token) error {
 		// This is called after the token is acquired
@@ -141,10 +140,8 @@ func main() {
 	// Event handler for produced messages and token refresh
 	go func(eventsChan chan kafka.Event) {
 		for ev := range eventsChan {
-			fmt.Println("ev.(kafka.OAuthBearerTokenRefresh)")
 			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
 			if ok {
-				fmt.Println("calling handleOAuthBearerTokenRefreshEvent")
 				handleOAuthBearerTokenRefreshEvent(c, oart, spt)
 			}
 		}

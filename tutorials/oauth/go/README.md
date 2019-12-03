@@ -1,4 +1,4 @@
-# Send and Receive Messages in Go using Azure Event Hubs for Apache Kafka Ecosystem
+# Send and Receive Messages in Go using Azure Event Hubs for Apache Kafka Ecosystem with OAuthBearer
 
 This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Go. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
 
@@ -48,7 +48,10 @@ Define two environmental variables that specify the fully qualified domain name 
 
 ```bash
 $ export KAFKA_EVENTHUB_ENDPOINT="mynamespace.servicebus.windows.net:9093" # REPLACE
-$ export KAFKA_EVENTHUB_CONNECTION_STRING="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX" # REPLACE
+$ export AAD_TENANT_ID="your AAD tenant-id" # REPLACE
+$ export AAD_APPLICATION_ID="your AAD application id" # REPLACE
+$ export AAD_APPLICATION_SECRET="your AAD application secret" # REPLACE
+$ export AAD_AUDIENCE="https://mynamespace.servicebus.int7.windows-int.net" # REPLACE
 ```
 
 You may want to run `go get -u github.com/confluentinc/confluent-kafka-go/kafka`.  This command downloads and builds the go library from Github then executes a `go install` to move the package to your `$GOPATH` directory.
@@ -79,6 +82,3 @@ $ go run consumer.go
 
 The consumer will now begin receiving events from the Kafka-enabled Event Hub on topic `test` and printing the events to stdout. If you would like to change the topic, change the topic variable in `consumer.go`.
 
-## Troubleshooting
-
-If you receive `Invalid value "SASL_SSL" for configuration property "security.protocol"`, you should install SSL dependencies.  For Ubuntu, you can run `sudo apt-get install libsasl2-dev libsasl2-modules libssl-dev`.  You will also need to rebuild your `librdkafka` installation.
