@@ -50,6 +50,7 @@ func getExpirationFromClaims(claims Claims) time.Time {
 }
 
 func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) {
+	fmt.Printf("handleOAuthBearerTokenRefreshEvent")
 	oauthBearerToken, err := retrieveToken(e, spt)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%% Token retrieval error: %v\n", err)
