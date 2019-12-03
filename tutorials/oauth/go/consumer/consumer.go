@@ -137,17 +137,13 @@ func main() {
 
 	// Event handler for produced messages and token refresh
 	go func(eventsChan chan kafka.Event) {
-		fmt.Println("go func(eventsChan chan kafka.Event)")
 		for ev := range eventsChan {
+			fmt.Println("ev.(kafka.OAuthBearerTokenRefresh)")
 			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
-			if !ok {
-				// Ignore other event types
-				fmt.Println("// Ignore other event types")
-				continue
+			if ok {
+				fmt.Println("calling handleOAuthBearerTokenRefreshEvent")
+				handleOAuthBearerTokenRefreshEvent(c, oart, spt)
 			}
-
-			fmt.Println("calling handleOAuthBearerTokenRefreshEvent")
-			handleOAuthBearerTokenRefreshEvent(c, oart, spt)
 		}
 	}(c.Events())
 
