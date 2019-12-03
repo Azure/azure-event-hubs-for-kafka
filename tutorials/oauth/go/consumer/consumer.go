@@ -115,8 +115,8 @@ func main() {
 
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
-		"sasl.mechanisms":   "PLAIN",
-		"security.protocol": "OAUTHBEARER",
+		"security.protocol": "SASL_SSL",
+		"sasl.mechanisms":   "OAUTHBEARER",
 		"group.id":          consumerGroup,
 		"auto.offset.reset": "earliest",
 		"debug":             "consumer",

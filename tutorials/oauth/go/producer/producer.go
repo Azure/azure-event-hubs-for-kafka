@@ -114,7 +114,7 @@ func main() {
 	config := kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
 		"security.protocol": "SASL_SSL",
-		"sasl.mechanisms":   "OAUTHBEARER",
+		"sasl.mechanisms":   "OAUTHBEARER"
 	}
 
 	p, err := kafka.NewProducer(&config)
