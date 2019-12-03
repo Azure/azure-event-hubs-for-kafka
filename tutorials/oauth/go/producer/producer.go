@@ -76,7 +76,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 	//expiration := getExpirationFromClaims(claims)
 
 	fmt.Println(tokenString)
-	fmt.Println(expiration)
+	//fmt.Println(expiration)
 
 	now := time.Now()
 	nowSecondsSinceEpoch := now.Unix()
