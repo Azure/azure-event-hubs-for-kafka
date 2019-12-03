@@ -123,6 +123,7 @@ func main() {
 		"group.id":          consumerGroup,
 		"auto.offset.reset": "earliest",
 		"debug":             "consumer",
+		"go.events.channel.enable": true
 	}
 
 	c, err := kafka.NewConsumer(&config)
@@ -137,9 +138,6 @@ func main() {
 		panic(err)
 	}
 
-	topics := []string{"test"}
-	c.SubscribeTopics(topics, nil)
-
 	// Event handler for produced messages and token refresh
 	go func(eventsChan chan kafka.Event) {
 		for ev := range eventsChan {
@@ -151,6 +149,9 @@ func main() {
 			}
 		}
 	}(c.Events())
+
+	topics := []string{"test"}
+	c.SubscribeTopics(topics, nil)
 
 	for {
 		msg, err := c.ReadMessage(-1)
