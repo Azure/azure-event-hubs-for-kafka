@@ -126,6 +126,12 @@ func main() {
 		panic(err)
 	}
 
+	spt, err := getServicePrincipalToken()
+
+	if err != nil {
+		panic(err)
+	}
+
 	// Event handler for produced messages and token refresh
 	go func(eventsChan chan kafka.Event) {
 		for ev := range eventsChan {
