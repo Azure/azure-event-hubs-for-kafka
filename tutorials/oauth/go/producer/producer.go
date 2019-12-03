@@ -67,12 +67,10 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) (kafka.OAuthBearerToken, error) {
 	fmt.Println("in retrieveToken")
 
-	// Acquire a new token
-	err := spt.Refresh()
-	if err != nil {
-		return nil, err
-	}
+	extensions := map[string]string{}
 
+	// Acquire a new token and extract expiry
+	spt.Refresh()
 	tokenString := spt.OAuthToken()
 	claims, _ := getClaimsFromJwt(tokenString)
 	expiration := getExpirationFromClaims(claims)
@@ -80,7 +78,6 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 	fmt.Println(tokenString)
 	fmt.Println(expiration)
 
-	extensions := map[string]string{}
 	oauthBearerToken := kafka.OAuthBearerToken{
 		TokenValue: tokenString,
 		Expiration: expiration,
