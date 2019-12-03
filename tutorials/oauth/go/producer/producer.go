@@ -72,14 +72,8 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 	// Acquire a new token and extract expiry
 	spt.Refresh()
 	tokenString := spt.OAuthToken()
-	//claims, _ := getClaimsFromJwt(tokenString)
-	//expiration := getExpirationFromClaims(claims)
-
-	fmt.Println(tokenString)
-	//fmt.Println(expiration)
-
-	now := time.Now()
-	expiration := now.Add(time.Second * time.Duration(3600))
+	claims, _ := getClaimsFromJwt(tokenString)
+	expiration := getExpirationFromClaims(claims)
 
 	oauthBearerToken := kafka.OAuthBearerToken{
 		TokenValue: tokenString,
