@@ -146,6 +146,7 @@ func main() {
 				continue
 			}
 
+			fmt.Println("calling handleOAuthBearerTokenRefreshEvent")
 			handleOAuthBearerTokenRefreshEvent(c, oart, spt)
 		}
 	}(c.Events())
