@@ -40,8 +40,8 @@ func getClaimsFromJwt(tokenStr string) (Claims, error) {
 }
 
 func getExpirationFromClaims(claims Claims) time.Time {
-	if obj, ok := claims["exp"]; ok { /* thing exists in map */
-		if expVal, ok := obj.(float64); ok { /* do stuff with strVal */
+	if obj, ok := claims["exp"]; ok {
+		if expVal, ok := obj.(float64); ok {
 			return time.Unix(int64(expVal), 0)
 		}
 	}
@@ -129,21 +129,7 @@ func main() {
 		panic(err)
 	}
 
-	// Token refresh events are posted on the Events channel, instructing
-	// the application to refresh its token.
-	// go func(eventsChan chan kafka.Event) {
-	// 	for ev := range eventsChan {
-	// 		oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
-	// 		if !ok {
-	// 			// Ignore other event types
-	// 			continue
-	// 		}
-
-	// 		handleOAuthBearerTokenRefreshEvent(p, oart)
-	// 	}
-	// }(p.Events())
-
-	// Delivery report handler for produced messages
+	// Event handler for produced messages and token refresh
 	go func(eventsChan chan kafka.Event) {
 		for ev := range eventsChan {
 			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
