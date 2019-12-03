@@ -12,7 +12,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
 	"time"
 
@@ -42,7 +41,6 @@ func getClaimsFromJwt(tokenStr string) (Claims, error) {
 
 func getExpirationFromClaims(claims Claims) time.Time {
 	if obj, ok := claims["exp"]; ok { /* thing exists in map */
-		fmt.Println(reflect.TypeOf(obj))
 		if expVal, ok := obj.(float64); ok { /* do stuff with strVal */
 			return time.Unix(int64(expVal), 0)
 		}
@@ -78,6 +76,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 	tokenString := spt.OAuthToken()
 	claims, _ := getClaimsFromJwt(tokenString)
 	expiration := getExpirationFromClaims(claims)
+	fmt.Println("Token expires at %s", expiration)
 
 	//now := time.Now()
 	//owSecondsSinceEpoch := now.Unix()
@@ -99,7 +98,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 	// jwsCompactSerialization := joseHeaderEncoded + "." + encodedClaims + "."
 	extensions := map[string]string{}
 	oauthBearerToken := kafka.OAuthBearerToken{
-		TokenValue: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiJodHRwczovL2ludDdibjMwMDYtMy02YjFmNC0xNi5zZXJ2aWNlYnVzLmludDcud2luZG93cy1pbnQubmV0IiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3LyIsImlhdCI6MTU3NTE4Mzk3OSwibmJmIjoxNTc1MTgzOTc5LCJleHAiOjE1NzUxODc4NzksImFpbyI6IjQyVmdZQ2o3ZXVmZDN4bVNhcWU0aENhWThNaC9Cd0E9IiwiYXBwaWQiOiI1MWNlNzk0My1hMWFhLTRiYjEtYjcwOC04ZjY2NjU2YTkyNDIiLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC83MmY5ODhiZi04NmYxLTQxYWYtOTFhYi0yZDdjZDAxMWRiNDcvIiwib2lkIjoiMzRlOTRmODktZjNlNy00NWU4LWFjZDQtZTFjNGEzMDQ1M2JmIiwic3ViIjoiMzRlOTRmODktZjNlNy00NWU4LWFjZDQtZTFjNGEzMDQ1M2JmIiwidGlkIjoiNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IiwidXRpIjoiYkZGUEFsV1Nia2E4dXY4cEpiNEFBUSIsInZlciI6IjEuMCJ9.Ixhhy1Eou_YquwLQRr3VWTPZPMo9_gxH8EdCPSR9-3HkGvuV1W9Hv_KqO7-R-41eFLqroZeP2lPEjXcGGLsuprKmQnauZgRqod6sEAR-mw8W3Ldy6rIg_5JLtpUZJvqwGI2h6vGRPHUzsryvOVWZYBq34138KF7CAhPAn2qbaKFHsepqBiE7qUPVDPKJCtSvln3SRttWZWwWE3-VMzUSAoP0VmxU4B_redlGMWjmVIZHUTEhIlC5CFFjStk5bDVazT8CkcHnEcJoLzQCTCT8Xgxg0V5obfARPcfWXK2wmdpoAZiN1xy1FX5533O7Oiah2Mx-XLRawQCUnhzFManh6A",
+		TokenValue: tokenString,
 		Expiration: expiration,
 		Principal:  "",
 		Extensions: extensions,
