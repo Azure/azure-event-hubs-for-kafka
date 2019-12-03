@@ -83,6 +83,8 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 		Extensions: extensions,
 	}
 
+	fmt.Println(tokenString)
+
 	return &oauthBearerToken, nil
 }
 
