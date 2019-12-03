@@ -35,23 +35,23 @@ If your Event Hubs namespace is deployed on a non-Public cloud, your domain name
 
 ## Clone the example project
 
-Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `quickstart/go` subfolder:
+Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `tutorials/oauth/go` subfolder:
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
-cd azure-event-hubs-for-kafka/quickstart/go
+cd azure-event-hubs-for-kafka/tutorials/oauth/go
 ```
 
 ## Configuration
 
-Define two environmental variables that specify the fully qualified domain name and port of the Kafka head of your Event Hub and its connection string.
+Define these environmental variables that specify the fully qualified domain name and port of the Kafka head of your Event Hub and AAD application that will be used to acquire access token.
 
 ```bash
 $ export KAFKA_EVENTHUB_ENDPOINT="mynamespace.servicebus.windows.net:9093" # REPLACE
 $ export AAD_TENANT_ID="your AAD tenant-id" # REPLACE
 $ export AAD_APPLICATION_ID="your AAD application id" # REPLACE
 $ export AAD_APPLICATION_SECRET="your AAD application secret" # REPLACE
-$ export AAD_AUDIENCE="https://mynamespace.servicebus.int7.windows-int.net" # REPLACE
+$ export AAD_AUDIENCE="https://mynamespace.servicebus.windows.net" # REPLACE
 ```
 
 You may want to run `go get -u github.com/confluentinc/confluent-kafka-go/kafka`.  This command downloads and builds the go library from Github then executes a `go install` to move the package to your `$GOPATH` directory.
