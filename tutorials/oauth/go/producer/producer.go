@@ -8,13 +8,48 @@
 package main
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
+	"strings"
 	"time"
 
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
+
+// Claims is the main container for our body information
+type Claims map[string]interface{}
+
+func getClaimsFromJwt(tokenStr string) (Claims, error) {
+	tokenArray := strings.Split(tokenStr, ".")
+	
+	claimsByte, err := base64.RawURLEncoding.DecodeString(tokenArray[1])
+	if err != nil {
+		return nil, err
+	}
+	
+	var claims Claims
+	err = json.Unmarshal(claimsByte, &claims)
+	if err != nil {
+		return nil, err
+	}
+	
+	return claims, nil
+}
+
+func getExpirationFromClaims(claims Claims) time.Time {
+	if obj, ok := claims["exp"]; ok { /* thing exists in map */
+		fmt.Println(reflect.TypeOf(obj))
+		if expVal, ok := obj.(float64); ok { /* do stuff with strVal */
+			return time.Unix(int64(expVal), 0)
+		}
+	}
+
+	return time.Now()
+}
 
 func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalToken) {
 	fmt.Println("handleOAuthBearerTokenRefreshEvent")
@@ -22,7 +57,7 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 	if retrieveErr != nil {
 		fmt.Fprintf(os.Stderr, "%% Token retrieval error: %v\n", retrieveErr)
 		client.SetOAuthBearerTokenFailure(retrieveErr.Error())
-	} else {
+		} else {
 		setTokenError := client.SetOAuthBearerToken(*oauthBearerToken)
 		if setTokenError != nil {
 			fmt.Fprintf(os.Stderr, "%% Error setting token and extensions: %v\n", setTokenError)
@@ -41,24 +76,17 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 	}
 
 	tokenString := spt.OAuthToken()
+	claims, _ := getClaimsFromJwt(tokenString)
+	expiration = getExpirationFromClaims(claims Claims)
 
-	token, err := jwt.Parse(tokenString, 
-
-		return key.Key, nil
-		})
-
-
-	fmt.Println("Token " + tokenString)
-	spt.
-
-	now := time.Now()
+	//now := time.Now()
 	//owSecondsSinceEpoch := now.Unix()
 
 	// The token lifetime needs to be long enough to allow connection and a broker metadata query.
 	// We then exit immediately after that, so no additional token refreshes will occur.
 	// Therefore set the lifetime to be an hour (though anything on the order of a minute or more
 	// would be fine).
-	expiration := now.Add(time.Second * time.Duration(3600))
+	//expiration := now.Add(time.Second * time.Duration(3600))
 	// expirationSecondsSinceEpoch := expiration.Unix()
 
 	// oauthbearerMapForJSON := map[string]interface{}{

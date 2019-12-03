@@ -12,8 +12,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strconv"
+	"reflect"
 	"strings"
+	"time"
 
 	"github.com/Azure/go-autorest/autorest/adal"
 )
@@ -45,9 +46,15 @@ func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
 	return spt, err
 }
 
-func getExpFromClaims(claims Claims) (int, error) {
-	strVal := fmt.Sprintf("%v", claims["exp"])
-	return strconv.Atoi(strVal)
+func getExpFromClaims(claims Claims) time.Time {
+	if obj, ok := claims["exp"]; ok { /* thing exists in map */
+		fmt.Println(reflect.TypeOf(obj))
+		if expVal, ok := obj.(float64); ok { /* do stuff with strVal */
+			return time.Unix(int64(expVal), 0)
+		}
+	}
+
+	return time.Now()
 }
 
 func getClaimsFromJwt(tokenStr string) (Claims, error) {
@@ -70,7 +77,10 @@ func getClaimsFromJwt(tokenStr string) (Claims, error) {
 func main() {
 	fmt.Println("hello world")
 
-	//rawToken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+	rawToken := "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyIsImtpZCI6IkJCOENlRlZxeWFHckdOdWVoSklpTDRkZmp6dyJ9.eyJhdWQiOiJodHRwczovL2ludDdibjMwMDYtMy02YjFmNC0xNi5zZXJ2aWNlYnVzLmludDcud2luZG93cy1pbnQubmV0IiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3LyIsImlhdCI6MTU3NTMyODU0NSwibmJmIjoxNTc1MzI4NTQ1LCJleHAiOjE1NzUzMzI0NDUsImFpbyI6IjQyVmdZSWo1dVlOYjh1eDNyd3ZualUvTXZQSW9IZ0E9IiwiYXBwaWQiOiI1MWNlNzk0My1hMWFhLTRiYjEtYjcwOC04ZjY2NjU2YTkyNDIiLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC83MmY5ODhiZi04NmYxLTQxYWYtOTFhYi0yZDdjZDAxMWRiNDcvIiwib2lkIjoiMzRlOTRmODktZjNlNy00NWU4LWFjZDQtZTFjNGEzMDQ1M2JmIiwic3ViIjoiMzRlOTRmODktZjNlNy00NWU4LWFjZDQtZTFjNGEzMDQ1M2JmIiwidGlkIjoiNzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IiwidXRpIjoidGptdGNnbTVMa2F3R3Y2d1YtRVdBQSIsInZlciI6IjEuMCJ9.UPd_5wlFftO3yy73-O1nDVMNbbmTZ1b6Tn5YfAJFnfQf9asGUfuq0ZYoGLxRme0tw3X9VJIhU9JNVfo0Io_cgk9A3Ob5f3Mj58-SHxPWjV53jl0VeYWvQs_4xZbm3cjxkZoCu_-_m6gWFoqZZNnhTLbCos6vE-D3196d4kah9jIqVHCLnQVoQJ0pVpz6cdElqUaDp98c5OIJCzojTNa7_rS4crNVIi1b58N-p9H22RRmBPBsU53tI1ZBlnIRKrMxxkd68nxEEXT3afGBXEtoc8vw-bZU6_mkXIwb_FRF_7sYmfAyyZnxxU9WxQ-1Zh54k0UlxbchAryuv_XxyNhRHw"
+	claims, _ := getClaimsFromJwt(rawToken)
+	exp := getExpFromClaims(claims)
+	fmt.Println("Token expires at %s", exp)
 
 	spt, err := getServicePrincipalToken()
 
@@ -94,12 +104,12 @@ func main() {
 		rawToken := spt.OAuthToken()
 		fmt.Println("Token " + rawToken)
 
-		claims, _ := getClaimsFromJwt(rawToken)
+		/*claims, _ := getClaimsFromJwt(rawToken)
 		exp, err := getExpFromClaims(claims)
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Println("Token expires at ", exp)
+		fmt.Println("Token expires at ", exp)*/
 	}
 }
