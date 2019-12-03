@@ -116,14 +116,16 @@ func getServicePrincipalToken() (*adal.ServicePrincipalToken, error) {
 func main() {
 	consumerGroup := "consumergroup"
 
-	c, err := kafka.NewConsumer(&kafka.ConfigMap{
+	config := kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
 		"security.protocol": "SASL_SSL",
 		"sasl.mechanisms":   "OAUTHBEARER",
 		"group.id":          consumerGroup,
 		"auto.offset.reset": "earliest",
 		"debug":             "consumer",
-	})
+	}
+
+	c, err := kafka.NewConsumer(&config)
 
 	if err != nil {
 		panic(err)
@@ -134,6 +136,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	topics := []string{"test"}
+	c.SubscribeTopics(topics, nil)
 
 	// Event handler for produced messages and token refresh
 	go func(eventsChan chan kafka.Event) {
@@ -146,9 +151,6 @@ func main() {
 			}
 		}
 	}(c.Events())
-
-	topics := []string{"test"}
-	c.SubscribeTopics(topics, nil)
 
 	for {
 		msg, err := c.ReadMessage(-1)
