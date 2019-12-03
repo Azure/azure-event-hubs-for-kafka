@@ -137,7 +137,7 @@ func main() {
 		for ev := range eventsChan {
 			oart, ok := ev.(kafka.OAuthBearerTokenRefresh)
 			if ok {
-				handleOAuthBearerTokenRefreshEvent(p, oart, spt)
+				handleOAuthBearerTokenRefreshEvent(c, oart, spt)
 			}
 		}
 	}(c.Events())
