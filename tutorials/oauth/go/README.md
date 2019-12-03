@@ -35,11 +35,10 @@ If your Event Hubs namespace is deployed on a non-Public cloud, your domain name
 
 ## Create an Azure Active Directory Application
 
-In order to run these samples, you will need to create an AAD application and assign it as EventHubs Data Owner on the Event Hubs namespace you created in the previous section.
+In order to run these samples, you will need to create an AAD application with a client secret and assign it as EventHubs Data Owner on the Event Hubs namespace you created in the previous section.
 
-[AAD Role Based Access Control](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview)
-
-[More on Azure EventHubs Role Based Access Control](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory)
+Learn more about [AAD Role Based Access Control](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview)
+Learn more about [More on Azure EventHubs Role Based Access Control](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory)
 
 ## Clone the example project
 
