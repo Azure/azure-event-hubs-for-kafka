@@ -117,13 +117,13 @@ func main() {
 	consumerGroup := "consumergroup"
 
 	config := kafka.ConfigMap{
-		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
-		"security.protocol": "SASL_SSL",
-		"sasl.mechanisms":   "OAUTHBEARER",
-		"group.id":          consumerGroup,
-		"auto.offset.reset": "earliest",
-		"debug":             "consumer",
-		"go.events.channel.enable": true
+		"bootstrap.servers":        os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
+		"security.protocol":        "SASL_SSL",
+		"sasl.mechanisms":          "OAUTHBEARER",
+		"group.id":                 consumerGroup,
+		"auto.offset.reset":        "earliest",
+		"debug":                    "consumer",
+		"go.events.channel.enable": true,
 	}
 
 	c, err := kafka.NewConsumer(&config)
