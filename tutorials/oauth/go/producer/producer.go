@@ -25,18 +25,18 @@ type Claims map[string]interface{}
 
 func getClaimsFromJwt(tokenStr string) (Claims, error) {
 	tokenArray := strings.Split(tokenStr, ".")
-	
+
 	claimsByte, err := base64.RawURLEncoding.DecodeString(tokenArray[1])
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var claims Claims
 	err = json.Unmarshal(claimsByte, &claims)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return claims, nil
 }
 
@@ -57,7 +57,7 @@ func handleOAuthBearerTokenRefreshEvent(client kafka.Handle, e kafka.OAuthBearer
 	if retrieveErr != nil {
 		fmt.Fprintf(os.Stderr, "%% Token retrieval error: %v\n", retrieveErr)
 		client.SetOAuthBearerTokenFailure(retrieveErr.Error())
-		} else {
+	} else {
 		setTokenError := client.SetOAuthBearerToken(*oauthBearerToken)
 		if setTokenError != nil {
 			fmt.Fprintf(os.Stderr, "%% Error setting token and extensions: %v\n", setTokenError)
@@ -77,7 +77,7 @@ func retrieveToken(e kafka.OAuthBearerTokenRefresh, spt *adal.ServicePrincipalTo
 
 	tokenString := spt.OAuthToken()
 	claims, _ := getClaimsFromJwt(tokenString)
-	expiration = getExpirationFromClaims(claims Claims)
+	expiration = getExpirationFromClaims(claims)
 
 	//now := time.Now()
 	//owSecondsSinceEpoch := now.Unix()
