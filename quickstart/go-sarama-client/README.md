@@ -2,7 +2,7 @@
 
 This quickstart will show how to create and connect to an [Event Hubs Kafka](https://docs.microsoft.com/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview?WT.mc_id=azureeventhubsforkafka-github-abhishgu) endpoint using an example producer and consumer written in Go using the [Sarama Kafka client](https://github.com/Shopify/sarama) library
 
-> Azure Event Hubs for Apache Kafka Ecosystems supports Apache Kafka version 1.0 and later.
+Note: Azure Event Hubs for Apache Kafka Ecosystems supports Apache Kafka version 1.0 and later.
 
 ## Prerequisites
 
@@ -17,9 +17,9 @@ In addition, you will also need:
 
 
 
-## Create your Kafka enabled Event Hubs cluster
+## Create your Kafka enabled Event Hubs namespace
 
-If you have a cluster already, skip this and go to the *"Event Hubs connection details"* section
+If you have a namespace already, skip this and go to the *"Event Hubs connection details"* section
 
 Set some variables to avoid repetition
 
@@ -34,7 +34,7 @@ Create the resource group if you don't have one already
     az account set --subscription $AZURE_SUBSCRIPTION
     az group create --name $AZURE_RESOURCE_GROUP --location $AZURE_LOCATION
 
-Create an Event Hubs namespace (similar to a Kafka Cluster)
+Create an Event Hubs namespace
 
 > For details on Event Hubs namespace, please refer to the [Event Hubs documentation](https://docs.microsoft.com/azure/event-hubs/event-hubs-features?WT.mc_id=azureeventhubsforkafka-github-abhishgu)
 
@@ -51,7 +51,7 @@ And then create an Event Hub (same as a Kafka topic)
 
 ### Event Hubs connection details
 
-Get the connection string and credentials for your cluster
+Get the connection string and credentials for your namespace
 
 > For details, read [how Event Hubs uses Shared Access Signatures for authorization](https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature?WT.mc_id=devto-blog-abhishgu)
 
