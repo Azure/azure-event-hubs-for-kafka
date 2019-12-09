@@ -50,7 +50,7 @@ Minimal reconfiguration is necessary when redirecting Kafka Connect throughput f
 bootstrap.servers={NAMESPACE.NAME}.servicebus.windows.net:9093
 group.id=connect-cluster-group
 
-# connect internal topic names, auto-created if not exists
+# connect internal topic names, automatically created by Kafka Connect with AdminClient API if not exists
 config.storage.topic=connect-cluster-configs
 offset.storage.topic=connect-cluster-offsets
 status.storage.topic=connect-cluster-status
@@ -97,7 +97,7 @@ In this step, a Kafka Connect worker will be started locally in distributed mode
 
 3. Run `./bin/connect-distributed.sh /PATH/TO/connect-distributed.properties`.  The Connect worker REST API is ready for interaction when you see `'INFO Finished starting connectors and tasks'`. 
 
-Note: **Event Hubs supports topic auto-creation from Kafka clients!**  A quick check of the namespace on the Azure portal will reveal that the Connect worker's internal topics have been created automatically.
+Note: **Kafka Connect will use the AdminClient API to create topics with recommended configurations.**  A quick check of the namespace on the Azure portal will reveal that the Connect worker's internal topics have been created automatically.
 
 ### Creating Connectors
 
