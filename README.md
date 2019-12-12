@@ -22,7 +22,7 @@ When we built Kafka-enabled Event Hubs, we wanted to give Kafka users the stabil
 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
 
-## Create an Event Hubs namespace
+## Creating an Event Hubs namespace
 
 An Event Hubs namespace is required to send or receive from any Event Hubs service. See [Create Kafka-enabled Event Hubs](https://docs.microsoft.com/azure/event-hubs/event-hubs-create-kafka-enabled) for instructions on getting an Event Hubs Kafka endpoint. Make sure to copy the Event Hubs connection string for later use.
 
@@ -34,7 +34,7 @@ For these samples, you will need the connection string from the portal as well a
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
 
-## Update your Kafka client configuration
+## Updating your Kafka client configuration
 
 To connect to a Kafka-enabled Event Hub, you'll need to update the Kafka client configs. If you're having trouble finding yours, try searching for where `bootstrap.servers` is set in your application.
 
@@ -49,10 +49,6 @@ sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule require
 ``` 
 
 If `sasl.jaas.config` is not a supported configuration in your framework, find the configurations that are used to set the SASL username and password and use those instead. Set the username to `$ConnectionString` and the password to your Event Hubs connection string.
-
-## Run your application
-
-Run your application and see how it goes - in most cases this should be enough to make the switch. 
 
 ## Troubleshooting
 
