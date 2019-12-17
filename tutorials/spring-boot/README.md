@@ -1,0 +1,5 @@
+# Using Spring Boot with Azure Event Hubs for Apache Kafka Ecosystems
+
+### [Tutorial here](https://github.com/Azure/azure-docs-sdk-java/blob/master/docs-ref-conceptual/spring-framework/configure-spring-cloud-stream-binder-java-app-kafka-azure-event-hub.md)
+
+The tutorial for using Spring Boot with Event Hubs for Kafka lives in the Azure Java SDK repo linked above. It is different from the other Event Hubs for Kafka tutorials, in that it uses your Azure auth credentials to automatically populate the connection string and FQDN. For further details, you can see where this population occurs [here](https://github.com/microsoft/spring-cloud-azure/blob/master/spring-cloud-azure-autoconfigure/src/main/java/com/microsoft/azure/spring/cloud/autoconfigure/eventhub/AzureEventHubKafkaAutoConfiguration.java).

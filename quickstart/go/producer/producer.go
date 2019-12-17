@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-
+	// https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
 	p, err := kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_EVENTHUB_ENDPOINT"),
 		"sasl.mechanisms":   "PLAIN",

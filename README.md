@@ -22,7 +22,7 @@ When we built Kafka-enabled Event Hubs, we wanted to give Kafka users the stabil
 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
 
-## Create an Event Hubs namespace
+## Creating an Event Hubs namespace
 
 An Event Hubs namespace is required to send or receive from any Event Hubs service. See [Create Kafka-enabled Event Hubs](https://docs.microsoft.com/azure/event-hubs/event-hubs-create-kafka-enabled) for instructions on getting an Event Hubs Kafka endpoint. Make sure to copy the Event Hubs connection string for later use.
 
@@ -34,7 +34,7 @@ For these samples, you will need the connection string from the portal as well a
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
 
-## Update your Kafka client configuration
+## Updating your Kafka client configuration
 
 To connect to a Kafka-enabled Event Hub, you'll need to update the Kafka client configs. If you're having trouble finding yours, try searching for where `bootstrap.servers` is set in your application.
 
@@ -50,26 +50,24 @@ sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule require
 
 If `sasl.jaas.config` is not a supported configuration in your framework, find the configurations that are used to set the SASL username and password and use those instead. Set the username to `$ConnectionString` and the password to your Event Hubs connection string.
 
-## Run your application
-
-Run your application and see how it goes - in most cases this should be enough to make the switch. 
-
 ## Troubleshooting
 
-### Receiving an UnknownServerException from Kafka client libraries
+### Kafka Throttling
 
-The error will look something like this:
-```
-java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
-```
-This error could mean many things, usually related to either client configuration or the configuration of the Event Hubs. Some cases where this has been seen are:
+With Event Hubs AMQP clients, a ServerBusy exception is immediately returned upon service throttling, equivalent to a “try again later” message.  In Kafka, messages are just delayed before being completed, and the delay length is returned in milliseconds as `throttle_time_ms` in the produce/fetch response. In most cases, these delayed requests are not logged as ServerBusy exceptions on Event Hubs dashboards – instead, the response's `throttle_time_ms` value should be used as an indicator that throughput has exceeded the provisioned quota.
 
-* Too many Kafka producers being started at once. Space out the Kafka producer startup
-* Your requests are being throttled. One reason for this is too many producers sending events to too few partitions. Try creating a topic with more partitions.
+If traffic is extremely excessive, the service has the following behavior:
+* If produce request’s delay exceeds request timeout – EH returns PolicyViolation error code
+* If fetch request’s delay exceeds request timeout – EH logs the request as throttled and responds with empty set of records and no error code
+
+Dedicated clusters do not have throttling mechanisms - you are free to consume all of your cluster resources.  An overview on dedicated clusters can be found [here](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-dedicated-overview).
 
 ### Consumers not getting any records and constantly rebalancing
 
-There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. If this is happening, ensure that all consumers are using unique client IDs by setting the `client.id` property for each consumer client. 
+There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. There are a few possible causes:
+
+ * Make sure that your `request.timeout.ms` is at least the recommended value of 60000 and your `session.timeout.ms` is at least the recommended value of 30000. Having these too low could cause consumer timeouts which then cause rebalances (which then cause more timeouts which then cause more rebalancing...) 
+ * If your configuration matches those recommended values, and you're still seeing constant rebalancing, feel free to open up an issue (make sure to include your entire configuration in the issue so we can help debug)!
 
 ### Compression / Message Format Version issue
 
@@ -77,25 +75,58 @@ Kafka supports compression, and Event Hubs for Kafka currently does not. Errors 
 
 If compressed data is necessary, compressing your data before sending it to the brokers and decompressing after receiving it is a valid workaround. The message body is just a byte array to the service, so client-side compression/decompression will not cause any issues.
 
-### Other issues? 
-In our experience, when changing the configurations didn't go as smoothly as we'd hoped, the issue was usually related to one of the following:
+### Receiving an UnknownServerException from Kafka client libraries
 
-1. **Firewall issues** - Make sure that port 9093 isn't blocked by your firewall.
+The error will look something like this:
+```
+org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
+```
+Please open an issue.  Debug-level logging and exception timestamps in UTC are extremely helpful. 
+
+
+### Other issues?
+Check the following items if experiencing issues when using Kafka on Event Hubs.
+
+1. **Firewall blocking traffic** - Make sure that port 9093 isn't blocked by your firewall.
 
 2. **TopicAuthorizationException** - The most common causes of this exception are:
-    1. A typo in the connection string in your configuration file or
+    1. A typo in the connection string in your configuration file, or
     2. Trying to use Event Hubs for Kafka on a Basic tier namespace. Event Hubs for Kafka is [only supported for Standard and Dedicated tier namespaces](https://azure.microsoft.com/pricing/details/event-hubs/).
 
-3. **SASL authentication** - Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs can be more difficult than meets the eye. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
+3. **Kafka version mismatch** - Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could occasionally work because of the Kafka protocol's backwards compatability, but we heavily recommend against using old API versions. Kafka versions 0.9 and earlier do not support the required SASL protocols and will not be able to connect to Event Hubs.
 
-4. **Kafka version mismatch** - Event Hubs for Kafka Ecosystems supports Kafka versions 1.0 and later. Some applications using Kafka version 0.10 and later could occasionally work because of the Kafka protocol's backwards compatability, but there's a chance it won't be able to connect or will require some *serious* tinkering. Since Kafka versions 0.9 and earlier don't support the required SASL protocols, any adapter or client using those versions won't be able to connect to Event Hubs.
+4. **Strange encodings on AMQP headers when consuming with Kafka** - when sending to Event Hubs over AMQP, any AMQP payload headers are serialized in AMQP encoding.  Kafka consumers will not deserialize the headers from AMQP - to read header values, you must manually decode the AMQP headers.  (Alternatively, you can avoid using AMQP headers if you know that you will be consuming via Kafka protocol.) See here - https://github.com/Azure/azure-event-hubs-for-kafka/issues/56
+
+5. **SASL authentication** - Getting your framework to cooperate with the SASL authentication protocol required by Event Hubs can be more difficult than meets the eye. See if you can troubleshoot the configuration using your framework's resources on SASL authentication. If you figure it out, let us know and we'll share it with other developers!
 
 If you're still stuck (or if you know the secret to making it work with your framework), let us know by opening up a GitHub issue on this repo!
 
-## List of differences between Event Hubs for Kafka Ecosystems and Apache Kafka
+## Apache Kafka vs. Event Hubs Kafka
 
 For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, properties, error codes, and general behavior that Apache Kafka does. The instances where the two explicitly differ (or where Event Hubs imposes a limit that Kafka does not) are listed below:
 
 * The max length of the `group.id` property is 256 characters
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
-* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1Mb
+* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1 MB
+
+## More FAQ
+
+**Are you running Apache Kafka?**
+
+No.  We execute Kafka API operations against Event Hubs infrastructure.  Because there is a tight correlation between Apache Kafka and Event Hubs AMQP functionality (i.e. produce, receive, management, etc.), we are able to bring the known reliability of Event Hubs to the Kafka PaaS space.
+
+**What's the difference between an Event Hub consumer group and a Kafka consumer group on Event Hubs?**
+
+Kafka consumer groups on EH are fully distinct from standard Event Hubs consumer groups.
+
+Event Hubs consumer groups are...
+- managed with CRUD operations.  EH consumer groups cannot be auto-created.
+- children entities of an Event Hub.  This means that the same consumer group name can be reused between Event Hubs in the same namespace because they are separate entities.
+- not used for storing offsets.  Orchestrated AMQP consumption is done using Event Processor Host and an offset store like Azure Storage.
+
+Kafka consumer groups are...
+- auto-created.
+- capable of storing offsets in the Event Hubs service.
+- used as keys in what is effectively an offset key-value store.  For a given group.id and topic-partition unique pair, we store an offset.
+- span a namespace.  Using the same Kafka group name for multiple applications on multiple EH topics means that all applications and their Kafka clients will be rebalanced whenever only a single application needs rebalancing.  Choose your group names wisely.
+- fully distinct from EH consumer groups.  You don't need to use '$Default', nor do you need to worry about Kafka clients interfering with AMQP workloads.

@@ -1,6 +1,6 @@
 # Using Apache NiFi with Event Hubs for Apache Kafka Ecosystems
 
-This tutorial will show how to connect Apache NiFi to Kafka-enabled Event Hubs without changing your protocol clients or running your own clusters. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
+This tutorial will show how to connect Apache NiFi to a Kafka-enabled Event Hubs namespace. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
 
 ## Prerequisites
 
@@ -33,7 +33,7 @@ If your Event Hubs namespace is deployed on a non-Public cloud, your domain name
 
 Once the NiFi web interface is up and running, select the right Kafka processor.
 
-**Note: Event Hub supports Kafka protocol 1.0 and above. So make sure you select the right processor**
+**Note: Event Hub supports Kafka protocol 1.0.  This tutorial uses the NiFi Kafka PublishKafka_2_0 1.8.0.3.3.1.0-10 processor.**
 
 ![Select Kafka NiFi processor image](./images/select_kafka_processor.png)
 
@@ -43,15 +43,17 @@ Update the configuration properties of the processor using below information:
 
 *The screen shots used are of the NiFi Kafka PublishKafka_2_0 1.8.0.3.3.1.0-10 processor*
 
-* `Kafka brokers` field with the Event Hub FQDN obtained earlier followed by Port 9093. Eg. `mynamespace.servicebus.windows.net:9093`
+* Set `Kafka brokers` to the Event Hub FQDN, followed by port 9093 (e.g `mynamespace.servicebus.windows.net:9093`)
 
-* Select `SASL_SSL` from drop down for `Security protocol` options
+* Set `Security protocol` to `SASL_SSL`
 
-* `Kerberos Service Name` as `Kafka`
+* Set `Kerberos Service Name` to `Kafka`
 
-* `Topic Name` would be the name of the Event Hub
+* Set `Topic Name` to your Event Hub name (not the namespace name)
 
-* Let `Delivery Gaurantee` be `Best Effort` and set `Use Transactions` value to `false`
+* Set `Delivery Guarantee` to `Best Effort`
+
+* Set `Use Transactions` to `false`
 
 ![Kafka Processor Config image](./images/kafka_processor_config.png)
 
@@ -71,9 +73,7 @@ Update the configuration properties of the processor using below information:
 
     * Configure the StandardSSLControllerService with below properties:
 
-        * `Trustore Filename` => the cacerts from your Java installation
-        
-            If $JAVA_HOME Is set on your system, it should help point you in the right direction. If not, the location of cacerts varies depending on environment, but is approximately the following for their respective OS
+        * `Truststore Filename` => use the cert store from your existing Java installation. The following paths are typical for their corresponding operating systems: 
 
             * **OS X**: /Library/Java/JavaVirtualMachines/jdk<version>.jdk/Contents/Home/jre/lib/security/cacerts
             * **Windows**: C:\Program Files\Java\jdk<version>\jre\lib\security\cacerts
@@ -81,27 +81,25 @@ Update the configuration properties of the processor using below information:
 
         * `Truststore Type` => `JKS`
 
-        * `Truststore Password` => The default password is "`changeit`" if you are using the default keystore
+        * `Truststore Password` => The default password is `changeit` if you are using the default keystore
 
     * Save the `StandardSSLControllerService` configuration just created.
-    This might show you a message saying "Validating" for some time. If it does that, close the current NiFi flow configuration window and reopen it.
+    You may see the configurator get stuck on a "Validating" message - close and reopen the NiFi flow configuration window.
 
     ![Validating SSL context image](./images/validating_context.png)
 
-    * You may find that the `StandardSSLControllerService` is `Disabled`. Click the highlighted icon on the right to `Enable` it.
+    * The `StandardSSLControllerService` may be set to `Disabled` - click the highlighted icon and set to `Enable`.
 
     ![Disabled SSL service image](./images/disabled_ssl_service.png)
 
 * Using the `+` symbol to add custom properties, add in the following additional custom properties with the values as follows:
 
-    * `sasl.jaas.config` with value => `org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX";`
+    * Set `sasl.jaas.config` to `org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX";`
 
-    * `sasl.mechanism` with value => `PLAIN`
+    * Set `sasl.mechanism` to `PLAIN`
 
 ![Processor SASL config image](./images/processor_sasl_config.png)
 
-## Using NiFi to create data flow with Event Hubs
+## Using the NiFi ConsumeKafka processor to consume data from Event Hubs
 
-The configuration for the ConsumeKafka processor in NiFi will be similar.
-
-With the above auth and basic configurations, you should have a good initial setup to create your own data flow using Event Hubs with Kafka protocol.
+Coming soon!  Authorization should use the same StandardSSLControllerService configuration as the publisher, but configs will otherwise be different.

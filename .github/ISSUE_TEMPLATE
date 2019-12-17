@@ -13,21 +13,23 @@ Has it worked previously?
 Checklist
 =========
 
-**IMPORTANT**: We will close issues where the checklist has not been completed.
+**IMPORTANT**: We will close issues where the checklist has not been completed or where adequate information has not been provided.
 
-Please provide the following information:
- 
- - [ ] Verified that port 9093 is not blocked by firewall
- - [ ] Verified the namespace is either Standard or Dedicated tier (i.e. it is not Basic tier, which isn't supported)
+Please provide the relevant information for the following items:
+ - [ ] SDK (include version info): `<REPLACE with e.g., kafka-python/Java SDK/confluent-kafka-dotnet with version info>`
  - [ ] Sample you're having trouble with: `<REPLACE with e.g., Java quickstart>`
- - [x] Apache Kafka version: `<REPLACE with e.g., 1.1.0>`
+ - [x] If using Apache Kafka Java clients or a framework that uses Apache Kafka Java clients, version: `<REPLACE with e.g., 1.1.0>`
  - [ ] Kafka client configuration: `<REPLACE with e.g., auto.reset.offset=earliest, ..>` (*do not include your connection string or SAS Key*)
  - [ ] Namespace and EventHub/topic name
  - [ ] Consumer or producer failure `<REPLACE with e.g., Consumer failure>`
- - [ ] If consumer, partition ID, group ID `<REPLACE with e.g., partitionID=3, groupID=consumer-group>`
- - [ ] Timestamp in UTC `<REPLACE wtih e.g., Nov 7 2018 - 17:15:01 UTC>`
- - [ ] Client ID `<REPLACE with e.g., clientID=kafka-client>`
- - [ ] Provide all logs (with debugging enabled if possible) or exception call stack
+ - [ ] Timestamps *in UTC* `<REPLACE with e.g., Nov 7 2018 - 17:15:01 UTC>`
+ - [ ] group.id or client.id `<REPLACE with e.g., group.id=cg-name>`
+ - [ ] Logs provided (with debug-level logging enabled if possible, e.g. log4j.rootLogger=DEBUG) or exception call stack
  - [ ] Standalone repro `<REPLACE with e.g., Willing/able to send scenario to repro issue>`
  - [ ] Operating system: `<REPLACE with e.g., Ubuntu 16.04.5 (x64) LTS>`
  - [ ] Critical issue
+
+If this is a question on basic functionality, please verify the following:
+ - [ ] Port 9093 should not be blocked by firewall ("broker cannot be found" errors)
+ - [ ] Pinging FQDN shoudl return cluster DNS resolution (e.g. `$ ping namespace.servicebus.windows.net` returns ~ `ns-eh2-prod-am3-516.cloudapp.net [13.69.64.0]`)
+ - [ ] Namespace should be either Standard or Dedicated tier, not Basic (TopicAuthorization errors)

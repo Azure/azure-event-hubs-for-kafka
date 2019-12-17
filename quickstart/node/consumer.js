@@ -10,7 +10,7 @@ var Kafka = require('node-rdkafka');
 
 var stream = Kafka.KafkaConsumer.createReadStream({
     'metadata.broker.list': 'mynamespace.servicebus.windows.net:9093', //REPLACE
-    'group.id': '$Default', //The default consumer group for EventHubs is $Default
+    'group.id': 'nodejs-cg', //The default consumer group for EventHubs is $Default
     'socket.keepalive.enable': true,
     'enable.auto.commit': false,
     'security.protocol': 'SASL_SSL',

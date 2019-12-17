@@ -23,6 +23,26 @@ To complete this walkthough, make sure you have the following prerequisites:
 More information on Kafka Connect concepts is available [here](https://docs.confluent.io/current/connect/concepts.html).
 
 ## Configuring Kafka Connect for Event Hubs
+**Warning: Kafka Connect internal topics must be compacted topics. Do not use standard retention day topics.  Your messages will be deleted and *irrecoverable* after configured retention time has passed.**
+
+You should either allow Kafka Connect to create topics on its own using configured partitions counts (preferable); or you should use the following `kafka-topics` commands to create topics yourself.  The `kafka-topics` executables can be downloaded from Apache ([here](https://kafka.apache.org/downloads))
+```bash
+# configs
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093 --command-config path/to/config --create --topic CONFIGS-TOPIC-NAME --config cleanup.policy=compact --partitions 1 --replication-factor 1
+
+# offsets
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093 --command-config path/to/config --create --topic OFFSETS-TOPIC-NAME --config cleanup.policy=compact --partitions 25 --replication-factor 1
+
+# status
+kafka-topics --bootstrap-server {NAMESPACE.NAME}.servicebus.windows.net:9093 --command-config path/to/config --create --topic STATUS-TOPIC-NAME --config cleanup.policy=compact --partitions 5 --replication-factor 1
+```
+The command configuration file is simply an AdminClient configuration as follows:
+```properties
+bootstrap.servers={NAMESPACE.NAME}.servicebus.windows.net:9093
+security.protocol=SASL_SSL
+sasl.mechanism=PLAIN
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://{NAMESPACE.NAME}.servicebus.windows.net/;SharedAccessKeyName={XXXXXX};SharedAccessKey={XXXXXX}";
+```
 
 Minimal reconfiguration is necessary when redirecting Kafka Connect throughput from Kafka to Event Hubs.  The following `connect-distributed.properties` sample illustrates how to configure Connect to authenticate and communicate with the Kafka endpoint on Event Hubs:
 
@@ -30,7 +50,7 @@ Minimal reconfiguration is necessary when redirecting Kafka Connect throughput f
 bootstrap.servers={NAMESPACE.NAME}.servicebus.windows.net:9093
 group.id=connect-cluster-group
 
-# connect internal topic names, auto-created if not exists
+# connect internal topic names, automatically created by Kafka Connect with AdminClient API if not exists
 config.storage.topic=connect-cluster-configs
 offset.storage.topic=connect-cluster-offsets
 status.storage.topic=connect-cluster-status
@@ -77,7 +97,7 @@ In this step, a Kafka Connect worker will be started locally in distributed mode
 
 3. Run `./bin/connect-distributed.sh /PATH/TO/connect-distributed.properties`.  The Connect worker REST API is ready for interaction when you see `'INFO Finished starting connectors and tasks'`. 
 
-Note: **Event Hubs supports topic auto-creation from Kafka clients!**  A quick check of the namespace on the Azure portal will reveal that the Connect worker's internal topics have been created automatically.
+Note: **Kafka Connect will use the AdminClient API to create topics with recommended configurations.**  A quick check of the namespace on the Azure portal will reveal that the Connect worker's internal topics have been created automatically.
 
 ### Creating Connectors
 
