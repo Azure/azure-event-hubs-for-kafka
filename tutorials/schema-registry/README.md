@@ -48,9 +48,9 @@ props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "mynamespace.servicebus.windo
 props.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://<YOUR.SCHEMA.REGISTRY.IP.ADDRESS>:8081");
 
 //Add these configs
-props.put("security.protocol", "SASL_SSL")
-props.put("sasl.mechanism","PLAIN")
-props.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX\");
+props.put("security.protocol", "SASL_SSL");
+props.put("sasl.mechanism","PLAIN");
+props.put("sasl.jaas.config", "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX\";");
 ```
 
 ## Send and receive
