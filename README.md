@@ -120,13 +120,14 @@ No.  We execute Kafka API operations against Event Hubs infrastructure.  Because
 Kafka consumer groups on EH are fully distinct from standard Event Hubs consumer groups.
 
 Event Hubs consumer groups are...
-- managed with CRUD operations.  EH consumer groups cannot be auto-created.
+- managed with CRUD operations via portal, SDK, or ARM templates.  EH consumer groups cannot be auto-created.
 - children entities of an Event Hub.  This means that the same consumer group name can be reused between Event Hubs in the same namespace because they are separate entities.
-- not used for storing offsets.  Orchestrated AMQP consumption is done using Event Processor Host and an offset store like Azure Storage.
+- not used for storing offsets.  Orchestrated AMQP consumption is done using external offset storage, e.g. [Event Processor Host](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-event-processor-host) and an offset store like Azure Storage.
 
 Kafka consumer groups are...
-- auto-created.
+- auto-created.  Kafka groups can be managed via the Kafka consumer group APIs.
 - capable of storing offsets in the Event Hubs service.
-- used as keys in what is effectively an offset key-value store.  For a given group.id and topic-partition unique pair, we store an offset.
+- used as keys in what is effectively an offset key-value store.  For a unique pair of group.id and topic-partition, we store an offset in Azure Storage (3x replication).  Event Hubs users will not incur extra storage costs from storing Kafka offsets.  Offsets are manipulable via the Kafka consumer group APIs, but the offset storage *accounts* are not directly visible or manipulable for Event Hub users.  
 - span a namespace.  Using the same Kafka group name for multiple applications on multiple EH topics means that all applications and their Kafka clients will be rebalanced whenever only a single application needs rebalancing.  Choose your group names wisely.
-- fully distinct from EH consumer groups.  You don't need to use '$Default', nor do you need to worry about Kafka clients interfering with AMQP workloads.
+- fully distinct from EH consumer groups.  You **do not** need to use '$Default', nor do you need to worry about Kafka clients interfering with AMQP workloads.
+- not viewable in the Azure portal.  Consumer group info is accessible via Kafka APIs.
