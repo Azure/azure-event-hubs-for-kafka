@@ -43,6 +43,32 @@ git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
 cd azure-event-hubs-for-kafka/quickstart/java
 ```
 
+## Client Configuration For OAuth
+Kafka clients need to be configured in a way that they can authenticate against Azure Active Directory and fetch OAuth access tokens. These tokens then can be used to get authorized while accessing certain Event Hubs resources.
+
+#### Here is a list of authentication parameters for Kafka clients that needs to be configured for all clients
+
+* Set SASL mecnahism to OAUTHBEARER
+
+   `sasl.mechanism=OAUTHBEARER`
+* Set Java Authentication and Authorization Service (JAAS) configuration to OAuthBearerLoginModule
+
+   `sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;`
+* Set login callback handler
+
+   `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;`
+
+#### Configure authenticate callback handler of your client so that it can complete auth flow with Azure Active Directory and fetch access tokens
+
+* Set authority for you tenant. Most of the times, this is a URI built with your AAD tenant identifier such as  `https://login.microsoftonline.com/<tenant-id>/`
+   `this.authority = "<authority>";`
+   
+* Set your AAD application identifier 
+   `this.appId = "<app-id>";`
+   
+ * Set your AAD application secret
+   `this.appSecret = "<app-secret>";`
+
 ## Producer
 
 Using the provided producer example, send messages to the Event Hubs service. To change the Kafka version, change the dependency in the pom file to the desired version.
@@ -51,7 +77,7 @@ Using the provided producer example, send messages to the Event Hubs service. To
 
 #### producer.config
 
-Update the `bootstrap.servers` and `sasl.jaas.config` values in `producer/src/main/resources/producer.config` to direct the producer to the Event Hubs Kafka endpoint with the correct authentication.
+Update the `bootstrap.servers` in `producer/src/main/resources/producer.config` to direct the producer to the Event Hubs Kafka endpoint.
 
 ```config
 bootstrap.servers=mynamespace.servicebus.windows.net:9093
@@ -82,7 +108,7 @@ Using the provided consumer example, receive messages from the Kafka-enabled Eve
 
 #### consumer.config
 
-Change the `bootstrap.servers` and `sasl.jaas.config` values in `consumer/src/main/resources/consumer.config` to direct the consumer to the Event Hubs endpoint with the correct authentication.
+Change the `bootstrap.servers` in `consumer/src/main/resources/consumer.config` to direct the consumer to the Event Hubs endpoint.
 
 ```config
 bootstrap.servers=mynamespace.servicebus.windows.net:9093
