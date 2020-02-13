@@ -26,6 +26,14 @@ For these samples, you will need the Fully Qualified Domain Name of you Event Hu
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
 
+## Create an Azure Active Directory Application
+
+In order to run these samples, you will need to create an AAD application with a client secret and assign it as EventHubs Data Owner on the Event Hubs namespace you created in the previous section.
+
+Learn more about [AAD Role Based Access Control](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview)
+
+Learn more about [Azure EventHubs Role Based Access Control](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory)
+
 ## Clone the example project
 
 Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `quickstart/java` subfolder:
