@@ -22,11 +22,17 @@ An Event Hubs namespace is required to send or receive from any Event Hubs servi
 
 ### FQDN
 
-For these samples, you will need the connection string from the portal as well as the FQDN that points to your Event Hub namespace. **The FQDN can be found within your connection string as follows**:
-
-`Endpoint=sb://`**`mynamespace.servicebus.windows.net`**`/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX`
+For these samples, you will need the Fully Qualified Domain Name of you Event Hubs namespace which can be found in Azure Portal. To do so, in Azure Portal, go to your Event Hubs namespace overview page and copy host name which should look like `**`mynamespace.servicebus.windows.net`**`.
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
+
+## Create an Azure Active Directory Application
+
+In order to run these samples, you will need to create an AAD application with a client secret and assign it as EventHubs Data Owner on the Event Hubs namespace you created in the previous section.
+
+Learn more about [AAD Role Based Access Control](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview)
+
+Learn more about [Azure EventHubs Role Based Access Control](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory)
 
 ## Clone the example project
 
@@ -37,6 +43,35 @@ git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
 cd azure-event-hubs-for-kafka/quickstart/java
 ```
 
+## Client Configuration For OAuth
+Kafka clients need to be configured in a way that they can authenticate with Azure Active Directory and fetch OAuth access tokens. These tokens then can be used to get authorized while accessing certain Event Hubs resources.
+
+#### Here is a list of authentication parameters for Kafka clients that needs to be configured for all clients
+
+* Set SASL mecnahism to OAUTHBEARER
+
+   `sasl.mechanism=OAUTHBEARER`
+* Set Java Authentication and Authorization Service (JAAS) configuration to OAuthBearerLoginModule
+
+   `sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;`
+* Set login callback handler. This is the authentication handler which is responsible to complete oauth flow and return an access token.
+
+   `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;`
+
+#### Configure authenticate callback handler of your client so that it can complete auth flow with Azure Active Directory and fetch access tokens
+
+* Set authority for your tenant. Most of the times, this is a URI built with your AAD tenant identifier such as  `"https://login.microsoftonline.com/<tenant-id>/"`
+
+   `this.authority = "<authority>";`
+   
+* Set your AAD application identifier 
+
+   `this.appId = "<app-id>";`
+   
+ * Set your AAD application secret
+ 
+   `this.appSecret = "<app-secret>";`
+
 ## Producer
 
 Using the provided producer example, send messages to the Event Hubs service. To change the Kafka version, change the dependency in the pom file to the desired version.
@@ -45,14 +80,14 @@ Using the provided producer example, send messages to the Event Hubs service. To
 
 #### producer.config
 
-Update the `bootstrap.servers` and `sasl.jaas.config` values in `producer/src/main/resources/producer.config` to direct the producer to the Event Hubs Kafka endpoint with the correct authentication.
+Update the `bootstrap.servers` in `producer/src/main/resources/producer.config` to direct the producer to the Event Hubs Kafka endpoint.
 
 ```config
-bootstrap.servers=mynamespace.servicebus.windows.net:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093 # REPLACE
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=class CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
 ```
 
 ### Run producer from command line
@@ -76,16 +111,16 @@ Using the provided consumer example, receive messages from the Kafka-enabled Eve
 
 #### consumer.config
 
-Change the `bootstrap.servers` and `sasl.jaas.config` values in `consumer/src/main/resources/consumer.config` to direct the consumer to the Event Hubs endpoint with the correct authentication.
+Change the `bootstrap.servers` in `consumer/src/main/resources/consumer.config` to direct the consumer to the Event Hubs endpoint.
 
 ```config
-bootstrap.servers=mynamespace.servicebus.windows.net:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093 # REPLACE
 group.id=$Default
 request.timeout.ms=60000
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=class CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
 ```
 
 ### Run consumer from command line
