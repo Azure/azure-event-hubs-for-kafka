@@ -80,7 +80,7 @@ Using the provided producer example, send messages to the Event Hubs service. To
 Update the `bootstrap.servers` in `producer/src/main/resources/producer.config` to direct the producer to the Event Hubs Kafka endpoint.
 
 ```config
-bootstrap.servers=mynamespace.servicebus.windows.net:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093 # REPLACE
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
@@ -111,7 +111,7 @@ Using the provided consumer example, receive messages from the Kafka-enabled Eve
 Change the `bootstrap.servers` in `consumer/src/main/resources/consumer.config` to direct the consumer to the Event Hubs endpoint.
 
 ```config
-bootstrap.servers=mynamespace.servicebus.windows.net:9093
+bootstrap.servers=mynamespace.servicebus.windows.net:9093 # REPLACE
 group.id=$Default
 request.timeout.ms=60000
 security.protocol=SASL_SSL
