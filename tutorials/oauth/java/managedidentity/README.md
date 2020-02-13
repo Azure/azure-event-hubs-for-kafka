@@ -44,7 +44,7 @@ cd azure-event-hubs-for-kafka/quickstart/java
 ```
 
 ## Client Configuration For OAuth
-Kafka clients need to be configured in a way that they can authenticate against Azure Active Directory and fetch OAuth access tokens. These tokens then can be used to get authorized while accessing certain Event Hubs resources.
+Kafka clients need to be configured in a way that they can authenticate with Azure Active Directory and fetch OAuth access tokens. These tokens then can be used to get authorized while accessing certain Event Hubs resources.
 
 #### Here is a list of authentication parameters for Kafka clients that needs to be configured for all clients
 
