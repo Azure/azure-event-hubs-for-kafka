@@ -54,7 +54,7 @@ Kafka clients need to be configured in a way that they can authenticate against 
 * Set Java Authentication and Authorization Service (JAAS) configuration to OAuthBearerLoginModule
 
    `sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;`
-* Set login callback handler
+* Set login callback handler. This is the authentication handler which is responsible to complete oauth flow and return an access token.
 
    `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;`
 
