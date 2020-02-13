@@ -61,12 +61,15 @@ Kafka clients need to be configured in a way that they can authenticate against 
 #### Configure authenticate callback handler of your client so that it can complete auth flow with Azure Active Directory and fetch access tokens
 
 * Set authority for your tenant. Most of the times, this is a URI built with your AAD tenant identifier such as  `https://login.microsoftonline.com/<tenant-id>/`
+
    `this.authority = "<authority>";`
    
 * Set your AAD application identifier 
+
    `this.appId = "<app-id>";`
    
  * Set your AAD application secret
+ 
    `this.appSecret = "<app-secret>";`
 
 ## Producer
