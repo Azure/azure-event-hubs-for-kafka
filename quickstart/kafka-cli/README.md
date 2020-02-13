@@ -92,17 +92,13 @@ Update the `password` field in the `jaas.conf` with the primary connection strin
 > **Please do not remove** the trailing `;` in the `password` field of the `jaas.conf` file
 
     KafkaClient {
-        org.apache.kafka.common.security.plain.PlainLoginModule required
-        username="$ConnectionString"
-        password=enter-connection-string-here;
+        org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="enter-connection-string-here";
     };
 
 For example:
 
     KafkaClient {
-        org.apache.kafka.common.security.plain.PlainLoginModule required
-        username="$ConnectionString"
-        password=Endpoint=sb://foobar-eventhub-namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Nbaz0D42MT7qwerty6D/W51ao42r6EJuxR/zEqwerty=;
+        org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password=Endpoint="sb://foobar-eventhub-namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Nbaz0D42MT7qwerty6D/W51ao42r6EJuxR/zEqwerty=";
     };
 
 ## Connect to Event Hubs using Kafka CLI
