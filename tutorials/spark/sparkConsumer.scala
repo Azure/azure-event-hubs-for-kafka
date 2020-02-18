@@ -26,7 +26,7 @@ val df = spark.readStream
     .load()
 
 // write to console
-dfWrite.writeStream
+df.writeStream
     .outputMode("append")
     .format("console")
     .start()
