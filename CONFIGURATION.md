@@ -21,6 +21,7 @@ Property | Recommended Values | Permitted Range | Notes
 max.request.size | 1000000 | < 1046528 | The service will close connections if requests larger than 1046528 bytes are sent.  *This **must** be changed and will cause issues in high-throughput produce scenarios.*
 retries | > 0 | | May require increasing delivery.timeout.ms value, see documentation.
 request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.  *While requests with lower timeout values are accepted, client behavior is not guaranteed.*
+metadata.max.idle.ms | 180000 | > 5000 | Controls how long the producer will cache metadata for a topic that's idle. If the elapsed time since a topic was last produced to exceeds the metadata idle duration, then the topic's metadata is forgotten and the next access to it will force a metadata fetch request.
 linger.ms | > 0 | | For high throughput scenarios, linger value should be equal to application's highest tolerable latency.
 delivery.timeout.ms | | | Set according to the formula (`request.timeout.ms` + `linger.ms`) * `retries`.
 enable.idempotence | false | | Idempotency currently not supported.
