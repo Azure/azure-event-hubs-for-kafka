@@ -22,7 +22,7 @@ max.request.size | 1000000 | < 1046528 | The service will close connections if r
 retries | > 0 | | May require increasing delivery.timeout.ms value, see documentation.
 request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.  *While requests with lower timeout values are accepted, client behavior is not guaranteed.*
 metadata.max.idle.ms | 180000 | > 5000 | Controls how long the producer will cache metadata for a topic that's idle. If the elapsed time since a topic was last produced to exceeds the metadata idle duration, then the topic's metadata is forgotten and the next access to it will force a metadata fetch request.
-linger.ms | > 0 | | For high throughput scenarios, linger value should be equal to application's highest tolerable latency.
+linger.ms | > 0 | | For high throughput scenarios, linger value should be equal to the highest tolerable value to take advantage of batching.
 delivery.timeout.ms | | | Set according to the formula (`request.timeout.ms` + `linger.ms`) * `retries`.
 enable.idempotence | false | | Idempotency currently not supported.
 compression.type | `none` | | Compression currently not supported..
