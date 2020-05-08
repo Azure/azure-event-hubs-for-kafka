@@ -31,5 +31,5 @@ Please provide the relevant information for the following items:
 
 If this is a question on basic functionality, please verify the following:
  - [ ] Port 9093 should not be blocked by firewall ("broker cannot be found" errors)
- - [ ] Pinging FQDN shoudl return cluster DNS resolution (e.g. `$ ping namespace.servicebus.windows.net` returns ~ `ns-eh2-prod-am3-516.cloudapp.net [13.69.64.0]`)
+ - [ ] Pinging FQDN should return cluster DNS resolution (e.g. `$ ping namespace.servicebus.windows.net` returns ~ `ns-eh2-prod-am3-516.cloudapp.net [13.69.64.0]`)
  - [ ] Namespace should be either Standard or Dedicated tier, not Basic (TopicAuthorization errors)
