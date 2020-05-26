@@ -14,7 +14,7 @@ metadata.max.age.ms | ~ 180000 | < 240000 | Can be lowered to pick up metadata c
 connections.max.idle.ms	| 180000 | < 240000 | Azure closes inbound TCP idle > 240000 ms, which can result in sending on dead connections (shown as expired batches due to send timeout).
 
 ### Producer configurations only
-Producer configs can be found [here](https://docs.confluent.io/current/installation/configuration/producer-configs.html).
+Producer configs can be found [here](https://kafka.apache.org/documentation/#producerconfigs).
 
 Property | Recommended Values | Permitted Range | Notes
 ---|---:|---:|---
@@ -28,7 +28,7 @@ enable.idempotence | false | | Idempotency currently not supported.
 compression.type | `none` | | Compression currently not supported..
 
 ### Consumer configurations only
-Consumer configs can be found [here](https://docs.confluent.io/current/installation/configuration/consumer-configs.html).
+Consumer configs can be found [here](https://kafka.apache.org/documentation/#consumerconfigs).
 
 Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
