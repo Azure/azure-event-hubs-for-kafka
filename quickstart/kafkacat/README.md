@@ -39,4 +39,12 @@ The following command prints all messages from the first available offset to con
 kafkacat -b mynamespace.servicebus.windows.net:9093 -t topic1 -o beginning
 ```
 
+The following command uses standard high-level Kafka consumer for balancing and offset commits:
+
+```sh
+kafkacat -b mynamespace.servicebus.windows.net:9093 -G mygroup topic1 topic2
+```
+
 The kafkacat Github repository contains documentation for further commands.
+
+For consumption - please note that consumption modes -C (low-level consumer) and -G (high-level consumer) are mutually exclusive and kafkacat will use the *last* mode flag in the command.  Also note that if you intend to use Kafka group semantics, you must specify the -G flag; setting group ID in your configuration file is not adequate.

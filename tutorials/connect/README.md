@@ -62,6 +62,8 @@ status.storage.replication.factor=1
 
 rest.advertised.host.name=connect
 offset.flush.interval.ms=10000
+connections.max.idle.ms=180000
+metadata.max.age.ms=180000
 
 key.converter=org.apache.kafka.connect.json.JsonConverter
 value.converter=org.apache.kafka.connect.json.JsonConverter
