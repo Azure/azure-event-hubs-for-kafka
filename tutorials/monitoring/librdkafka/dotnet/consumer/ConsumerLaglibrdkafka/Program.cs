@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using System.Configuration;
-using System.Drawing.Printing;
 
 namespace ConsumerLaglibrdkafka
 {
@@ -21,7 +20,7 @@ namespace ConsumerLaglibrdkafka
             Console.ReadLine();
         }
 
-        public static async Task ConsumeMessages(string clientId, string groupId, string topicName, int delayInMilliseconds)
+        public static async Task ConsumeMessages(int consumerId, int delayInMilliseconds)
         {
             string brokerList = ConfigurationManager.AppSettings["EH_FQDN"];
             string connectionString = ConfigurationManager.AppSettings["EH_CONNECTION_STRING"];
@@ -41,20 +40,20 @@ namespace ConsumerLaglibrdkafka
                 SslCaLocation = caCertLocation,
                 GroupId = consumerGroup,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
-                //librdkafka statistics emit interval. Required to be configured for capturing the librdkafka statistics
+                // librdkafka statistics emit interval. Required to be configured for capturing the librdkafka statistics
                 StatisticsIntervalMs = 1000
             };
 
-            //Set the StatisticsHandler to read and process the statistics from the librdkafka
+            // Set the StatisticsHandler to read and process the statistics from the librdkafka
             using (var c = new ConsumerBuilder<long, string>(conf).SetKeyDeserializer(Deserializers.Int64).SetValueDeserializer(Deserializers.Utf8).SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}")).SetStatisticsHandler((_, json) =>
             {
-                //Deserialize the json content
+                // Deserialize the json content
                 var statistics = JsonConvert.DeserializeObject<ConsumerStatistics>(json);
 
                 foreach (var topic in statistics.Topics)
                 {
-                    //getting the consumer lag value from all the paritions
-                    //You might see a parition id -1. This is for for internal UA/UnAssigned partition according to the doc here: https://github.com/edenhill/librdkafka/blob/master/STATISTICS.md
+                    // Getting the consumer lag value from all the partitions
+                    // You might see a partition id -1. This is for for internal UnAssigned (UA) partition according to the doc here: https://github.com/edenhill/librdkafka/blob/master/STATISTICS.md
                     foreach (var partition in topic.Value.Partitions)
                     {
                         var consumer_lag = new MetricTelemetry();
@@ -65,8 +64,8 @@ namespace ConsumerLaglibrdkafka
                         Console.WriteLine($"Consumer Lag value sent for topic = {topic.Key}, partition = {partition.Key} => consumerLag = {partition.Value.ConsumerLag}");
                     }
 
-                    //Fetch the metrics from the broker
-                    //getting the Round Trip Time from the broker 
+                    // Fetch the metrics from the broker
+                    // Getting the Round Trip Time from the broker 
                     foreach (var broker in statistics.Brokers)
                     {
                         var roundTripTimeAvg = new MetricTelemetry();
@@ -80,7 +79,7 @@ namespace ConsumerLaglibrdkafka
             ).Build())
             {
                 
-                c.Subscribe(topicName);
+                c.Subscribe(topic);
 
                 bool consuming = true;
 
@@ -90,7 +89,7 @@ namespace ConsumerLaglibrdkafka
                     {
                         var cr = c.Consume();
                         Thread.Sleep(new Random().Next(delayInMilliseconds));
-                        Console.WriteLine($"Consumed message '{cr.Value}' at: '{cr.TopicPartitionOffset}' in group {groupId}.");
+                        Console.WriteLine($"Consumer '{consumerId}' Consumed message '{cr.Value}' at: '{cr.TopicPartitionOffset}'");
                     }
                     catch (ConsumeException e)
                     {
@@ -105,12 +104,10 @@ namespace ConsumerLaglibrdkafka
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    //Add the consumers as worker
+                    // Add the consumers as worker
                     services.AddHostedService<Worker>();
 
-                    // Application Insights configs
-
-                    // instrumentation key is read automatically from appsettings.json
+                    // Instrumentation key is read automatically from appsettings.json
                     services.AddApplicationInsightsTelemetryWorkerService();
 
                     // Build ServiceProvider.

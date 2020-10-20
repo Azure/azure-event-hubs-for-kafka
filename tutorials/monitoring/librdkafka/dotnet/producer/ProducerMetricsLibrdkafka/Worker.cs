@@ -8,9 +8,10 @@ namespace ProducerStatisticsLibrdKafka
     {
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            // Starting two producers
             await Task.WhenAll(
-                Program.ConsumeMessages("my-client-1", "my-consumer-group-1", "evaskhub", 1000), 
-                Program.ConsumeMessages("my-client-2", "my-consumer-group-2", "evaskhub", 900)
+                Program.ProduceMessages(1000), 
+                Program.ProduceMessages(900)
             );
         }
     }

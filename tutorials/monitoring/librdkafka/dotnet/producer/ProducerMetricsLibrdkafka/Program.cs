@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using System.Configuration;
+using System.Threading;
 
 namespace ProducerStatisticsLibrdKafka
 {
@@ -19,13 +20,12 @@ namespace ProducerStatisticsLibrdKafka
             Console.ReadLine();
         }
 
-        public static async Task ConsumeMessages(string clientId, string groupId, string topicName, int delayInMilliseconds)
+        public static async Task ProduceMessages(int delayInMilliseconds)
         {
             string brokerList = ConfigurationManager.AppSettings["EH_FQDN"];
             string connectionString = ConfigurationManager.AppSettings["EH_CONNECTION_STRING"];
             string topic = ConfigurationManager.AppSettings["EH_NAME"];
             string caCertLocation = ConfigurationManager.AppSettings["CA_CERT_LOCATION"];
-            string consumerGroup = ConfigurationManager.AppSettings["CONSUMER_GROUP"];
 
             var config = new ProducerConfig
             {
@@ -39,13 +39,13 @@ namespace ProducerStatisticsLibrdKafka
                 StatisticsIntervalMs = 1000
             };
 
-            //Set the StatisticsHandler to read and process the statistics from the librdkafka
+            // Set the StatisticsHandler to read and process the statistics from the librdkafka
             using (var producer = new ProducerBuilder<long, string>(config).SetKeySerializer(Serializers.Int64).SetValueSerializer(Serializers.Utf8).SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}")).SetStatisticsHandler((_, json) =>
             {
-                //Deserialize the json content
+                // Deserialize the json content
                 var statistics = JsonConvert.DeserializeObject<ProducerStatistics>(json);
 
-                //Fetch the metrics from the broker
+                // Fetch the metrics from the broker
                 foreach (var broker in statistics.Brokers)
                 {
                         var tx = new MetricTelemetry();
@@ -88,7 +88,7 @@ namespace ProducerStatisticsLibrdKafka
                     try
                     {
                         var dr = await producer.ProduceAsync("evaskhub", new Message<long, string> { Value = "test" });
-                        // Thread.Sleep(new Random().Next(100));
+                        Thread.Sleep(new Random().Next(delayInMilliseconds));
                         Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
                     }
                     catch (KafkaException e)
@@ -105,10 +105,8 @@ namespace ProducerStatisticsLibrdKafka
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    //Add the consumers as worker
+                    // Add the consumers as worker
                     services.AddHostedService<Worker>();
-
-                    // Application Insights 
 
                     // instrumentation key is read automatically from appsettings.json
                     services.AddApplicationInsightsTelemetryWorkerService();
