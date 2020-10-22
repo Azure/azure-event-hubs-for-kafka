@@ -1,4 +1,4 @@
-## Monitoring librdkafka based .NET clients of Azure Event Hubs for Apache Kafka Ecosystems
+# Monitoring librdkafka based .NET clients of Azure Event Hubs for Apache Kafka Ecosystems
 
 This tutorial will be showing how to monitor a librdkafka based .NET client application of Azure Event Hubs by using some suitable techniques. The approaches mentioned here will highlight the code changes to be made in order to track significant client metrics using Azure Monitor's Application Insights. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later. 
 
