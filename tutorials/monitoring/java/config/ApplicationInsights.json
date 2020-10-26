@@ -1,0 +1,83 @@
+{
+  "instrumentationSettings": {
+    "connectionString": "InstrumentationKey=0000000-0000-0000-0000-0000000000",
+    "preview": {
+        "jmxMetrics": [
+        {
+          "objectName": "java.lang:type=ClassLoading",
+          "attribute": "LoadedClassCount",
+          "display": "Loaded Class Count"
+        },
+        {
+          "objectName": "java.lang:type=MemoryPool,name=Code Cache",
+          "attribute": "Usage.used",
+          "display": "Code Cache Used"
+        },
+        {
+          "objectName": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=consumer-testgroup-1",
+          "attribute": "fetch-rate",
+          "display": "Fetch Rate"
+        },
+        {
+          "objectName": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=consumer-testgroup-1",
+          "attribute": "bytes-consumed-rate",
+          "display": "Bytes Consumed Rate"
+        },
+        {
+          "objectName": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=consumer-testgroup-1",
+          "attribute": "records-lag-max",
+          "display": "Records Lag Max"
+        },
+        {
+          "objectName": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=consumer-testgroup-1",
+          "attribute": "records-consumed-rate",
+          "display": "Records consumed Rate"
+        },
+        {
+          "objectName": "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=consumer-testgroup-1",
+          "attribute": "bytes-consumed-total",
+          "display": "Bytes Consumed Total"
+        },
+        {
+		    "objectName": "kafka.producer:type=producer-metrics,client-id=console-producer",
+		    "attribute": "request-rate",
+		    "display": "Request Rate"
+		},
+		{
+		    "objectName": "kafka.producer:type=producer-metrics,client-id=console-producer",
+		    "attribute": "response-rate",
+		    "display": "Response Rate"
+		},
+		{
+		    "objectName": "kafka.producer:type=producer-metrics,client-id=console-producer",
+		    "attribute": "compression-rate-avg",
+		    "display": "Compression Rate Avg"
+		},
+		{
+		    "objectName": "kafka.producer:type=producer-metrics,client-id=console-producer",
+		    "attribute": "request-latency-avg",
+		    "display": "Request Latency Avg"
+		},
+		{
+		    "objectName": "kafka.producer:type=producer-metrics,client-id=console-producer",
+		    "attribute": "batch-size-avg",
+		    "display": "Batch Size Avg"
+		},
+		{
+		    "objectName": "kafka.producer:type=producer-metrics,client-id=console-producer",
+		    "attribute": "outgoing-byte-rate",
+		    "display": "Outgoing Byte Rate"
+		},
+		{
+		    "objectName": "kafka.producer:type=producer-metrics,client-id=console-producer",
+		    "attribute": "io-wait-time-ns-avg",
+		    "display": "I/O Wait Time Avg"
+		}
+      ],
+    "heartbeat": {
+        "intervalSeconds": 10
+    }
+    }
+  }
+}
+
