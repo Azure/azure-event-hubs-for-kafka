@@ -107,7 +107,7 @@ On your local machine, use a new terminal to start a **Kafka Consumer** - set th
 
     export EVENT_HUBS_NAMESPACE=[to be filled]
     export EVENT_HUB_NAME=[to be filled]
-    export export KAFKA_OPTS="-Djava.security.auth.login.config=jaas.conf"
+    export KAFKA_OPTS="-Djava.security.auth.login.config=jaas.conf"
     export KAFKA_INSTALL_HOME=[to be filled] e.g. /Users/foo/kafka_2.12-2.3.0/
 
 Start consuming
@@ -122,7 +122,7 @@ Use another terminal to start a **Kafka Producer** - set the required variables 
 
     export EVENT_HUBS_NAMESPACE=[to be filled]
     export EVENT_HUB_NAME=[to be filled]
-    export export KAFKA_OPTS="-Djava.security.auth.login.config=jaas.conf"
+    export KAFKA_OPTS="-Djava.security.auth.login.config=jaas.conf"
     export KAFKA_INSTALL_HOME=[to be filled] e.g. /Users/foo/kafka_2.12-2.3.0/
 
 Start the producer
