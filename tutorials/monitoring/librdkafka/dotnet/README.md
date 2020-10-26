@@ -125,6 +125,8 @@ telemetryClient.TrackMetric(consumer_lag);
 
 The metric will be sent to the configured Application Insights Resource. It can be viewed under: Application Insights Resource -> Monitoring -> Metrics -> Custom [azure.application.insights]. 
 
+![Visualization of Consumer Lag Metric](https://user-images.githubusercontent.com/73145416/97198367-18da9700-1785-11eb-93ce-e749522e9cbc.png)
+
 ## References
 
 The below links can be used as quick references:
