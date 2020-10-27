@@ -87,7 +87,8 @@ namespace ProducerStatisticsLibrdKafka
                 {
                     try
                     {
-                        var dr = await producer.ProduceAsync("evaskhub", new Message<long, string> { Value = "test" });
+                        var message = "producer-msg";
+                        var dr = await producer.ProduceAsync(topic, new Message<long, string> { Value = message });
                         Thread.Sleep(new Random().Next(delayInMilliseconds));
                         Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
                     }
@@ -97,7 +98,6 @@ namespace ProducerStatisticsLibrdKafka
                     }
                 }
             }
-
             Console.ReadLine();
         }
 

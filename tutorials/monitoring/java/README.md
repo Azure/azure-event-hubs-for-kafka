@@ -36,7 +36,7 @@ In order to track the metrics in real-time on Azure Monitor, it is essential to 
 
 For EH clients that are Java based, this document outlines an approach to monitor some client metrics, with the help of JMX. The monitoring will be done using Azure Monitor’s Application Insights. For this, we are recommending making use of the Application Insights Java 3.0 Preview. This is an agent which auto collects requests, dependencies and logs from the Java apps running anywhere on VMs, AKS, on-premises etc. We will further enable JMX configurations on this agent and send some metrics to the Application Insights Resource. 
 
-Start by downloading the agent from [here](https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.0-PREVIEW.7/applicationinsights-agent-3.0.0-PREVIEW.7.jar). Further details regarding how to use the agent can be found [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent). 
+Start by downloading the agent from [here](https://github.com/Microsoft/ApplicationInsights-Java/releases/tag/3.0.0-PREVIEW.7). Further details regarding how to use the agent can be found [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent). 
 
 Place the agent in the same directory as the client application that you are running. Now create a file named `ApplicationInsights.json` in the same directory. This provides some configuration option for the agent. Firstly, configure the agent to point to the Application Insights Resource as shown below:
 
@@ -71,7 +71,7 @@ Now, we need to enable JMX configuration on this agent. This will tell the agent
 
 The agent now will be able to collect the two JMX attributes shown above, namely the records-lag-max, which is the consumer lag and the records-consumed-rate.
 
-You can add additional metrics to the jmxMetrics list. There is also an additional field called heartbeat which is the frequency at which the metrics will be sent to the Application Insights Resource. A good choice would be 10 seconds. 
+You can add additional metrics to the jmxMetrics list. There is also an additional field called heartbeat which is the frequency at which the metrics will be sent to the Application Insights Resource. A good choice would be 10 seconds. Choosing a low heartbeat interval provides high fidelity monitoring but can result in a large AI bill.
 
 ```json
 "heartbeat": { 
@@ -79,13 +79,13 @@ You can add additional metrics to the jmxMetrics list. There is also an addition
  } 
 ```
 
-Make sure the value is suitably configured so that the rate at with the metric updates are sent is appropriate for your application. Before running the Java consumer application, make sure that the following environmental variables are set. 
+Make sure the value is suitably configured so that the rate at with the metric updates are sent is appropriate for your application.  Before running the Java consumer application, make sure that the following environmental variables are set. Ensure that the correct agent version is used.
 
 ```
 SetLocal
 set "KAFKA_JMX_OPTS=-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.1.1 -Dcom.sun.management.jmxremote.rmi.port=9010"
 set "KAFKA_HEAP_OPTS=-Xmx512M"
-set "KAFKA_JVM_PERFORMANCE_OPTS=-javaagent:applicationinsights-agent-3.0.0-PREVIEW.5.jar"
+set "KAFKA_JVM_PERFORMANCE_OPTS=-javaagent:applicationinsights-agent-3.0.0-PREVIEW.7.jar"
 "%~dp0kafka-run-class.bat" kafka.tools.ConsoleConsumer %*
 EndLocal
 ```

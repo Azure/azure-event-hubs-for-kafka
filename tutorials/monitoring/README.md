@@ -28,13 +28,3 @@ If your Event Hubs namespace is deployed on a non-Public cloud, your domain name
 ### Create an Application Insights Resource
 
 In order to track the metrics in real-time on Azure Monitor, it is essential to have an Application Insights Resource created. Also note down the the Instrumentation Key of this resource. For instructions, refer to this article [Creating an Appliction Insights Resource](https://docs.microsoft.com/en-us/azure/azure-monitor/app/create-new-resource).
-
-## Confluent Kafka Configuration and Troubleshooting
-
-#### Import Confluent Kafka package
-
-Use the NuGet Package Manager UI (or Package Manager Console) to install the Confluent.Kafka package. More detailed instructions can be found [here](https://github.com/confluentinc/confluent-kafka-dotnet#referencing).
-
-**This tutorial uses Confluent.Kafka v1.5.1**
-
-For more details regrading client application configuration and Troubleshooting help, refer to this quickstart tutorial: [Send and Receive Messages in C# using Azure Event Hubs for Kafka Ecosystems](https://github.com/Azure/azure-event-hubs-for-kafka/tree/master/quickstart/dotnet).
