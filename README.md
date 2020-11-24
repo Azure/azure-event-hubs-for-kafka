@@ -77,6 +77,8 @@ If compressed data is necessary, compressing your data before sending it to the 
 
 ### Receiving an UnknownServerException from Kafka client libraries
 
+**Note: if you are using `rdkafka`-based libraries and you are seeing issues where producers get 100% timeout failures, please upgrade your `rdkafka` installation to the latest version (> v1.5.2).**
+
 The error will look something like this:
 ```
 org.apache.kafka.common.errors.UnknownServerException: The server experienced an unexpected error when processing the request
