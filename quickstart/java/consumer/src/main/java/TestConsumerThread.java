@@ -60,7 +60,7 @@ public class TestConsumerThread implements Runnable {
             return consumer;
             
         } catch (FileNotFoundException e){
-            System.out.println("FileNoteFoundException: " + e);
+            System.out.println("FileNotFoundException: " + e);
             System.exit(1);
             return null;        //unreachable
         } catch (IOException e){
