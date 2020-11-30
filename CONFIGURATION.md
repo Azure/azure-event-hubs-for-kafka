@@ -62,7 +62,7 @@ Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
 heartbeat.interval.ms | 3000 || This is default and should not be changed.
 session.timeout.ms | 30000 |6000 .. 300000| Start with 30000, increase if seeing frequent rebalancing due to missed heartbeats.
-
+max.poll.interval.ms | 300000 (default) | >session.timeout.ms| Used for rebalance timeout, so this should not be set too low.  **Must be greater than session.timeout.ms.**
 
 ## Further notes
 
