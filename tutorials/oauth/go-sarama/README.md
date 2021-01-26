@@ -2,8 +2,6 @@
 
 This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Go. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
 
-This sample is based on [Confluent's Apache Kafka Golang client](https://github.com/confluentinc/confluent-kafka-go), modified for use with Event Hubs for Kafka.
-
 ## Prerequisites
 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
@@ -15,9 +13,6 @@ In addition:
     * On Ubuntu, you can run `sudo apt-get install git` to install Git.
 * Go language
     * On Ubuntu, run `sudo apt-get install golang`.
-* [Add Confluent APT repository](https://docs.confluent.io/current/installation/installing_cp/deb-ubuntu.html#get-the-software) if needed
-* [Install librdkafka](https://github.com/edenhill/librdkafka)
-    * On Ubuntu, run `sudo apt-get install librdkafka-dev`.
 
 ## Create an Event Hubs namespace
 
@@ -59,8 +54,6 @@ $ export AAD_APPLICATION_ID="your AAD application id" # REPLACE
 $ export AAD_APPLICATION_SECRET="your AAD application secret" # REPLACE
 $ export AAD_AUDIENCE="https://mynamespace.servicebus.windows.net" # REPLACE
 ```
-
-You may want to run `go get -u github.com/confluentinc/confluent-kafka-go/kafka`.  This command downloads and builds the go library from Github then executes a `go install` to move the package to your `$GOPATH` directory.
 
 ## Producer
 
