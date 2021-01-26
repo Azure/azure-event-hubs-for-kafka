@@ -42,7 +42,11 @@ Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure 
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
 cd azure-event-hubs-for-kafka/tutorials/oauth/go-sarama
 ```
+    
+Fetch the Sarama Kafka client library
 
+    go get github.com/Shopify/sarama
+    
 ## Configuration
 
 Define these environmental variables that specify the fully qualified domain name and port of the Kafka head of your Event Hub and AAD application that will be used to acquire access token.
@@ -63,7 +67,7 @@ You can run the sample via:
 
 ```bash
 $ cd producer
-$ go run producer.go
+$ go run producer.go token-provider.go
 ```
 
 The producer will now begin sending events to the Kafka-enabled Event Hub on topic `test` and printing the events to stdout. If you would like to change the topic, change the topic variable in `producer.go`.
@@ -76,7 +80,7 @@ You can run the sample via:
 
 ```bash
 $ cd consumer
-$ go run consumer.go
+$ go run consumer.go token-provider.go
 ```
 
 The consumer will now begin receiving events from the Kafka-enabled Event Hub on topic `test` and printing the events to stdout. If you would like to change the topic, change the topic variable in `consumer.go`.
