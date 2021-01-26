@@ -36,11 +36,11 @@ Learn more about [Azure EventHubs Role Based Access Control](https://docs.micros
 
 ## Clone the example project
 
-Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `tutorials/oauth/go` subfolder:
+Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `tutorials/oauth/go-sarama` subfolder:
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
-cd azure-event-hubs-for-kafka/tutorials/oauth/go
+cd azure-event-hubs-for-kafka/tutorials/oauth/go-sarama
 ```
 
 ## Configuration
