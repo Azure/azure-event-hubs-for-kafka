@@ -1,4 +1,4 @@
-# Send and Receive Messages in Go using Azure Event Hubs for Apache Kafka Ecosystem with OAuthBearer
+# Use Sarama Kafka Go client to send and receive messages using Azure Event Hubs for Apache Kafka Ecosystem with OAuthBearer
 
 This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Go. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
 
