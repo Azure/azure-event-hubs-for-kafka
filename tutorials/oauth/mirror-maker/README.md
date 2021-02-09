@@ -1,8 +1,6 @@
-# Using Apache Kafka's MirrorMaker with Event Hubs for Apache Kafka Ecosystems
+# Using Apache Kafka's MirrorMaker with Event Hubs for Apache Kafka Ecosystems with OAuth
 
-![MirrorMaker Diagram](./mirror-maker-graphic.PNG) 
-
-One major consideration for modern cloud scale apps is being able to update, improve, and change infrastructure without interrupting service. In this tutorial, we show how a Kafka-enabled Event Hub and Kafka MirrorMaker can integrate an existing Kafka pipeline into Azure by "mirroring" the Kafka input stream in the Event Hub service. 
+In this tutorial, we show how a Kafka-enabled Event Hub and Kafka MirrorMaker can integrate an existing Kafka pipeline into Azure by "mirroring" the Kafka input stream in the Event Hub service authorized via OAuth 2.0 flow. 
 
 ## Prerequisites
 
@@ -23,11 +21,17 @@ An Event Hubs namespace is required to send or receive from any Event Hubs servi
 
 ### FQDN
 
-For these samples, you will need the connection string from the portal as well as the FQDN that points to your Event Hub namespace. **The FQDN can be found within your connection string as follows**:
-
-`Endpoint=sb://`**`mynamespace.servicebus.windows.net`**`/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX`
+For these samples, you will need the Fully Qualified Domain Name of you Event Hubs namespace which can be found in Azure Portal. To do so, in Azure Portal, go to your Event Hubs namespace overview page and copy host name which should look like `**`mynamespace.servicebus.windows.net`**`.
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
+
+## Create an Azure Active Directory Application
+
+In order to run these samples, you will need to create an AAD application with a client secret and assign it as EventHubs Data Owner on the Event Hubs namespace you created in the previous section.
+
+Learn more about [AAD Role Based Access Control](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview)
+
+Learn more about [Azure EventHubs Role Based Access Control](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory)
 
 ## Clone the example project
 
