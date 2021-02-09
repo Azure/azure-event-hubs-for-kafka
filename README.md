@@ -109,7 +109,8 @@ For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, pr
 
 * The max length of the `group.id` property is 256 characters
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
-* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1 MB
+
+[Update as of 2/9/21 - no throttling on offset commit calls.]
 
 ## More FAQ
 
