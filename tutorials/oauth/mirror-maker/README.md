@@ -61,7 +61,7 @@ Kafka clients need to be configured in a way that they can authenticate with Azu
 
 ### Package authentication handler into a jar
 
-Generate the JAR by running mvn command:
+Generate the JAR package by running mvn command below:
 
 ```bash
 mvn clean package
