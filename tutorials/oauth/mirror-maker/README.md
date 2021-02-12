@@ -42,6 +42,31 @@ git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
 cd azure-event-hubs-for-kafka/tutorials/oauth/mirror-maker
 ```
 
+## Client Configuration For OAuth
+Kafka clients need to be configured in a way that they can authenticate with Azure Active Directory and fetch OAuth access tokens. These tokens then can be used to get authorized while accessing certain Event Hubs resources.
+
+#### Configure authenticate callback handler of your client so that it can complete auth flow with Azure Active Directory and fetch access tokens
+
+* Set authority for your tenant. Most of the times, this is a URI built with your AAD tenant identifier such as  `"https://login.microsoftonline.com/<tenant-id>/"`
+
+   `this.authority = "<authority>";`
+   
+* Set your AAD application identifier 
+
+   `this.appId = "<app-id>";`
+   
+ * Set your AAD application secret
+ 
+   `this.appSecret = "<app-secret>";`
+
+### Package authentication handler into a jar
+
+Generate the JAR by running mvn command:
+
+```bash
+mvn clean package
+```
+
 ## Set up a Kafka cluster
 
 Use the [Kafka quickstart guide](https://kafka.apache.org/quickstart) to set up a cluster with the desired settings (or use an existing Kafka cluster).
@@ -71,7 +96,7 @@ client.id=mirror_maker_consumer
 
 #### Producer Configuration
 
-Now update the producer config file `mirror-eventhub.config`, which tells MirrorMaker to send the duplicated (or "mirrored") data to the Event Hubs service. Specifically change `bootstrap.servers` and `sasl.jaas.config` to point to your Event Hubs Kafka endpoint. The Event Hubs service requires secure (SASL) communication, which is achieved by setting the last three properties in the configuration below. 
+Now update the producer config file `mirror-eventhub.config`, which tells MirrorMaker to send the duplicated (or "mirrored") data to the Event Hubs service. Specifically change `bootstrap.servers`, `sasl.mechanism`, `sasl.jaas.config`, and `sasl.login.callback.handler.class` to point to your Event Hubs Kafka endpoint. The Event Hubs service requires secure (SASL) communication, which is achieved by setting the last three properties in the configuration below. 
 
 ##### mirror-eventhub.config
 
