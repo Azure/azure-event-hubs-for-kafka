@@ -111,8 +111,9 @@ sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginMo
 sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler
 ```
 
-### Copy auth handler jar to Kafka library folder
-We need Kafka mirror-maker client to load our authenticaion handler library built in the previous steps. Copy the jar file from build location to Kafka library folder. Please note that there may be other libraries missing under Kafka libraries to run the authentication handler. Copy those dependencies as well if mirror-maker reports about missing libraries.
+### Copy auth handler jar pacjage to Kafka library folder
+
+You will need Kafka mirror-maker client to load authentication handler library built in the previous steps. Copy the jar file from build location to Kafka library folder. Please note that there may be other libraries missing under Kafka libraries to run your authentication handler. Copy those dependencies as well if mirror-maker reports about any missing libraries.
 
 ### Run MirrorMaker
 
