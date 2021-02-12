@@ -96,7 +96,7 @@ client.id=mirror_maker_consumer
 
 #### Producer Configuration
 
-Now update the producer config file `mirror-eventhub.config`, which tells MirrorMaker to send the duplicated (or "mirrored") data to the Event Hubs service. Specifically change `bootstrap.servers`, `sasl.mechanism`, `sasl.jaas.config`, and `sasl.login.callback.handler.class` to point to your Event Hubs Kafka endpoint. The Event Hubs service requires secure (SASL) communication, which is achieved by setting the last three properties in the configuration below. 
+Now update the producer config file `mirror-eventhub.config`, which tells MirrorMaker to send the duplicated (or "mirrored") data to the Event Hubs service. Specifically change `bootstrap.servers` to point to your Event Hubs Kafka endpoint.
 
 ##### mirror-eventhub.config
 
@@ -105,10 +105,14 @@ bootstrap.servers=mynamespace.servicebus.windows.net:9093
 client.id=mirror_maker_producer
 
 #Required for Event Hubs
-sasl.mechanism=PLAIN
 security.protocol=SASL_SSL
-sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://mynamespace.servicebus.windows.net/;SharedAccessKeyName=XXXXXX;SharedAccessKey=XXXXXX";
+sasl.mechanism=OAUTHBEARER
+sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
+sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler
 ```
+
+### Copy auth handler jar to Kafka library folder
+We need Kafka mirror-maker client to load our authenticaion handler library built in the previous steps. Copy the jar file from build location to Kafka library folder. Please note that there may be other libraries missing under Kafka libraries to run the authentication handler. Copy those dependencies as well if mirror-maker reports about missing libraries.
 
 ### Run MirrorMaker
 
