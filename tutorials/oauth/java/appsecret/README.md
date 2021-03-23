@@ -56,7 +56,7 @@ Kafka clients need to be configured in a way that they can authenticate with Azu
    `sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;`
 * Set login callback handler. This is the authentication handler which is responsible to complete oauth flow and return an access token.
 
-   `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;`
+   `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler`
 
 #### Configure authenticate callback handler of your client so that it can complete auth flow with Azure Active Directory and fetch access tokens
 
@@ -87,7 +87,7 @@ bootstrap.servers=mynamespace.servicebus.windows.net:9093 # REPLACE
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler
 ```
 
 ### Run producer from command line
@@ -120,7 +120,7 @@ request.timeout.ms=60000
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler
 ```
 
 ### Run consumer from command line
