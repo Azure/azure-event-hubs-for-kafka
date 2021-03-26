@@ -67,6 +67,7 @@ Dedicated clusters do not have throttling mechanisms - you are free to consume a
 There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. There are a few possible causes:
 
  * Make sure that your `request.timeout.ms` is at least the recommended value of 60000 and your `session.timeout.ms` is at least the recommended value of 30000. Having these too low could cause consumer timeouts which then cause rebalances (which then cause more timeouts which then cause more rebalancing...) 
+ * Check your Kafka client side log and see if your consumers are issuing leave group command. The error message usually give you details as to why the consumers are leaving, but the most common issue is that the poll interval timed out - i.e. your processing logic spend too much time processing messages that the next poll() did not run within the specified max.poll.interval.ms time. 
  * If your configuration matches those recommended values, and you're still seeing constant rebalancing, feel free to open up an issue (make sure to include your entire configuration in the issue so we can help debug)!
 
 ### Compression / Message Format Version issue
