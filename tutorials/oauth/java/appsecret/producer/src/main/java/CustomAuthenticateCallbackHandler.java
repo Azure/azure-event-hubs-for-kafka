@@ -16,23 +16,22 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.AppConfigurationEntry;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.KafkaException;
-import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
-import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
-import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
-
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.KafkaException;
+import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
+import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
+import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
+
 public class CustomAuthenticateCallbackHandler implements AuthenticateCallbackHandler {
 
     final static ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
-    
+
     private String authority;
     private String appId;
     private String appSecret;
@@ -45,13 +44,13 @@ public class CustomAuthenticateCallbackHandler implements AuthenticateCallbackHa
         bootstrapServer = bootstrapServer.replaceAll("\\[|\\]", "");
         URI uri = URI.create("https://" + bootstrapServer);
         String sbUri = uri.getScheme() + "://" + uri.getHost();
-        this.aadParameters = 
+        this.aadParameters =
                 ClientCredentialParameters.builder(Collections.singleton(sbUri + "/.default"))
                 .build();
-        
-        this.authority = "<authority>";
-        this.appId = "<app-id>";
-        this.appSecret = "<app-secret>";
+
+        this.authority = "https://login.microsoftonline.com/<tenant-id>/"; // replace <tenant-id> with your tenant id
+        this.appId = "<app-id>"; // also called client id
+        this.appSecret = "<app-password>"; // also called client secret
     }
 
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
@@ -82,10 +81,10 @@ public class CustomAuthenticateCallbackHandler implements AuthenticateCallbackHa
                 }
             }
         }
-        
+
         IAuthenticationResult authResult = this.aadClient.acquireToken(this.aadParameters).get();
         System.out.println("TOKEN ACQUIRED");
-        
+
         return new OAuthBearerTokenImp(authResult.accessToken(), authResult.expiresOnDate());
     }
 
