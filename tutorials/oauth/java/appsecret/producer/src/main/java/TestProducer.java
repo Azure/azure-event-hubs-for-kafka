@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 public class TestProducer {
     //Change constant to send messages to the desired topic, for this example we use 'test'
     private final static String TOPIC = "test";
-        
+
     private final static int NUM_THREADS = 1;
 
 
@@ -40,7 +40,7 @@ public class TestProducer {
         } catch (Exception e){
             System.out.println("Failed to create producer with exception: " + e);
             System.exit(0);
-            return null;        //unreachable
+            return null; //unreachable
         }
     }
 }
