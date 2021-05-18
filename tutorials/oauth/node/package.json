@@ -1,0 +1,15 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "Sample NodeJS for EventHubs with Producer/Consumer using KafkaJS library",
+  "main": "producer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ernani Joppert Pontes Martins",
+  "license": "MIT",
+  "dependencies": {
+    "adal-node": "^0.2.2",
+    "kafkajs": "^1.15.0"
+  }
+}
