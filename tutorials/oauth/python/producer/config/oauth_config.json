@@ -1,0 +1,6 @@
+{
+    "bootstrap_servers": "NAMESPACE.servicebus.windows.net:9093",
+    "security_protocol": "SASL_SSL",
+    "sasl_mechanism": "OAUTHBEARER",
+    "token_scope": "https://NAMESPACE.servicebus.windows.net"
+}
