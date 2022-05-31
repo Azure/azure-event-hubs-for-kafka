@@ -64,7 +64,7 @@ Kafka clients need to be configured in a way that they can authenticate with Azu
 Generate the JAR package by running mvn command below:
 
 ```bash
-mvn clean package
+mvn clean package assembly:single
 ```
 
 ## Set up a Kafka cluster
@@ -111,7 +111,7 @@ sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginMo
 sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler
 ```
 
-### Copy auth handler jar pacjage to Kafka library folder
+### Copy auth handler jar package to Kafka library folder
 
 You will need Kafka mirror-maker client to load authentication handler library built in the previous steps. Copy the jar file from build location to Kafka library folder. Please note that there may be other libraries missing under Kafka libraries to run your authentication handler. Copy those dependencies as well if mirror-maker reports about any missing libraries.
 
