@@ -5,9 +5,6 @@
 //
 //Original Confluent sample modified for use with Azure Event Hubs for Apache Kafka Ecosystems
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Confluent.Kafka;
 
 namespace EventHubsForKafkaSample
