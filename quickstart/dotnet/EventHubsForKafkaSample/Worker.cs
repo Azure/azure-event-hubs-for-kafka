@@ -14,7 +14,7 @@ namespace EventHubsForKafkaSample
 {
     class Worker
     {
-        public static async Task Producer(string brokerList, string connStr, string topic, string cacertlocation)
+        public static async Task Producer(string? brokerList, string? connStr, string? topic, string? cacertlocation)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace EventHubsForKafkaSample
             }
         }
 
-        public static void Consumer(string brokerList, string connStr, string consumergroup, string topic, string cacertlocation)
+        public static void Consumer(string? brokerList, string? connStr, string? consumergroup, string? topic, string? cacertlocation)
         {
             var config = new ConsumerConfig
             {
