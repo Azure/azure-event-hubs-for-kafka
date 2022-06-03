@@ -77,7 +77,7 @@ namespace EventHubsForKafkaSample
                     try
                     {
                         var msg = consumer.Consume(cts.Token);
-                        Console.WriteLine($"Received: '{msg.Value}'");
+                        Console.WriteLine($"Received: '{msg.Message.Value}'");
                     }
                     catch (ConsumeException e)
                     {
