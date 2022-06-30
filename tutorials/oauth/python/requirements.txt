@@ -1,0 +1,10 @@
+#python -m pip install -r requirements.txt
+aiohttp
+azure.eventhub
+azure.identity
+python-dotenv
+confluent-kafka
+azure-identity
+azure.keyvault.certificates
+azure.keyvault.secrets
+az.cli
