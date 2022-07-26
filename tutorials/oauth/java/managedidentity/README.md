@@ -1,6 +1,6 @@
 # Send and Receive Messages in Java using Azure Event Hubs for Apache Kafka Ecosystems with Managed Identity OAuth
 
-This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Java. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
+This tutorial will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Java. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure 
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
-cd azure-event-hubs-for-kafka/quickstart/java
+cd azure-event-hubs-for-kafka/tutorials/oauth/java/managedidentity
 ```
 
 ## Client Configuration For OAuth
