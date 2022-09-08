@@ -15,10 +15,34 @@ In addition:
     * On Ubuntu, you can run `apt-get install maven` to install Maven.
 * [Git](https://www.git-scm.com/downloads)
     * On Ubuntu, you can run `sudo apt-get install git` to install Git.
+    
+## Create (or configure existing) Virtual Machine
+There is currently no Managed Identity emulator so in order to use Managed Identity, you must create a (or configure an existing) virtual machine using a system-assigned managed identity. 
+See [Quickstart: Create a Linux virtual machine in the Azure portal](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal#create-virtual-machine) and [Configure managed identities for Azure resources on a VM using the Azure portal](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm)
+
+You will have install or confirm installation of the [required tools](#prerequisites) on your virtual machine.  
+
+Note: it is strongly recommended to not open ssh ports to the open internet. We recommend [enabling Bastion](https://docs.microsoft.com/en-us/azure/bastion/quickstart-host-portal) and remoting into your VM that way.
 
 ## Create an Event Hubs namespace
 
 An Event Hubs namespace is required to send or receive from any Event Hubs service. See [Create Kafka-enabled Event Hubs](https://docs.microsoft.com/azure/event-hubs/event-hubs-create-kafka-enabled) for instructions on getting an Event Hubs Kafka endpoint. Make sure to copy the Event Hubs connection string for later use.
+
+## Add managed identity to Event Hubs namespace access control
+
+In the Azure Portal, navigate to your Event Hubs namespace. Go to "Access Control (IAM)" in the left navigation. 
+
+Click + Add and select "Add role assignment."
+
+In the Role tab, select "Azure Event Hubs Data Owner" and click the Next button.
+
+In the Members tab, select the Managed Identity radio button for type to assign access to.
+
+Click the + Select members link.
+
+In the Managed Identity dropdown, select Virtual Machine and select your virtual machine's managed identity.
+
+Click "Review + Assign."
 
 ### FQDN
 
@@ -28,7 +52,7 @@ If your Event Hubs namespace is deployed on a non-Public cloud, your domain name
 
 ## Clone the example project
 
-Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `quickstart/java` subfolder:
+Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository in [your Azure VM](#create-or-configure-existing-virtual-machine) and navigate to the `quickstart/java` subfolder:
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
