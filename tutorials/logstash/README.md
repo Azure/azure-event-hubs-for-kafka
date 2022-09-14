@@ -13,7 +13,7 @@ In addition:
 * [Logstash](https://www.elastic.co/guide/en/logstash/current/installing-logstash.html)
     * Unpack the download file and add the Logstash binaries directory, e.g. `<unpacked_file_path>/logstash-6.6.1/bin`, to your `PATH` environment variable.
     * Kafka input/output plugins, `logstash-input-kafka` and `logstash-output-kafka`, are ususlly already included in common plugins, which you can use directly. You can verify whether they are appropriately installed by running `logstash-plugin list 'kafka'`.
-    * In case of the above plugins not included in common plugins, you can run `logstash-plugin install logstash-input-kafka` or `logstash-plugin install logstash-output-kafka` to install Kafka input/output plugins.
+    * In case of the above plugins not included in common plugins, you can run `logstash-plugin install logstash-integration-kafka` to install the Kafka integration that includes input/output plugins.
 * [Git](https://www.git-scm.com/downloads)
 
 ## Create an Event Hubs namespace
