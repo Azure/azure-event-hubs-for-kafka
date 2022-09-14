@@ -83,3 +83,66 @@ python consumer.py
 
     **Confluent-Kafka** -> To connect to EventHub using Kafka protocol
 
+
+## OAuth 2.0 Overview
+
+Event Hubs integrates with Azure Active Directory (Azure AD), which provides an OAuth 2.0 compliant authorization server. Azure role-based access control (Azure RBAC) can be used to grant permissions to Kafka client identities. 
+
+To grant access to an Event Hub resource, the security principal must be authenticated and an OAuth 2.0 token is returned. The token is then passed as part of the request to the Event Hub Service to authorize access to the resource. This is accomplished by setting the appropriate values in the Kafka client configuration. 
+
+For more information on the Azure AD OAuth 2.0 for Event Hubs see [Authorize access with Azure Active Directory](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory#overview)
+
+### Retrieve Azure Active Directory (AAD) Token
+
+The `DefaultAzureCredential` Class can be used to get a credential, and Kafka clients must use the scope of `https://<namespace>.servicebus.windows.net` to retrieve the access token from the Event Hub namespace. See [DefaultAzureCredential](https://docs.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python) for more information on this class. 
+
+In this example, a service principal is used to get the AAD credential by setting the following environment variables:    
+
+```shell
+export AZURE_TENANT_ID=<TenantID>
+export AZURE_CLIENT_ID=<AppClientId>
+export AZURE_CLIENT_SECRET=<AppSecret>
+```
+
+An RBAC role must be assigned to the application to gain access to Event Hubs. Azure provides built-in roles for authorizing access to Event Hubs. See [Azure Built in Roles for Azure Event Hubs](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory#azure-built-in-roles-for-azure-event-hubs).
+
+To create a service principal and assign RBAC roles to the application, review [How to Create a Service Principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal).
+
+
+### Client Configuration
+
+To connect a Kafka client to Event Hub using OAuth 2.0, the following configuration is required:
+
+```properties
+bootstrap.servers=<namespace>.servicebus.windows.net:9093
+security.protocol=SASL_SSL
+sasl.mechanism=OAUTHBEARER
+oauth_cb=<Callback for retrieving OAuth Bearer token> 
+```
+
+The return value of `oauth_cb` is expected to be a (token_str, expiry_time) tuple where expiry_time is the time in seconds since the epoch as a floating point number.
+See [Confluent Kafka for Python](https://docs.confluent.io/platform/current/clients/confluent-kafka-python/html/index.html) for reference.
+
+An example `oauth_cb` and kafka client configuration is defined below:
+
+```python
+from azure.identity import DefaultAzureCredential
+from functools import partial
+
+def oauth_cb(cred, namespace_fqdn, config):
+    # note: confluent_kafka passes 'sasl.oauthbearer.config' as the config param
+    access_token = cred.get_token('https://%s/.default' % namespace_fqdn)
+    return access_token.token, access_token.expires_on
+
+az_credential = DefaultAzureCredential()
+eh_namespace_fqdn = '<namespace>.servicebus.windows.net'
+kafka_conf = {
+    'bootstrap.servers': '%s:9093' % namespace,
+    'security.protocol': 'SASL_SSL',
+    'sasl.mechanism': 'OAUTHBEARER',
+    'oauth_cb': partial(oauth_cb, az_credential, eh_namespace_fqdn),
+}
+
+# Create Producer instance
+p = Producer(kafka_conf)
+```
