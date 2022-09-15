@@ -14,7 +14,7 @@ For more information on using Azure AD with Event Hubs, see [Authorize access wi
 
 ### Retrieve Azure Active Directory (AAD) Token
 
-The `DefaultAzureCredential` class from the [Azure Identity client library](https://docs.microsoft.com/en-us/python/api/overview/azure/identity-readme?view=azure-python) can be used to get a credential with the scope of `https://<namespace>.servicebus.windows.net` to retrieve the access token for the Event Hubs namespace.
+The `DefaultAzureCredential` class from the [Azure Identity client library](https://docs.microsoft.com/en-us/python/api/overview/azure/identity-readme?view=azure-python) can be used to get a credential with the scope of `https://<namespace>.servicebus.windows.net/.default` to retrieve the access token for the Event Hubs namespace.
 
 This class is suitable for use with Azure CLI for local development, Managed Identity for Azure deployments, and with service principal client secrets/certificates. See [DefaultAzureCredential](https://docs.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python) for more information on this class.
 
@@ -113,7 +113,7 @@ export AZURE_CLIENT_SECRET=<AppSecret>
 python producer.py mynamespace.servicebus.windows.net topic1
 ```
 
-> Note that the topic must already exist or else you will see an "Unknown topic or partition" error.
+> Note: the topic must already exist, or will see an "Unknown topic or partition" error when running with the `Azure Event Hubs Data Sender` role. With the `Azure Event Hubs Data Owner` role, the topic (Event Hub) will be automatically created.
 
 ### Consuming
 
