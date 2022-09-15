@@ -23,6 +23,12 @@ def stats_cb(stats_json_str):
 
 
 def oauth_cb(cred, namespace_fqdn, config):
+    # confluent_kafka requires an oauth callback function to return (str, float) with the values of (<access token>, <expiration date in seconds from epoch>)
+
+    # cred: an Azure identity library credential object. Ex: an instance of DefaultAzureCredential, ManagedIdentityCredential, etc
+    # namespace_fqdn: the FQDN for the target Event Hubs namespace. Ex: 'mynamespace.servicebus.windows.net'
+    # config: confluent_kafka passes the value of 'sasl.oauthbearer.config' as the config param
+
     access_token = cred.get_token('https://%s/.default' % namespace_fqdn)
     return access_token.token, access_token.expires_on
 
@@ -48,6 +54,7 @@ if __name__ == '__main__':
     topics = argv[2:]
 
     # Azure credential
+    # See https://docs.microsoft.com/en-us/azure/developer/python/sdk/authentication-overview
     cred = DefaultAzureCredential()
 
     # Consumer configuration
@@ -61,6 +68,7 @@ if __name__ == '__main__':
         # Required OAuth2 configuration properties
         'security.protocol': 'SASL_SSL',
         'sasl.mechanism': 'OAUTHBEARER',
+        # the resulting oauth_cb must accept a single `config` parameter, so we use partial to bind the namespace/identity to our function
         'oauth_cb': partial(oauth_cb, cred, namespace),
     }
 
