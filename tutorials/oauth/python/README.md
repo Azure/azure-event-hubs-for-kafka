@@ -121,3 +121,13 @@ python producer.py mynamespace.servicebus.windows.net topic1
 # Usage: consumer.py [options..] <eventhubs-namespace> <group> <topic1> <topic2> ..
 python consumer.py mynamespace.servicebus.windows.net myconsumergroup topic1
 ```
+
+## Troubleshooting
+### Errors observed without proper role assignments configured
+```shell
+# producer
+% Message failed delivery: KafkaError{code=TOPIC_AUTHORIZATION_FAILED,val=29,str="Broker: Topic authorization failed"}
+
+# consumer
+cimpl.KafkaException: KafkaError{code=TOPIC_AUTHORIZATION_FAILED,val=29,str="Failed to fetch committed offset for group "<consumer group>" topic <topic name>[0]: Broker: Topic authorization failed"}
+```
