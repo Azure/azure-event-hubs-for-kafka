@@ -36,7 +36,7 @@ public class TestProducer {
             Properties properties = new Properties();
             properties.load(new FileReader("src/main/resources/producer.config"));
             properties.put(ProducerConfig.CLIENT_ID_CONFIG, "KafkaExampleProducer");
-            properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
+            properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
             properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
             return new KafkaProducer<>(properties);
         } catch (Exception e){
