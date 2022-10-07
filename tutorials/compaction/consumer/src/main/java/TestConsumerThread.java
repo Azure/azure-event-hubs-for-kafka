@@ -29,7 +29,7 @@ public class TestConsumerThread implements Runnable {
             while (true) {
                 final ConsumerRecords<String, String> consumerRecords = consumer.poll(1000);
                 for(ConsumerRecord<String, String> cr : consumerRecords) {
-                    System.out.printf("Consumer Record(key, value):(%s, %s)\n", cr.key(), cr.value());
+                    System.out.printf("Consumer Record(key, value):(%s, %s)\n", cr.key(), cr.value().substring(0, 2));
                 }
                 consumer.commitAsync();
             }
@@ -47,7 +47,7 @@ public class TestConsumerThread implements Runnable {
                 properties.put(ConsumerConfig.CLIENT_ID_CONFIG, "KafkaExampleConsumer#" + id);
                 id++;
             }
-            properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
+            properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
             properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
             //Get remaining properties from config file
