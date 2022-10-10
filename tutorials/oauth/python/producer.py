@@ -7,60 +7,74 @@
 #
 # Original Confluent sample modified for use with Azure Event Hubs for Apache Kafka Ecosystems
 
-import time
-from confluent_kafka import Producer
 from azure.identity import DefaultAzureCredential
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-FULLY_QUALIFIED_NAMESPACE= os.environ['EVENT_HUB_HOSTNAME']
-EVENTHUB_NAME = os.environ['EVENT_HUB_NAME']
-AUTH_SCOPE= "https://" + FULLY_QUALIFIED_NAMESPACE +"/.default"
-
-# AAD
-cred = DefaultAzureCredential()
-
-def _get_token(config):
-    """Note here value of config comes from sasl.oauthbearer.config below.
-    It is not used in this example but you can put arbitrary values to
-    configure how you can get the token (e.g. which token URL to use)
-    """
-    access_token = cred.get_token(AUTH_SCOPE)
-    return access_token.token, time.time() + access_token.expires_on
+from confluent_kafka import Producer
+import sys
+from functools import partial
 
 
-producer = Producer({
-    "bootstrap.servers": FULLY_QUALIFIED_NAMESPACE + ":9093",
-    "sasl.mechanism": "OAUTHBEARER",
-    "security.protocol": "SASL_SSL",
-    "oauth_cb": _get_token,
-    "enable.idempotence": True,
-    "acks": "all",
-    # "debug": "broker,topic,msg"
-})
+def oauth_cb(cred, namespace_fqdn, config):
+    # confluent_kafka requires an oauth callback function to return (str, float) with the values of (<access token>, <expiration date in seconds from epoch>)
+
+    # cred: an Azure identity library credential object. Ex: an instance of DefaultAzureCredential, ManagedIdentityCredential, etc
+    # namespace_fqdn: the FQDN for the target Event Hubs namespace. Ex: 'mynamespace.servicebus.windows.net'
+    # config: confluent_kafka passes the value of 'sasl.oauthbearer.config' as the config param
+
+    access_token = cred.get_token('https://%s/.default' % namespace_fqdn)
+    return access_token.token, access_token.expires_on
 
 
-def delivery_report(err, msg):
-    """Called once for each message produced to indicate delivery result.
-    Triggered by poll() or flush()."""
-    if err is not None:
-        print(f"Message delivery failed: {err}")
-    else:
-        print(f"Message delivered to {msg.topic()} [{msg.partition()}]")
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
+        sys.stderr.write('Usage: %s <eventhubs-namespace> <topic>\n' % sys.argv[0])
+        sys.exit(1)
 
+    namespace = sys.argv[1]
+    topic = sys.argv[2]
 
-some_data_source = [str(i) for i in range(1000)]
-for data in some_data_source:
-    # Trigger any available delivery report callbacks from previous produce() calls
-    producer.poll(0)
+    # Azure credential
+    # See https://docs.microsoft.com/en-us/azure/developer/python/sdk/authentication-overview
+    cred = DefaultAzureCredential()
 
-    # Asynchronously produce a message, the delivery report callback
-    # will be triggered from poll() above, or flush() below, when the message has
-    # been successfully delivered or failed permanently.
-    producer.produce(EVENTHUB_NAME, f"Hello {data}".encode("utf-8"), callback=delivery_report)
+    # Producer configuration
+    # See https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
+    conf = {
+        'bootstrap.servers': '%s:9093' % namespace,
 
-# Wait for any outstanding messages to be delivered and delivery report
-# callbacks to be triggered.
-producer.flush()
+        # Required OAuth2 configuration properties
+        'security.protocol': 'SASL_SSL',
+        'sasl.mechanism': 'OAUTHBEARER',
+        # the resulting oauth_cb must accept a single `config` parameter, so we use partial to bind the namespace/identity to our function
+        'oauth_cb': partial(oauth_cb, cred, namespace),
+    }
+
+    # Create Producer instance
+    p = Producer(**conf)
+
+    # Optional per-message delivery callback (triggered by poll() or flush())
+    # when a message has been successfully delivered or permanently
+    # failed delivery (after retries).
+    def delivery_callback(err, msg):
+        if err:
+            sys.stderr.write('%% Message failed delivery: %s\n' % err)
+        else:
+            sys.stderr.write('%% Message delivered to %s [%d] @ %d\n' %
+                             (msg.topic(), msg.partition(), msg.offset()))
+
+    # Write 1-100 to topic
+    for i in range(0, 100):
+        try:
+            p.produce(topic, str(i), callback=delivery_callback)
+        except BufferError:
+            sys.stderr.write('%% Local producer queue is full (%d messages awaiting delivery): try again\n' %
+                             len(p))
+
+        # Serve delivery callback queue.
+        # NOTE: Since produce() is an asynchronous API this poll() call
+        #       will most likely not serve the delivery callback for the
+        #       last produce()d message.
+        p.poll(0)
+
+    # Wait until all messages have been delivered
+    sys.stderr.write('%% Waiting for %d deliveries\n' % len(p))
+    p.flush()
