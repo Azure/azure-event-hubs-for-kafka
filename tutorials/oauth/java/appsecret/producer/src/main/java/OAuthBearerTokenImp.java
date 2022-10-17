@@ -9,12 +9,12 @@ public class OAuthBearerTokenImp implements OAuthBearerToken
 {
     String token;
     long lifetimeMs;
-    
+
     public OAuthBearerTokenImp(final String token, Date expiresOn) {
         this.token = token;
         this.lifetimeMs = expiresOn.getTime();
     }
-    
+
     @Override
     public String value() {
         return this.token;

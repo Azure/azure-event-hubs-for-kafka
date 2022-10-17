@@ -67,6 +67,7 @@ Dedicated clusters do not have throttling mechanisms - you are free to consume a
 There is no exception or error when this happens, but the Kafka logs will show that the consumers are stuck trying to re-join the group and assign partitions. There are a few possible causes:
 
  * Make sure that your `request.timeout.ms` is at least the recommended value of 60000 and your `session.timeout.ms` is at least the recommended value of 30000. Having these too low could cause consumer timeouts which then cause rebalances (which then cause more timeouts which then cause more rebalancing...) 
+ * Check your Kafka client side log and see if your consumers are issuing leave group command. The error message usually give you details as to why the consumers are leaving, but the most common issue is that the poll interval timed out - i.e. your processing logic spend too much time processing messages that the next poll() did not run within the specified max.poll.interval.ms time. 
  * If your configuration matches those recommended values, and you're still seeing constant rebalancing, feel free to open up an issue (make sure to include your entire configuration in the issue so we can help debug)!
 
 ### Compression / Message Format Version issue
@@ -76,6 +77,8 @@ Kafka supports compression, and Event Hubs for Kafka currently does not. Errors 
 If compressed data is necessary, compressing your data before sending it to the brokers and decompressing after receiving it is a valid workaround. The message body is just a byte array to the service, so client-side compression/decompression will not cause any issues.
 
 ### Receiving an UnknownServerException from Kafka client libraries
+
+**Note: if you are using `rdkafka`-based libraries and you are seeing issues where producers get 100% timeout failures, please upgrade your `rdkafka` installation to the latest version (> v1.5.2).**
 
 The error will look something like this:
 ```
@@ -107,7 +110,6 @@ For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, pr
 
 * The max length of the `group.id` property is 256 characters
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
-* Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1 MB
 
 ## More FAQ
 

@@ -47,7 +47,6 @@ output.kafka:
   ssl.enabled: true
   compression: none
   max_message_bytes: 1000000
-  required_acks: 1
   partition.round_robin:
     reachable_only: true
 logging.level: debug

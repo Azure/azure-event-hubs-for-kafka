@@ -30,6 +30,8 @@ public class CustomAuthenticateCallbackHandler implements AuthenticateCallbackHa
 
     final static ScheduledExecutorService EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
     final static MSICredentials CREDENTIALS = new MSICredentials();
+    // Use AppServiceMSICredentials instead for App Service deployment.
+    // final static AppServiceMSICredentials CREDENTIALS = new AppServiceMSICredentials(AzureEnvironment.AZURE);
     
     private String sbUri;
 

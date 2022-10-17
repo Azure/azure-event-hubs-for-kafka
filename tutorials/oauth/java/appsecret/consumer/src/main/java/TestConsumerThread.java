@@ -1,18 +1,25 @@
 //Copyright (c) Microsoft Corporation. All rights reserved.
 //Licensed under the MIT License.
-import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.common.serialization.LongDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
+
+import org.apache.kafka.clients.consumer.CommitFailedException;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.LongDeserializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class TestConsumerThread implements Runnable {
 
     private final String TOPIC;
-    
+
     //Each consumer needs a unique client ID per thread
     private static int id = 0;
 
@@ -26,7 +33,7 @@ public class TestConsumerThread implements Runnable {
 
         try {
             while (true) {
-                final ConsumerRecords<Long, String> consumerRecords = consumer.poll(1000);
+                final ConsumerRecords<Long, String> consumerRecords = consumer.poll(Duration.ofMillis(1000));
                 for(ConsumerRecord<Long, String> cr : consumerRecords) {
                     System.out.printf("Consumer Record:(%d, %s, %d, %d)\n", cr.key(), cr.value(), cr.partition(), cr.offset());
                 }
@@ -58,7 +65,7 @@ public class TestConsumerThread implements Runnable {
             // Subscribe to the topic.
             consumer.subscribe(Collections.singletonList(TOPIC));
             return consumer;
-            
+
         } catch (FileNotFoundException e){
             System.out.println("FileNoteFoundException: " + e);
             System.exit(1);

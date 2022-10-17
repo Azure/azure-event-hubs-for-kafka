@@ -1,6 +1,6 @@
 # Send and Receive Messages in Java using Azure Event Hubs for Apache Kafka Ecosystems with OAuth
 
-This quickstart will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Java. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
+This tutorial will show how to create and connect to an Event Hubs Kafka endpoint using an example producer and consumer written in Java. Azure Event Hubs for Apache Kafka Ecosystems supports [Apache Kafka version 1.0](https://kafka.apache.org/10/documentation.html) and later.
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ An Event Hubs namespace is required to send or receive from any Event Hubs servi
 
 ### FQDN
 
-For these samples, you will need the Fully Qualified Domain Name of you Event Hubs namespace which can be found in Azure Portal. To do so, in Azure Portal, go to your Event Hubs namespace overview page and copy host name which should look like `**`mynamespace.servicebus.windows.net`**`.
+For these samples, you will need the Fully Qualified Domain Name of you Event Hubs namespace which can be found in Azure Portal. To do so, in Azure Portal, go to your Event Hubs namespace overview page and copy host name which should look like `**`<your-namespace>.servicebus.windows.net`**`.
 
 If your Event Hubs namespace is deployed on a non-Public cloud, your domain name may differ (e.g. \*.servicebus.chinacloudapi.cn, \*.servicebus.usgovcloudapi.net, or \*.servicebus.cloudapi.de).
 
@@ -40,7 +40,7 @@ Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure 
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
-cd azure-event-hubs-for-kafka/quickstart/java
+cd azure-event-hubs-for-kafka/tutorials/oauth/java/appsecret
 ```
 
 ## Client Configuration For OAuth
@@ -56,21 +56,21 @@ Kafka clients need to be configured in a way that they can authenticate with Azu
    `sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;`
 * Set login callback handler. This is the authentication handler which is responsible to complete oauth flow and return an access token.
 
-   `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;`
+   `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler`
 
 #### Configure authenticate callback handler of your client so that it can complete auth flow with Azure Active Directory and fetch access tokens
 
 * Set authority for your tenant. Most of the times, this is a URI built with your AAD tenant identifier such as  `"https://login.microsoftonline.com/<tenant-id>/"`
 
-   `this.authority = "<authority>";`
-   
-* Set your AAD application identifier 
+   `this.authority = "https://login.microsoftonline.com/<tenant-id>/";`
+
+* Set your AAD application identifier, also known as client id
 
    `this.appId = "<app-id>";`
-   
- * Set your AAD application secret
- 
-   `this.appSecret = "<app-secret>";`
+
+ * Set your AAD application password, also known as client secret
+
+   `this.appSecret = "<app-password>";`
 
 ## Producer
 
@@ -87,7 +87,7 @@ bootstrap.servers=mynamespace.servicebus.windows.net:9093 # REPLACE
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler
 ```
 
 ### Run producer from command line
@@ -101,7 +101,7 @@ mvn clean package
 mvn exec:java -Dexec.mainClass="TestProducer"
 ```
 
-The producer will now begin sending events to the Kafka-enabled Event Hub at topic `test` (or whatever topic you chose) and printing the events to stdout. 
+The producer will now begin sending events to the Kafka-enabled Event Hub at topic `test` (or whatever topic you chose) and printing the events to stdout.
 
 ## Consumer
 
@@ -120,7 +120,7 @@ request.timeout.ms=60000
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler
 ```
 
 ### Run consumer from command line

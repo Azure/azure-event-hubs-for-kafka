@@ -22,6 +22,8 @@ public class TestProducer {
         //Create Kafka Producer
         final Producer<Long, String> producer = createProducer();
 
+        Thread.sleep(5000);
+
         final ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
 
         //Run NUM_THREADS TestDataReporters

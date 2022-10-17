@@ -4,7 +4,6 @@ import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import java.sql.Timestamp;
 
 public class TestDataReporter implements Runnable {
 
@@ -20,10 +19,10 @@ public class TestDataReporter implements Runnable {
 
     @Override
     public void run() {
-        for(int i = 0; i < NUM_MESSAGES; i++) {                
+        for(int i = 0; i < NUM_MESSAGES; i++) {
             long time = System.currentTimeMillis();
             System.out.println("Test Data #" + i + " from thread #" + Thread.currentThread().getId());
-            
+
             final ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(TOPIC, time, "Test Data #" + i);
             producer.send(record, new Callback() {
                 public void onCompletion(RecordMetadata metadata, Exception exception) {

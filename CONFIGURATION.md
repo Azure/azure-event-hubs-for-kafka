@@ -24,7 +24,6 @@ request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a m
 metadata.max.idle.ms | 180000 | > 5000 | Controls how long the producer will cache metadata for a topic that's idle. If the elapsed time since a topic was last produced to exceeds the metadata idle duration, then the topic's metadata is forgotten and the next access to it will force a metadata fetch request.
 linger.ms | > 0 | | For high throughput scenarios, linger value should be equal to the highest tolerable value to take advantage of batching.
 delivery.timeout.ms | | | Set according to the formula (`request.timeout.ms` + `linger.ms`) * `retries`.
-enable.idempotence | false | | Idempotency currently not supported.
 compression.type | `none` | | Compression currently not supported..
 
 ### Consumer configurations only
@@ -34,6 +33,7 @@ Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
 heartbeat.interval.ms | 3000 | | This is default and should not be changed.
 session.timeout.ms | 30000 |6000 .. 300000| Start with 30000, increase if seeing frequent rebalancing due to missed heartbeats.
+max.poll.interval.ms | 300000 (default) | >session.timeout.ms| Used for rebalance timeout, so this should not be set too low.  **Must be greater than session.timeout.ms.**
 
 
 ## librdkafka configuration properties
@@ -53,7 +53,6 @@ Property | Recommended Values | Permitted Range | Notes
 retries | > 0 | | Default is 2. This is fine.
 request.timeout.ms | 30000 .. 60000 | > 20000| EH will internally default to a minimum of 20000 ms.  `librdkafka` default value is 5000, which can be problematic. *While requests with lower timeout values are accepted, client behavior is not guaranteed.*
 partitioner | `consistent_random` | See librdkafka documentation | `consistent_random` is default and best.  Empty and null keys are handled ideally for most cases.
-enable.idempotence | false | | Idempotency currently not supported.
 compression.codec | `none` || Compression currently not supported.
 
 ### Consumer configurations only
@@ -62,7 +61,7 @@ Property | Recommended Values | Permitted Range | Notes
 ---|---:|-----:|---
 heartbeat.interval.ms | 3000 || This is default and should not be changed.
 session.timeout.ms | 30000 |6000 .. 300000| Start with 30000, increase if seeing frequent rebalancing due to missed heartbeats.
-
+max.poll.interval.ms | 300000 (default) | >session.timeout.ms| Used for rebalance timeout, so this should not be set too low.  **Must be greater than session.timeout.ms.**
 
 ## Further notes
 
@@ -72,3 +71,4 @@ Symptoms | Problem | Solution
 ----|---|-----
 Offset commit failures due to rebalancing | Your consumer is waiting too long in between calls to poll() and the service is kicking the consumer out of the group. | You have several options: <ul><li>increase session timeout</li><li>decrease message batch size to speed up processing</li><li>improve processing parallelization to avoid blocking consumer.poll()</li></ul> Applying some combination of the three is likely wisest.
 Network exceptions at high produce throughput | Are you using Java client + default max.request.size?  Your requests may be too large. | See Java configs above.
+Seeing frequent rebalancing becaues of frequent consumer leave group | Check your client side logs, and you should find the log saying "Member [some member-id] sending LeaveGroup request to coordinator [xyz] due to consumer poll timeout has expired". This means the time between subsequent calls to poll() was longer than the configured max.poll.interval.ms, which typically implies that the poll loop is spending too much time processing messages. | There are serveral settings you can tweak: <ul><li>Either increase max.poll.interval.ms (but then rebalance may take longer)</li><li>or speed up processing by reducing the maximum size of batches returned in poll() with max.poll.records (which may impact performance due to less batching)</li><li>or improve processing parallelization to avoid blocking consumer.poll() for too long</li></ul> Applying some combination of the three is likely necessary to get the best balance for your scenario.

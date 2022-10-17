@@ -5,16 +5,13 @@
 //
 //Original Confluent sample modified for use with Azure Event Hubs for Apache Kafka Ecosystems
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Confluent.Kafka;
 
 namespace EventHubsForKafkaSample
 {
     class Worker
     {
-        public static async Task Producer(string brokerList, string connStr, string topic, string cacertlocation)
+        public static async Task Producer(string? brokerList, string? connStr, string? topic, string? cacertlocation)
         {
             try
             {
@@ -45,7 +42,7 @@ namespace EventHubsForKafkaSample
             }
         }
 
-        public static void Consumer(string brokerList, string connStr, string consumergroup, string topic, string cacertlocation)
+        public static void Consumer(string? brokerList, string? connStr, string? consumergroup, string? topic, string? cacertlocation)
         {
             var config = new ConsumerConfig
             {
@@ -77,7 +74,7 @@ namespace EventHubsForKafkaSample
                     try
                     {
                         var msg = consumer.Consume(cts.Token);
-                        Console.WriteLine($"Received: '{msg.Value}'");
+                        Console.WriteLine($"Received: '{msg.Message.Value}'");
                     }
                     catch (ConsumeException e)
                     {
