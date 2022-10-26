@@ -161,6 +161,19 @@ consumer can use to determine whether header values need AMQP deserialization. T
 not important; it just needs a well-known name that the Kafka consumer can find in the list of headers and
 adjust its behavior accordingly.
 
+> [!NOTE]
+> The Event Hubs service natively converts some of the EventHubs specific [AmqpMessage properties](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-properties) to [Kafka’s record headers](https://kafka.apache.org/32/javadoc/org/apache/kafka/common/header/Headers.html) as **strings**. Kafka message header is a list of &lt;key, value&gt; pairs where key is string and value is always a byte array. For these supported properties, the byte array will have an UTF8encoded string. 
+>
+> Here is the list of immutable properties that Event Hubs support in this conversion today. If you set values for user properties with the names in this list, you don’t need to deserialize at the Kafka consumer side.
+> 
+> - message-id
+> - user-id
+> - to
+> - reply-to
+> - content-type
+> - content-encoding
+> - creation-time
+
 ### AMQP to Kafka part 1: create and send an event in C# (.NET) with properties
 ```csharp
     // Create an event with properties "MyStringProperty" and "MyIntegerProperty"
