@@ -32,7 +32,9 @@ public class TestDataReporter implements Runnable {
 
         for(int i = 0; i < 100; i++) {
             System.out.println("Publishing event: Key-" + i );
-            final ProducerRecord<String, String> record = new ProducerRecord<String, String>(TOPIC, "Key-" + Integer.toString(i), "V1_" + Integer.toString(i) + largeDummyValue);
+            final ProducerRecord<String, String> record = new ProducerRecord<String, String>(TOPIC,
+                                                                        "Key-" + Integer.toString(i),
+                                                                        "V1_" + Integer.toString(i) + largeDummyValue);
             producer.send(record, new Callback() {
                 public void onCompletion(RecordMetadata metadata, Exception exception) {
                     if (exception != null) {
@@ -45,7 +47,9 @@ public class TestDataReporter implements Runnable {
 
         for(int i = 0; i < 50; i++) {
             System.out.println("Publishing updated event: Key-" + i );
-            final ProducerRecord<String, String> record = new ProducerRecord<String, String>(TOPIC, "Key-" + Integer.toString(i), "V2_" + Integer.toString(i) + largeDummyValue);
+            final ProducerRecord<String, String> record = new ProducerRecord<String, String>(TOPIC,
+                                                                        "Key-" + Integer.toString(i),
+                                                                        "V3_" + Integer.toString(i) + largeDummyValue);
             producer.send(record, new Callback() {
                 public void onCompletion(RecordMetadata metadata, Exception exception) {
                     if (exception != null) {

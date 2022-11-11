@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 public class TestConsumer {
     //Change constant to send messages to the desired topic
-    private final static String TOPIC = "eh-p4";
+    private final static String TOPIC = "contoso-compacted";
     
     private final static int NUM_THREADS = 1;
 

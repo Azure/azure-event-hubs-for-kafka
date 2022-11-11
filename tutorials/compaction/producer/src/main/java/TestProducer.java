@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class TestProducer {
     //Change constant to send messages to the desired topic, for this example we use 'test'
-    private final static String TOPIC = "eh-p4";
+    private final static String TOPIC = "contoso-compacted";
         
     private final static int NUM_THREADS = 1;
 
