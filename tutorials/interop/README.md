@@ -38,11 +38,11 @@ and ByteArrayDeserializer:
     // add other properties
     properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
 
-    final KafkaProducer<Long, byte[]> producer = new KafkaProducer<Long, byte[]>(properties);
+    final KafkaProducer<byte[], byte[]> producer = new KafkaProducer<byte[], byte[]>(properties);
 
     final byte[] eventBody = new byte[] { 0x01, 0x02, 0x03, 0x04 };
-    ProducerRecord<Long, byte[]> pr =
-        new ProducerRecord<Long, byte[]>(myTopic, myPartitionId, myTimeStamp, eventBody);
+    ProducerRecord<byte[], byte[]> pr =
+        new ProducerRecord<byte[], byte[]>(myTopic, myPartitionId, myTimeStamp, eventBody);
 
     /* send pr */
 ```
@@ -53,9 +53,9 @@ and ByteArrayDeserializer:
     // add other properties
     properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class.getName());
 
-    final KafkaConsumer<Long, byte[]> consumer = new KafkaConsumer<Long, byte[]>(properties);
+    final KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<byte[], byte[]>(properties);
 
-    ConsumerRecord<Long, byte[]> cr = /* receive event */
+    ConsumerRecord<byte[], byte[]> cr = /* receive event */
     // cr.value() is a byte[] with values { 0x01, 0x02, 0x03, 0x04 }
 ```
 
