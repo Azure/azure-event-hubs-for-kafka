@@ -1,13 +1,13 @@
 //Copyright (c) Microsoft Corporation. All rights reserved.
 //Licensed under the MIT License.
-import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;     //v0.11.0.0
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Properties;
+
+import org.apache.flink.connector.kafka.sink.KafkaSink;
+import org.apache.flink.connector.kafka.sink.KafkaSinkBuilder;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class FlinkTestProducer {
 
@@ -19,30 +19,22 @@ public class FlinkTestProducer {
             Properties properties = new Properties();
             properties.load(new FileReader(FILE_PATH));
 
+            KafkaSinkBuilder<Long> kafkaSinkBuilder = KafkaSink.<Long>builder();
+            for(String property: properties.stringPropertyNames())
+            {
+                kafkaSinkBuilder.setProperty(property, properties.getProperty(property));
+            }
+            KafkaSink<Long> kafkaSink = kafkaSinkBuilder.build();
+            
+
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-            DataStream stream = createStream(env);
-            FlinkKafkaProducer011<String> myProducer = new FlinkKafkaProducer011<>(
-                    TOPIC,    
-                    new SimpleStringSchema(),   // serialization schema
-                    properties);
-
-            stream.addSink(myProducer);
-            env.execute("Testing flink print");
-
+            DataStream<Long> sourceStream = env.fromSequence(0, 200);
+            sourceStream.sinkTo(kafkaSink);
+            env.execute("Send to eventhub using Kafka api");
         } catch(FileNotFoundException e){
             System.out.println("FileNotFoundException: " + e);
         } catch (Exception e) {
             System.out.println("Failed with exception:: " + e);
         }
-    }
-
-    public static DataStream createStream(StreamExecutionEnvironment env){
-        return env.generateSequence(0, 200)
-            .map(new MapFunction<Long, String>() {
-                @Override
-                public String map(Long in) {
-                    return "FLINK PRODUCE " + in;
-                }
-            });
     }
 }
