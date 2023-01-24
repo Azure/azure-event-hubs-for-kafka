@@ -133,3 +133,10 @@ Kafka consumer groups are...
 - span a namespace.  Using the same Kafka group name for multiple applications on multiple EH topics means that all applications and their Kafka clients will be rebalanced whenever only a single application needs rebalancing.  Choose your group names wisely.
 - fully distinct from EH consumer groups.  You **do not** need to use '$Default', nor do you need to worry about Kafka clients interfering with AMQP workloads.
 - not viewable in the Azure portal.  Consumer group info is accessible via Kafka APIs.
+
+## See Also
+See the following articles in our Azure Event Hubs documentation:
+
+- [Azure Event Hubs for Apache Kafka](https://learn.microsoft.com/azure/event-hubs/azure-event-hubs-kafka-overview)
+- [Quickstart: Data streaming with Event Hubs using the Kafka protocol](https://learn.microsoft.com/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=connection-string)
+- [Tutorial: Process Apache Kafka for Event Hubs events using Stream analytics](https://learn.microsoft.com/azure/event-hubs/event-hubs-kafka-stream-analytics)
