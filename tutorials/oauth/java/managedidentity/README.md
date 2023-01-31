@@ -8,7 +8,7 @@ If you don't have an Azure subscription, create a [free account](https://azure.m
 
 In addition:
 
-* [Java Development Kit (JDK) 1.7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Java Development Kit (JDK) 17+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
     * On Ubuntu, run `apt-get install default-jdk` to install the JDK.
     * Be sure to set the JAVA_HOME environment variable to point to the folder where the JDK is installed.
 * [Download](http://maven.apache.org/download.cgi) and [install](http://maven.apache.org/install.html) a Maven binary archive
@@ -72,7 +72,7 @@ Kafka clients need to be configured in a way that they can authenticate with Azu
    `sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;`
 * Set login callback handler. This is the authentication handler which is responsible to complete oauth flow and return an access token.
 
-   `sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;`
+   `sasl.login.callback.handler.class=de.microsoft.examples.AzureAuthenticateCallbackHandler;`
 
 ## Producer
 
@@ -89,18 +89,18 @@ bootstrap.servers=mynamespace.servicebus.windows.net:9093 # REPLACE
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=de.microsoft.examples.AzureAuthenticateCallbackHandler;
 ```
 
 ### Run producer from command line
 
-This sample is configured to send messages to topic `test`, if you would like to change the topic, change the TOPIC constant in `producer/src/main/java/TestProducer.java`.
+This sample is configured to send messages to topic `test`, if you would like to change the topic, change the TOPIC constant in `producer/src/main/java/de/microsoft/examples/TestProducer.java`.
 
 To run the producer from the command line, generate the JAR and then run from within Maven (alternatively, generate the JAR using Maven, then run in Java by adding the necessary Kafka JAR(s) to the classpath):
 
 ```bash
 mvn clean package
-mvn exec:java -Dexec.mainClass="TestProducer"
+mvn exec:java -Dexec.mainClass="de.microsoft.examples.TestProducer"
 ```
 
 The producer will now begin sending events to the Kafka-enabled Event Hub at topic `test` (or whatever topic you chose) and printing the events to stdout. 
@@ -122,18 +122,18 @@ request.timeout.ms=60000
 security.protocol=SASL_SSL
 sasl.mechanism=OAUTHBEARER
 sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;
-sasl.login.callback.handler.class=CustomAuthenticateCallbackHandler;
+sasl.login.callback.handler.class=de.microsoft.examples.AzureAuthenticateCallbackHandler;
 ```
 
 ### Run consumer from command line
 
-This sample is configured to receive messages from topic `test`, if you would like to change the topic, change the TOPIC constant in `consumer/src/main/java/TestConsumer.java`.
+This sample is configured to receive messages from topic `test`, if you would like to change the topic, change the TOPIC constant in `consumer/src/main/java/de/microsoft/examples/TestConsumer.java`.
 
 To run the producer from the command line, generate the JAR and then run from within Maven (alternatively, generate the JAR using Maven, then run in Java by adding the necessary Kafka JAR(s) to the classpath):
 
 ```bash
 mvn clean package
-mvn exec:java -Dexec.mainClass="TestConsumer"
+mvn exec:java -Dexec.mainClass="de.microsoft.examples.TestConsumer"
 ```
 
 If the Kafka-enabled Event Hub has incoming events (for instance, if your example producer is also running), then the consumer should now begin receiving events from topic `test` (or whatever topic you chose).
