@@ -1,33 +1,36 @@
 //Copyright (c) Microsoft Corporation. All rights reserved.
 //Licensed under the MIT License.
-import java.util.Date;
-import java.util.Set;
+package de.microsoft.examples;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 
-public class OAuthBearerTokenImp implements OAuthBearerToken
-{
-    String token;
-    long lifetimeMs;
-    
-    public OAuthBearerTokenImp(final String token, Date expiresOn) {
+public class OAuthBearerTokenImpl implements OAuthBearerToken {
+
+    private final String token;
+    private final long lifetimeMs;
+    private final Set<String> scopes = new HashSet<>();
+
+    public OAuthBearerTokenImpl(final String token, final Date expiresOn) {
         this.token = token;
         this.lifetimeMs = expiresOn.getTime();
     }
-    
+
     @Override
     public String value() {
-        return this.token;
+        return token;
     }
 
     @Override
     public Set<String> scope() {
-        return null;
+        return scopes;
     }
 
     @Override
     public long lifetimeMs() {
-        return this.lifetimeMs;
+        return lifetimeMs;
     }
 
     @Override
