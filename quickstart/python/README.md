@@ -4,6 +4,8 @@ This quickstart will show how to create and connect to an Event Hubs Kafka endpo
 
 This sample is based on [Confluent's Apache Kafka Python client](https://github.com/confluentinc/confluent-kafka-python), modified for use with Event Hubs for Kafka.  While the tutorial is aimed at Linux users, MacOS users can follow along with Homebrew.
 
+If you want to connect to an Event Hubs Kafka endpoint using Azure Active Directory authentication with the Python Kafka client, [take a look at this sample](../../tutorials/oauth/python).
+
 ## Prerequisites
 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?ref=microsoft.com&utm_source=microsoft.com&utm_medium=docs&utm_campaign=visualstudio) before you begin.
