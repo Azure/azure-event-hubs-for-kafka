@@ -9,7 +9,7 @@
   "author": "Ernani Joppert Pontes Martins",
   "license": "MIT",
   "dependencies": {
-    "adal-node": "^0.2.2",
+    "adal-node": "^0.2.3",
     "kafkajs": "^1.15.0"
   }
 }
