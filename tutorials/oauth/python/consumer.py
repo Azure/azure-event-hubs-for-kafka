@@ -62,8 +62,11 @@ def parse_consumer_args():
     parser.add_argument('namespace', help='Eventhubs namespace')
     parser.add_argument('group', help='Group')
     parser.add_argument('topics', nargs='+', help='Topic1, Topic2, ...')
-    parser.add_argument('-T', type=int, help='Enable client statistics at specified interval (ms)')
-    parser.add_argument('--mode', default='azure', choices=['azure', 'oidc', 'opaque'], help='Optional confluent producer configuration mode - azure, oidc, opaque')
+    parser.add_argument('-T', type=int,
+                        help='Enable client statistics at specified interval (ms)')
+    parser.add_argument('--mode', default='azure',
+                        choices=['azure', 'oidc', 'opaque'],
+                        help='Token request callback implementation logic')
 
     args = parser.parse_args()
 

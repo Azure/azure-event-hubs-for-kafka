@@ -28,7 +28,7 @@ def produce_workload(conf, topic, num_messages):
             sys.stderr.write('%% Message delivered to %s [%d] @ %d\n' %
                                 (msg.topic(), msg.partition(), msg.offset()))
 
-    # Write 1-records_num to topic
+    # Write 1-num_messages to topic
     for i in range(num_messages):
         try:
             p.produce(topic, str(i), callback=delivery_callback)
@@ -53,9 +53,9 @@ def parse_producer_args():
     parser.add_argument('topic', help='Topic or Event Hub')
     parser.add_argument('--mode', default='azure',
                         choices=['azure', 'oidc', 'opaque'],
-                        help='Optional confluent producer configuration mode - azure, oidc, opaque')
+                        help='Token request callback implementation logic')
     parser.add_argument('--num-messages', type=int, default=100, 
-                        help='Optional number of messages to be produced')
+                        help='Number of messages to be produced')
 
     args = parser.parse_args()
     return args.namespace, args.topic, args.mode, args.num_messages
