@@ -65,11 +65,11 @@ Update the configuration properties of the processor using below information:
 
     * Add new `StandardSSLControllerService` from the dropdown on next menu
 
-    ![Add SSL Controller image](./images/add_controller_service.png)
+![Add SSL Controller image](./images/add_controller_service.png)
 
     * Once created, hit the arrow to open the configuration and settings for the `StandardSSLControllerService` just created
 
-    ![SSL Service Arrow Config image](./images/ssl_service_arrow_config.png)
+![SSL Service Arrow Config image](./images/ssl_service_arrow_config.png)
 
     * Configure the StandardSSLControllerService with below properties:
 
@@ -86,11 +86,11 @@ Update the configuration properties of the processor using below information:
     * Save the `StandardSSLControllerService` configuration just created.
     You may see the configurator get stuck on a "Validating" message - close and reopen the NiFi flow configuration window.
 
-    ![Validating SSL context image](./images/validating_context.png)
+![Validating SSL context image](./images/validating_context.png)
 
     * The `StandardSSLControllerService` may be set to `Disabled` - click the highlighted icon and set to `Enable`.
 
-    ![Disabled SSL service image](./images/disabled_ssl_service.png)
+![Disabled SSL service image](./images/disabled_ssl_service.png)
 
 * Using the `+` symbol to add custom properties, add in the following additional custom properties with the values as follows:
 
