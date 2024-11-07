@@ -72,9 +72,9 @@ There is no exception or error when this happens, but the Kafka logs will show t
 
 ### Compression / Message Format Version issue
 
-Kafka supports compression, and Event Hubs for Kafka currently does not. Errors that mention a message format version (e.g. `The message format version on the broker does not support the request.`) are usually caused when a client tries to send compressed Kafka messages to our brokers. 
+Kafka supports compression, and Event Hubs for Kafka only supports compression using GZip. Errors that mention a message format version (e.g. `The message format version on the broker does not support the request.`) are usually caused when a client tries to send compressed Kafka messages in a format unsupported by our brokers. 
 
-If compressed data is necessary, compressing your data before sending it to the brokers and decompressing after receiving it is a valid workaround. The message body is just a byte array to the service, so client-side compression/decompression will not cause any issues.
+If compressed data is necessary in formats other than GZip, compressing your data before sending it to the brokers and decompressing after receiving it is a valid workaround. The message body is just a byte array to the service, so client-side compression/decompression will not cause any issues.
 
 ### Receiving an UnknownServerException from Kafka client libraries
 
